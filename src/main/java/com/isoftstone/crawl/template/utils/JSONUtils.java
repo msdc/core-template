@@ -7,8 +7,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.isoftstone.crawl.template.vo.ParseResult;
-import com.isoftstone.crawl.template.vo.TemplateResult;
+import com.isoftstone.crawl.template.Component.ParseResult;
+import com.isoftstone.crawl.template.Component.TemplateResult;
 
 public class JSONUtils {
 	public static TemplateResult getTemplateResultObject(String json) {
