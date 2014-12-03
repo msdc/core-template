@@ -1,0 +1,9 @@
+0    ERROR [2014-12-03 09:48:21]  The page http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=164441 , the selector content , the index  , get the result is empty
+23   WARN  [2014-12-03 09:48:21]  Don't get the match data ((20\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)) from 一、采购人：山东省卫生和计划生育委员会  地址：济南市燕东新路9号  联系方式：高晖  67876327.
+0    ERROR [2014-12-03 09:50:51]  The page http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=164441 , the selector content , the index  , get the result is empty
+12   WARN  [2014-12-03 09:50:51]  Don't get the match data ((20\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)) from 一、采购人：山东省卫生和计划生育委员会  地址：济南市燕东新路9号  联系方式：高晖  67876327.
+0    WARN  [2014-12-03 09:53:42]  Don't get the match data ((20\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)) from 一、采购人：山东省卫生和计划生育委员会  地址：济南市燕东新路9号  联系方式：高晖  67876327.
+0    ERROR [2014-12-03 10:17:59]  Match filter defined error.
+0    WARN  [2014-12-03 10:18:35]  Don't get the match data (/(\d+)) from 1.
+0    WARN  [2014-12-03 10:22:15]  Don't get the match data (/(\d+)) from 1.
+0    WARN  [2014-12-03 12:00:51]  Don't get the match data (/(\d+)) from 0.
