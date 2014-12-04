@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="libs/jackson-core-asl-1.9.11.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-mapper-asl-1.9.11.jar" sourcepath="C:/Users/Administrator/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.9.11/jackson-mapper-asl-1.9.11-sources.jar"/>
 	<classpathentry kind="lib" path="libs/jedis-2.6.0.jar"/>
-	<classpathentry kind="lib" path="libs/jsoup-1.7.3.jar"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.7.3.jar" sourcepath="libs/jsoup-1.8.1-sources.jar"/>
 	<classpathentry kind="lib" path="libs/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="libs/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="libs/myutil.jar"/>

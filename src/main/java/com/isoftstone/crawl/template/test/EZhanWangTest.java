@@ -25,8 +25,7 @@ public class EZhanWangTest {
 		byte[] input = readTextFile(filePath, encoding);
 		TemplateResult templateResult = EZhanWangTemplate();
 		System.out.println(templateResult.toJSON());
-		ParseResult parseResult = TemplateFactory.localProcess(input, encoding,
-				url, templateResult, Constants.TEMPLATE_LIST);
+		ParseResult parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
 		// System.out.println(parseResult.toJSON());
 		System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 	}

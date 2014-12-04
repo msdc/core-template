@@ -33,20 +33,16 @@ public class TemplateFactory {
 					selectors.addAll(templateResult.getPagination());
 				}
 			} else if (Constants.TEMPLATE_PAGITATION.equals(type)) {
-				selectors = RedisUtils.getTemplateResult(templateGuid)
-						.getList();
+				selectors = RedisUtils.getTemplateResult(templateGuid).getList();
 				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_NEWS.equals(type)) {
 				// 获取新闻页模板
-				selectors = RedisUtils.getTemplateResult(templateGuid)
-						.getNews();
+				selectors = RedisUtils.getTemplateResult(templateGuid).getNews();
 				// 获取中间结果
 				String parseResultGuid = templateResult.getParseResultGuid();
 				parseResult = RedisUtils.getParseResult(parseResultGuid);
 			} else {
-				LOG.error("This page " + url + " ， the type "
-						+ templateResult.getType()
-						+ " , it isn't defined in the Template.");
+				LOG.error("This page " + url + " ， the type "+ templateResult.getType()+ " , it isn't defined in the Template.");
 				return null;
 			}
 			int flag = 0;
@@ -59,9 +55,7 @@ public class TemplateFactory {
 					}
 				}
 			} else {
-				LOG.error("This page " + url + " ， the type "
-						+ templateResult.getType()
-						+ " , it isn't defined in the Template.");
+				LOG.error("This page " + url + " ， the type "+ templateResult.getType()+ " , it isn't defined in the Template.");
 				return null;
 			}
 			if (flag != -1) {
@@ -75,8 +69,7 @@ public class TemplateFactory {
 		return parseResult;
 	}
 
-	public static ParseResult localProcess(byte[] input, String encoding,
-			String url, TemplateResult templateResult, String pageType) {
+	public static ParseResult localProcess(byte[] input, String encoding,String url, TemplateResult templateResult, String pageType) {
 		List<Selector> selectors = null;
 		ParseResult parseResult = new ParseResult();
 		String templateGuid = templateResult.getTemplateGuid();
@@ -84,9 +77,7 @@ public class TemplateFactory {
 		if (Constants.TEMPLATE_LIST.equals(pageType)) {
 			selectors = templateResult.getList();
 			if (selectors == null) {
-				LOG.error("This page " + url + " ， the type "
-						+ templateResult.getType()
-						+ " , it isn't defined in the Template.");
+				LOG.error("This page " + url + " ， the type "+ templateResult.getType()+ " , it isn't defined in the Template.");
 				return null;
 			}
 			if (templateResult.getPagination() != null) {
@@ -119,11 +110,9 @@ public class TemplateFactory {
 			if (results != null && results.size() > 0) {
 				if (results.containsKey(Constants.CONTENT_OUTLINK)) {
 					result = new ArrayList<String>();
-					int len = Integer.parseInt(results
-							.get(Constants.CONTENT_OUTLINK));
+					int len = Integer.parseInt(results.get(Constants.CONTENT_OUTLINK));
 					for (int i = 0; i < len; i++) {
-						String outlink = results.get(Constants.CONTENT_OUTLINK
-								+ "_" + i);
+						String outlink = results.get(Constants.CONTENT_OUTLINK+ "_" + i);
 						result.add(outlink);
 					}
 				}
@@ -139,14 +128,11 @@ public class TemplateFactory {
 			if (results != null && results.size() > 0) {
 				if (results.containsKey(Constants.PAGINATION_OUTLINK)) {
 					result = new ArrayList<String>();
-					int len = Integer.parseInt(results
-							.get(Constants.PAGINATION_OUTLINK));
+					int len = Integer.parseInt(results.get(Constants.PAGINATION_OUTLINK));
 					Set<String> keySet = results.keySet();
 					for (int i = 0; i < len; i++) {
-						if (keySet.contains(Constants.PAGINATION_OUTLINK + "_"
-								+ i)) {
-							String outlink = results
-									.get(Constants.PAGINATION_OUTLINK + "_" + i);
+						if (keySet.contains(Constants.PAGINATION_OUTLINK + "_"+ i)) {
+							String outlink = results.get(Constants.PAGINATION_OUTLINK + "_" + i);
 							result.add(outlink);
 						} else {
 							continue;

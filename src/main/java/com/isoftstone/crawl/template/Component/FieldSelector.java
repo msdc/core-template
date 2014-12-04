@@ -49,13 +49,11 @@ public class FieldSelector implements ISelectorHandler {
 		String resultKey = this.selector.getName();
 		// parseResult中保存了当前新闻页的URL以及标签信息
 		if (parseResult == null) {
-			LOG.error("This page " + url
-					+ " ， don't init the parse result object in redis.");
+			LOG.error("This page " + url+ " ， don't init the parse result object in redis.");
 			return -1;
 		} // field拾取器必须定义name属性，无name属性，获取到的结果无法保存
 		if (resultKey.isEmpty()) {
-			LOG.error("This page " + url
-					+ " ， the name of this selector is null or empty.");
+			LOG.error("This page " + url+ " ， the name of this selector is null or empty.");
 			return -1;
 		}
 		// TODO: 已经获取的同名Selector不再获取
@@ -67,14 +65,11 @@ public class FieldSelector implements ISelectorHandler {
 		if (indexers != null) {
 			StringBuilder field = new StringBuilder();
 			for (int i = 0; i < indexers.size(); i++) {
-				ArrayList<String> results = indexers.get(i).process(input,
-						encoding, url);
+				ArrayList<String> results = indexers.get(i).process(input,encoding, url);
 				if (results.size() == 1) {
 					String resultValue = results.get(0);
 					if (resultValue.isEmpty()) {
-						LOG.error("The page " + url + " , the selector "
-								+ resultKey + " , the index "
-								+ " , get the result is empty");
+						LOG.error("The page " + url + " , the selector "+ resultKey + " , the index "+ " , get the result is empty");
 						return -1;
 					}
 					// 处理过滤器
@@ -102,8 +97,7 @@ public class FieldSelector implements ISelectorHandler {
 				parseResult.setResult(resultKey, resultValue);
 				return 1;
 			} else {
-				LOG.error("The page " + url + " , the selector " + resultKey
-						+ " , both of the index and value are empty!");
+				LOG.error("The page " + url + " , the selector " + resultKey+ " , both of the index and value are empty!");
 				return -1;
 			}
 		}

@@ -51,8 +51,7 @@ public class JsoupIndexer implements IIndexerHandler {
 		try {
 			String value = this.index.getValue();
 			if (value != null && !value.isEmpty()) {
-				value = EncodeUtils.convertEncoding(value,
-						Constants.DEFAULT_ENCODING, encoding);
+				value = EncodeUtils.convertEncoding(value,Constants.DEFAULT_ENCODING, encoding);
 				doc = org.jsoup.Jsoup.parse(in, encoding, url);
 				//System.out.println(doc);
 				elements = doc.select(value);
@@ -84,8 +83,7 @@ public class JsoupIndexer implements IIndexerHandler {
 	 *            需要查询的网页的编码格式
 	 * @return 获取的元素集合
 	 */
-	private ArrayList<String> attributorHandler(
-			org.jsoup.select.Elements elements, String encoding) {
+	private ArrayList<String> attributorHandler(org.jsoup.select.Elements elements, String encoding) {
 		ArrayList<String> results = new ArrayList<String>();
 		if (elements != null) {
 			String r = null;

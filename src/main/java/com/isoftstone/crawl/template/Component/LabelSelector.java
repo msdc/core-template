@@ -23,8 +23,7 @@ public class LabelSelector implements ISelectorHandler {
 	}
 
 	@Override
-	public int select(byte[] input, String encoding, String url,
-			ParseResult parseResult) {
+	public int select(byte[] input, String encoding, String url, ParseResult parseResult) {
 		List<SelectorIndexer> indexs = this.selector.getIndexers();
 		String resultKey = this.selector.getName();
 		// label拾取器必须定义name属性，无name属性，获取到的结果无法保存
