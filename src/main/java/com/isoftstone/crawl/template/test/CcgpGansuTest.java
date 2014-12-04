@@ -8,6 +8,7 @@ import com.isoftstone.crawl.template.Component.Selector;
 import com.isoftstone.crawl.template.Component.SelectorFilter;
 import com.isoftstone.crawl.template.Component.SelectorFormat;
 import com.isoftstone.crawl.template.Component.SelectorIndexer;
+import com.isoftstone.crawl.template.Component.TemplateFactory;
 import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.utils.MD5Utils;
@@ -59,16 +60,18 @@ public class CcgpGansuTest {
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(2n-1) > td:nth-child(2) > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
-		template.setList(list);
+		//template.setList(list);
 		
 		// tstamp
 		selector = new Selector();
+		selector.setType(Constants.SELECTOR_LABEL);
 		indexer = new SelectorIndexer();
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(2n-1) > td:nth-child(3)", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDD);
-		selector.initFieldSelector("tstamp", "", indexer, filter, null);
+		selector.initLabelSelector("tstamp", "", indexer, filter, null);
 		list.add(selector);
+		
 		template.setList(list);
 
 		// pagitation outlink  js翻页无法处理
@@ -99,7 +102,8 @@ public class CcgpGansuTest {
 		indexer.initJsoupIndexer("body > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr > td", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
-
+		
+		template.setNews(news);
 		
 		RedisUtils.setTemplateResult(template, templateGuid);
 		return template;
