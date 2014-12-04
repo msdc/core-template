@@ -3,7 +3,7 @@ package com.isoftstone.crawl.template.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.IFilterHandler;
+import com.isoftstone.crawl.template.itf.IFilterHandler;
 
 /**
  * RemoveFilter类是过滤器的实现类,主要提供替换过滤器

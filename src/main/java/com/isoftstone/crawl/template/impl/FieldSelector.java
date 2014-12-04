@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.ISelectorHandler;
+import com.isoftstone.crawl.template.itf.ISelectorHandler;
 
 /**
  * FieldSelector类是拾取器的实现类,主要提供正针对新闻页中的各种信息的检索爬取

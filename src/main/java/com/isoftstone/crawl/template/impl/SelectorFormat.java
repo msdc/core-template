@@ -1,8 +1,8 @@
 package com.isoftstone.crawl.template.impl;
 
 
-import com.isoftstone.crawl.template.dao.IFormaterHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.IFormaterHandler;
 
 /**
  * SelectorFormat类定义了格式化器，用于根据当前字符串的格式，将当前字符串格式化为系统设定的默认格式

@@ -1,4 +1,4 @@
-package com.isoftstone.crawl.template.dao;
+package com.isoftstone.crawl.template.itf;
 
 import com.isoftstone.crawl.template.impl.ParseResult;
 

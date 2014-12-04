@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.ISelectorHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.ISelectorHandler;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 

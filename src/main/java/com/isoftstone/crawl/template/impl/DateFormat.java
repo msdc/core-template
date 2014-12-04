@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.IFormaterHandler;
+import com.isoftstone.crawl.template.itf.IFormaterHandler;
 
 /**
  * DateFormater类是格式化器的实现类,主要提供时间字符串的格式

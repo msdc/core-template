@@ -2,8 +2,8 @@ package com.isoftstone.crawl.template.impl;
 
 import java.util.ArrayList;
 
-import com.isoftstone.crawl.template.dao.IIndexerHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.IIndexerHandler;
 
 /**
  * SelectorFilter类定义了索引器，用于根据索引器模板，获取到需要的数据。

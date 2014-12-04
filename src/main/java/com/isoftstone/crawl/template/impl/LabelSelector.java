@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.ISelectorHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.ISelectorHandler;
 
 public class LabelSelector implements ISelectorHandler {
 	private static final Log LOG = LogFactory.getLog(LabelSelector.class);

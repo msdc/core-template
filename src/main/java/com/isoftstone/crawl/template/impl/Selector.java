@@ -3,8 +3,8 @@ package com.isoftstone.crawl.template.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.isoftstone.crawl.template.dao.ISelectorHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.ISelectorHandler;
 
 /**
  * Selector类定义了拾取器，用于根据拾取器模板获取页面的内容

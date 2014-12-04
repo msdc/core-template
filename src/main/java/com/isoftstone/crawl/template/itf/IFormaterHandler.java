@@ -1,4 +1,4 @@
-package com.isoftstone.crawl.template.dao;
+package com.isoftstone.crawl.template.itf;
 
 public interface IFormaterHandler {
 	public String format(String str);

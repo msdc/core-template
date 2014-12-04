@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.IFilterHandler;
+import com.isoftstone.crawl.template.itf.IFilterHandler;
 
 /**
  * MatchFilter类是过滤器的实现类,主要提供正则表达式过滤器

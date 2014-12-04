@@ -1,8 +1,8 @@
 package com.isoftstone.crawl.template.impl;
 
 
-import com.isoftstone.crawl.template.dao.IFilterHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.IFilterHandler;
 
 /**
  * SelectorFilter类定义了过滤器，用于将拾取器(Selector)中获取到的数据，进行过滤处理。

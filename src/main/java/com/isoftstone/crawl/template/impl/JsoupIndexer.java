@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.dao.IIndexerHandler;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.itf.IIndexerHandler;
 import com.isoftstone.crawl.template.utils.EncodeUtils;
 
 /**
