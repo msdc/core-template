@@ -8,7 +8,6 @@ import com.isoftstone.crawl.template.Component.Selector;
 import com.isoftstone.crawl.template.Component.SelectorFilter;
 import com.isoftstone.crawl.template.Component.SelectorFormat;
 import com.isoftstone.crawl.template.Component.SelectorIndexer;
-import com.isoftstone.crawl.template.Component.TemplateFactory;
 import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.utils.MD5Utils;

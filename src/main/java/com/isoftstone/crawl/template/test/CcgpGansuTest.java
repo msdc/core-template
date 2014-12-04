@@ -8,7 +8,6 @@ import com.isoftstone.crawl.template.Component.Selector;
 import com.isoftstone.crawl.template.Component.SelectorFilter;
 import com.isoftstone.crawl.template.Component.SelectorFormat;
 import com.isoftstone.crawl.template.Component.SelectorIndexer;
-import com.isoftstone.crawl.template.Component.TemplateFactory;
 import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.utils.MD5Utils;
@@ -23,18 +22,18 @@ public class CcgpGansuTest {
 		byte[] input = DownloadHtml.getHtml(url);
 		TemplateResult templateResult = CcgpGansuTemplate();
 		ParseResult parseResult = null;
-		parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
-//	    parseResult = TemplateFactory.process(input, encoding,url);
+		//	parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
+	    parseResult = TemplateFactory.process(input, encoding,url);
 		System.out.println("templateResult:"+templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		//System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 //	System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
 //		
-		url = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=162302";
+		url = "http://www.ccgp-gansu.gov.cn/web/214/224183.html";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
-		//parseResult = TemplateFactory.process(input, encoding, url);
-		parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
+		parseResult = TemplateFactory.process(input, encoding, url);
+		//parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 
 	}
@@ -60,7 +59,7 @@ public class CcgpGansuTest {
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(2n-1) > td:nth-child(2) > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
-		//template.setList(list);
+	
 		
 		// tstamp
 		selector = new Selector();
@@ -102,7 +101,6 @@ public class CcgpGansuTest {
 		indexer.initJsoupIndexer("body > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr > td", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
-		
 		template.setNews(news);
 		
 		RedisUtils.setTemplateResult(template, templateGuid);

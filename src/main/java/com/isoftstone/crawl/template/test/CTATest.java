@@ -18,36 +18,33 @@ public class CTATest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String url = "http://www.xtxh.net/xtxh/finance/index.htm";
-		String encoding = "utf-8";
-		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = ChinaTrusteeAssociationTemplate();
-		// ParseResult parseResult = null;
-		// //parseResult = TemplateFactory.localProcess(input, encoding,url,
-		// templateResult, Constants.TEMPLATE_LIST);
-		// parseResult = TemplateFactory.process(input, encoding,url);
-		// System.out.println("templateResult:"+templateResult.toJSON());
-		// System.out.println(parseResult.toJSON());
-		// //System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		// System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-		//
-		// url = "http://www.xtxh.net/xtxh/finance/21592.htm";
-		// input = DownloadHtml.getHtml(url);
-		// encoding = "utf-8";
-		// //parseResult = TemplateFactory.localProcess(input, encoding,
-		// url,templateResult, Constants.TEMPLATE_NEWS);
-		// parseResult = TemplateFactory.localProcess(input, encoding,
-		// url,templateResult, Constants.TEMPLATE_NEWS);
-		// System.out.println(parseResult.toJSON());
+				String url = "http://www.xtxh.net/xtxh/finance/index.htm";
+				String encoding = "utf-8";
+				byte[] input = DownloadHtml.getHtml(url);
+				TemplateResult templateResult = ChinaTrusteeAssociationTemplate();
+//				ParseResult parseResult = null;
+//				//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
+//			    parseResult = TemplateFactory.process(input, encoding,url);
+//				System.out.println("templateResult:"+templateResult.toJSON());
+//				System.out.println(parseResult.toJSON());
+//				//System.out.println(TemplateFactory.getOutlink(parseResult).toString());
+//				System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+//				
+//				url = "http://www.xtxh.net/xtxh/finance/21592.htm";
+//				input = DownloadHtml.getHtml(url);
+//				encoding = "utf-8";
+//				//parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
+//				parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
+//				System.out.println(parseResult.toJSON());
 	}
-
-	public static TemplateResult ChinaTrusteeAssociationTemplate() {
+	public static TemplateResult ChinaTrusteeAssociationTemplate()
+	{
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.xtxh.net/xtxh/finance/index.htm";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -59,8 +56,7 @@ public class CTATest {
 		// content outlink
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.newsListRight ul.articleList li a",
-				Constants.ATTRIBUTE_HREF);
+		indexer.initJsoupIndexer("div.newsListRight ul.articleList li a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
 		template.setList(list);
@@ -81,15 +77,14 @@ public class CTATest {
 
 		// title
 		indexer = new SelectorIndexer();
-		selector = new Selector();// body > div.table > div.newsListRight >
-									// div.detail > div.detailTitle
+		selector = new Selector();//body > div.table > div.newsListRight > div.detail > div.detailTitle
 		indexer.initJsoupIndexer("div.detailTitle", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
 		// content
 		indexer = new SelectorIndexer();
-		selector = new Selector();// #ziti
+		selector = new Selector();//#ziti
 		indexer.initJsoupIndexer("div#ziti", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
@@ -103,8 +98,8 @@ public class CTATest {
 		selector.initFieldSelector("tstamp", "", indexer, filter, null);
 		news.add(selector);
 		template.setNews(news);
-
+		
 		RedisUtils.setTemplateResult(template, templateGuid);
 		return template;
-	}
+		}
 }

@@ -18,6 +18,8 @@ public class Constants {
 	public static final String PAGINATION_TYPE_PAGENUMBER = "number";
 	// 获取分页的记录数
 	public static final String PAGINATION_TYPE_PAGERECORD = "record";
+	// 默认返回最大页数
+	public static final int MAX_PAGE_COUNT = 50;
 	// 用于ParseReuslt，新闻页的URL
 	public static final String ARTICLE_URL = "article_url";
 

@@ -1,5 +1,6 @@
 package com.isoftstone.crawl.template.Component;
 
+
 import com.isoftstone.crawl.template.IComponent.IFilterHandler;
 import com.isoftstone.crawl.template.global.Constants;
 

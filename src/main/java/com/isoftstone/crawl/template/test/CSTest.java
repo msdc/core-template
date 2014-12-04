@@ -8,7 +8,6 @@ import com.isoftstone.crawl.template.Component.Selector;
 import com.isoftstone.crawl.template.Component.SelectorFilter;
 import com.isoftstone.crawl.template.Component.SelectorFormat;
 import com.isoftstone.crawl.template.Component.SelectorIndexer;
-import com.isoftstone.crawl.template.Component.TemplateFactory;
 import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.utils.MD5Utils;
@@ -22,22 +21,21 @@ public class CSTest {
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
 		TemplateResult templateResult = CSTemplate();
-		ParseResult parseResult = null;
-		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, url);
-		System.out.println(parseResult.toJSON());
+//		ParseResult parseResult = null;
+//		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
+//		 parseResult = TemplateFactory.process(input, encoding,url);
+//		System.out.println(parseResult.toJSON());
 //		System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 //		//System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
 //		
-		url = "http://www.cs.com.cn/xwzx/hg/201412/t20141202_4579057.html";
-		input = DownloadHtml.getHtml(url);
-		encoding = "gb2312";
+//		url = "http://www.cs.com.cn/xwzx/hg/201411/t20141125_4572144.html";
+//		input = DownloadHtml.getHtml(url);
+//		encoding = "gb2312";
 //		parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
-		parseResult = TemplateFactory.process(input, encoding, url);
-		System.out.println(parseResult.toJSON());
+//		//parseResult = TemplateFactory.process(input, encoding, url);
+//		System.out.println(parseResult.toJSON());
 
 	}
-	
 	public static TemplateResult CSTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
