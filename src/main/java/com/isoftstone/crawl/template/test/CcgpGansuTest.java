@@ -3,13 +3,13 @@ package com.isoftstone.crawl.template.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.isoftstone.crawl.template.Component.ParseResult;
-import com.isoftstone.crawl.template.Component.Selector;
-import com.isoftstone.crawl.template.Component.SelectorFilter;
-import com.isoftstone.crawl.template.Component.SelectorFormat;
-import com.isoftstone.crawl.template.Component.SelectorIndexer;
-import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.impl.ParseResult;
+import com.isoftstone.crawl.template.impl.Selector;
+import com.isoftstone.crawl.template.impl.SelectorFilter;
+import com.isoftstone.crawl.template.impl.SelectorFormat;
+import com.isoftstone.crawl.template.impl.SelectorIndexer;
+import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 import com.lj.util.http.DownloadHtml;
@@ -68,10 +68,12 @@ public class CcgpGansuTest {
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(2n-1) > td:nth-child(3)", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDD);
-		selector.initLabelSelector("tstamp", "", indexer, filter, null);
+		selector.initLabelSelector("label_list", "", indexer, filter, null);
 		list.add(selector);
 		
 		template.setList(list);
+		
+	
 
 		// pagitation outlink  js翻页无法处理
 		indexer = new SelectorIndexer();

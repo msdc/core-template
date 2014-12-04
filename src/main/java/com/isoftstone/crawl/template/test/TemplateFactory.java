@@ -8,10 +8,10 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.isoftstone.crawl.template.Component.ParseResult;
-import com.isoftstone.crawl.template.Component.Selector;
-import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.impl.ParseResult;
+import com.isoftstone.crawl.template.impl.Selector;
+import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 
@@ -33,6 +33,7 @@ public class TemplateFactory {
 			if (Constants.TEMPLATE_LIST.equals(type)) {
 				parseResult = new ParseResult();
 				selectors = templateResult.getList();
+				
 				if (templateResult.getPagination() != null) {
 					selectors.addAll(templateResult.getPagination());
 				}

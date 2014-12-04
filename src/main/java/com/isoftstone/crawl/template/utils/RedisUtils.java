@@ -1,8 +1,8 @@
 package com.isoftstone.crawl.template.utils;
 
-import com.isoftstone.crawl.template.Component.ParseResult;
-import com.isoftstone.crawl.template.Component.TemplateResult;
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.impl.ParseResult;
+import com.isoftstone.crawl.template.impl.TemplateResult;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
