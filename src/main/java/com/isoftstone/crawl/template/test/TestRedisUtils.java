@@ -1,4 +1,4 @@
-package com.isoftstone.crawl.template;
+package com.isoftstone.crawl.template.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,14 +11,14 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.impl.ParseResult;
+import com.isoftstone.crawl.template.impl.Selector;
+import com.isoftstone.crawl.template.impl.SelectorFilter;
+import com.isoftstone.crawl.template.impl.SelectorFormat;
+import com.isoftstone.crawl.template.impl.SelectorIndexer;
+import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
-import com.isoftstone.crawl.template.vo.ParseResult;
-import com.isoftstone.crawl.template.vo.Selector;
-import com.isoftstone.crawl.template.vo.SelectorFilter;
-import com.isoftstone.crawl.template.vo.SelectorFormat;
-import com.isoftstone.crawl.template.vo.SelectorIndexer;
-import com.isoftstone.crawl.template.vo.TemplateResult;
 
 public class TestRedisUtils {
 	static ObjectMapper objectMapper = null;
@@ -28,14 +28,14 @@ public class TestRedisUtils {
 		String url = "http://search.ccgp.gov.cn/dataB.jsp?searchtype=1&page_index=1&bidSort=1&buyerName=&projectId=&pinMu=1&bidType=1&dbselect=bidx&kw=&start_time=2014%3A10%3A27&end_time=2014%3A11%3A03&timeType=2&displayZone=&zoneId=&agentName=";
 		String encoding = "utf8";
 		String templateGuid = MD5Utils.MD5(url);
-		String filePath = "D:/Develop/resource/标讯库搜索_中国政府采购网1.html";
+		String filePath = "D:/Develop/resource/标讯库搜索_中国政府采购�?1.html";
 		TemplateResult t = createPageForCCGP(templateGuid);
 
 		ParseResult r = TemplateResultTest(url, encoding, filePath, t, "list");
 		System.out.println(r.toString());
 
 		url = "http://www.ccgp.gov.cn/cggg/zygg/gkzb/201411/t20141103_4689829.htm";
-		filePath = "D:/Develop/resource/中国医学科学院阜外心血管病医院（中国医学科学院心血管病研究所）新大楼开办费项目第四十五次采购招标公告.html";
+		filePath = "D:/Develop/resource/中国医学科学院阜外心�?管病医院（中国医学科学院心血管病研究�?）新大楼�?办费项目第四十五次采购招标公�?.html";
 		r = TemplateResultTest(url, encoding, filePath, t, "news");
 		System.out.println(r.toString());
 	}
@@ -44,7 +44,7 @@ public class TestRedisUtils {
 		String url = "http://search.ccgp.gov.cn/dataB.jsp?searchtype=1&page_index=1&bidSort=1&buyerName=&projectId=&pinMu=1&bidType=1&dbselect=bidx&kw=&start_time=2014%3A10%3A27&end_time=2014%3A11%3A03&timeType=2&displayZone=&zoneId=&agentName=";
 		String encoding = "utf8";
 		String templateGuid = MD5Utils.MD5(url);
-		String filePath = "D:/Develop/resource/标讯库搜索_中国政府采购网1.html";
+		String filePath = "D:/Develop/resource/标讯库搜索_中国政府采购�?1.html";
 		TemplateResult t = createPageForCCGP(templateGuid);
 		RedisUtils.setTemplateResult(t, templateGuid);
 
@@ -53,7 +53,7 @@ public class TestRedisUtils {
 		System.out.println(r.toString());
 
 		url = "http://www.ccgp.gov.cn/cggg/zygg/gkzb/201411/t20141103_4689829.htm";
-		filePath = "D:/Develop/resource/中国医学科学院阜外心血管病医院（中国医学科学院心血管病研究所）新大楼开办费项目第四十五次采购招标公告.html";
+		filePath = "D:/Develop/resource/中国医学科学院阜外心�?管病医院（中国医学科学院心血管病研究�?）新大楼�?办费项目第四十五次采购招标公�?.html";
 		input = readTextFile(filePath, encoding);
 		r = TemplateFactory.process(input, encoding, url);
 		System.out.println(r.toString());
@@ -145,6 +145,18 @@ public class TestRedisUtils {
 		System.out.println(r.toString());
 	}
 
+	/**
+	 * @param guid
+	 * @return
+	 */
+	/**
+	 * @param guid
+	 * @return
+	 */
+	/**
+	 * @param guid
+	 * @return
+	 */
 	public static TemplateResult createPageResult(String guid) {
 		TemplateResult pageResult = new TemplateResult();
 
@@ -178,7 +190,7 @@ public class TestRedisUtils {
 		filter.setType(Constants.FILTER_REMOVE);
 		filter.setValue("]");
 		filters.add(filter);
-		label.setFilter(filters);
+		label.setFilter(filter);
 		labels.add(label);
 
 		label = new Selector();
@@ -199,7 +211,7 @@ public class TestRedisUtils {
 		filter.setType(Constants.FILTER_REMOVE);
 		filter.setValue("]");
 		filters.add(filter);
-		label.setFilter(filters);
+		label.setFilter(filter);
 		labels.add(label);
 
 		label = new Selector();
@@ -220,16 +232,16 @@ public class TestRedisUtils {
 		filter.setType(Constants.FILTER_REMOVE);
 		filter.setValue("]");
 		filters.add(filter);
-		label.setFilter(filters);
+		label.setFilter(filter);
 
 		List<SelectorFormat> formats = new ArrayList<SelectorFormat>();
 		SelectorFormat format = new SelectorFormat();
 		format.setType(Constants.FORMAT_DATE);
 		format.setValue("yyyy-MM-dd");
-		label.setFormat(formats);
+		label.setFormat(format);
 		labels.add(label);
 
-		selector.setLabel(labels);
+		selector.setLabel(label);
 		list.add(selector);
 
 		selector = new Selector();
@@ -237,7 +249,7 @@ public class TestRedisUtils {
 		selector.setName("list_outlink");
 		index = new SelectorIndexer();
 		index.setType("jsoup");
-		index.setValue("div.searchPage form a:contains(下一页)");
+		index.setValue("div.searchPage form a:contains(下一�?)");
 		index.setAttribute("href");
 		selector.setIndexer(index);
 		list.add(selector);
@@ -350,7 +362,7 @@ public class TestRedisUtils {
 		index.setType("jsoup");
 		label.setIndexer(index);
 		labels.add(label);
-		selector.setLabel(labels);
+		selector.setLabel(label);
 		list.add(selector);
 		template.setList(list);
 
@@ -386,7 +398,7 @@ public class TestRedisUtils {
 		index = new SelectorIndexer();
 		selector.setType(Constants.SELECTOR_FEILD);
 		selector.setName("oriName");
-		selector.setValue("中国政府采购网");
+		selector.setValue("中国政府采购�?");
 		news.add(selector);
 
 		// mainBodyStr
