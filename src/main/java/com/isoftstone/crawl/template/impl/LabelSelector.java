@@ -39,6 +39,12 @@ public class LabelSelector implements ISelectorHandler {
 				LOG.error("Don't get the result from label selector or results size isn't equal with the number of outlinks.");
 				return 0;
 			} else {
+//				if (!parseResult.getResult().containsKey(resultKey)) {
+//					parseResult.setResult(Constants.LABEL_LIST, resultKey);
+//				} else {
+//					String temp = parseResult.getResult().containsKey(resultKey) + "," + resultKey;
+//					parseResult.setResult(Constants.LABEL_LIST, temp);
+//				}				
 				parseResult
 						.setResult(resultKey, String.valueOf(results.size()));
 				for (int i = 0; i < results.size(); i++) {

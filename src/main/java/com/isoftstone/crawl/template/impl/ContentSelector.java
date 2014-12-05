@@ -48,7 +48,7 @@ public class ContentSelector implements ISelectorHandler {
 						// 判断当前链接是否已经存在
 						boolean exists = RedisUtils.contains(MD5Utils.MD5(resultVale));
 						if (!exists)
-							parseResult.setResult(Constants.CONTENT_OUTLINK + "_" + i + "_" + j, resultVale);
+							parseResult.setResult(Constants.CONTENT_OUTLINK + "_" + j, resultVale);
 						else {
 							LOG.info("Already exists url " + resultVale);
 							count++;

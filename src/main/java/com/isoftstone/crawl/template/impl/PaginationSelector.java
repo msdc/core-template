@@ -23,8 +23,7 @@ public class PaginationSelector implements ISelectorHandler {
 	}
 
 	@Override
-	public int select(byte[] input, String encoding, String url,
-			ParseResult parseResult) {
+	public int select(byte[] input, String encoding, String url, ParseResult parseResult) {
 		String type = this.selector.getPagitationType();
 		List<SelectorIndexer> indexers = selector.getIndexers();
 		String current = this.selector.getCurrent();
@@ -36,17 +35,14 @@ public class PaginationSelector implements ISelectorHandler {
 			if (indexers != null) {
 				ArrayList<String> outlinks = new ArrayList<String>();
 				for (int i = 0; i < indexers.size(); i++) {
-					ArrayList<String> results = indexers.get(i).process(input,
-							encoding, url);
+					ArrayList<String> results = indexers.get(i).process(input, encoding, url);
 					if (results.size() > 0) {
 						outlinks.addAll(results);
 					}
 				}
-				parseResult.setResult(Constants.PAGINATION_OUTLINK,
-						String.valueOf(outlinks.size()));
+				parseResult.setResult(Constants.PAGINATION_OUTLINK, String.valueOf(outlinks.size()));
 				for (int i = 0; i < outlinks.size(); i++) {
-					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_"
-							+ i, outlinks.get(i));
+					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_" + i, outlinks.get(i));
 				}
 				return 1;
 			} else {
@@ -57,8 +53,7 @@ public class PaginationSelector implements ISelectorHandler {
 			if (indexers != null) {
 				String lastNumber = "0";
 				for (int i = 0; i < indexers.size(); i++) {
-					ArrayList<String> results = indexers.get(i).process(input,
-							encoding, url);
+					ArrayList<String> results = indexers.get(i).process(input, encoding, url);
 					if (results.size() > 0) {
 						lastNumber = results.get(0);
 						break;
@@ -73,12 +68,11 @@ public class PaginationSelector implements ISelectorHandler {
 				}
 				int last = Integer.parseInt(lastNumber);
 				int start = Integer.parseInt(startNumber);
-				parseResult.setResult(Constants.PAGINATION_OUTLINK,
-						String.valueOf(last - 1));
-				for (int i = 0; i <= last - 1; i++) {
-					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_"
-							+ i,
-							pagitationUrl.replace(current, replaceTo + start));
+				// 默认返回最多页数
+				int pageCount = last > Constants.MAX_PAGE_COUNT ? Constants.MAX_PAGE_COUNT : last;
+				parseResult.setResult(Constants.PAGINATION_OUTLINK, String.valueOf(pageCount));
+				for (int i = 0; i < pageCount; i++) {
+					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_" + i, pagitationUrl.replace(current, replaceTo + start));
 					start++;
 				}
 				return 1;
@@ -90,8 +84,7 @@ public class PaginationSelector implements ISelectorHandler {
 			if (indexers != null) {
 				String totalRecordNumber = "0";
 				for (int i = 0; i < indexers.size(); i++) {
-					ArrayList<String> results = indexers.get(i).process(input,
-							encoding, url);
+					ArrayList<String> results = indexers.get(i).process(input, encoding, url);
 					if (results.size() > 0) {
 						totalRecordNumber = results.get(0);
 						break;
@@ -101,21 +94,19 @@ public class PaginationSelector implements ISelectorHandler {
 				List<SelectorFilter> filters = selector.getFilters();
 				if (filters != null) {
 					for (int j = 0; j < filters.size(); j++) {
-						totalRecordNumber = filters.get(j).process(
-								totalRecordNumber);
+						totalRecordNumber = filters.get(j).process(totalRecordNumber);
 					}
 				}
 				double total = Double.parseDouble(totalRecordNumber);
-				double record = Double.parseDouble(this.selector
-						.getRecordNumber());
+				double record = Double.parseDouble(this.selector.getRecordNumber());
 				int last = (int) Math.ceil(total / record);
 				int start = Integer.parseInt(startNumber);
-				parseResult.setResult(Constants.PAGINATION_OUTLINK,
-						String.valueOf(last - 1));
-				for (int i = 0; i < last - 1; i++) {
-					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_"
-							+ i,
-							pagitationUrl.replace(current, replaceTo + start));
+				// 默认返回最多页数
+				int pageCount = last > Constants.MAX_PAGE_COUNT ? Constants.MAX_PAGE_COUNT : last;
+
+				parseResult.setResult(Constants.PAGINATION_OUTLINK, String.valueOf(last - 1));
+				for (int i = 0; i < pageCount; i++) {
+					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_" + i, pagitationUrl.replace(current, replaceTo + start));
 					start++;
 				}
 				return 1;

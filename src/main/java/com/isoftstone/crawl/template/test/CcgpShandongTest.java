@@ -9,6 +9,7 @@ import com.isoftstone.crawl.template.impl.Selector;
 import com.isoftstone.crawl.template.impl.SelectorFilter;
 import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
+import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
@@ -23,13 +24,12 @@ public class CcgpShandongTest {
 		byte[] input = DownloadHtml.getHtml(url);
 		TemplateResult templateResult = CcgpTemplate();
 		ParseResult parseResult = null;
-		parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
-//	    parseResult = TemplateFactory.process(input, encoding,url);
+		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
+	    parseResult = TemplateFactory.process(input, encoding,url);
 		System.out.println("templateResult:"+templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		//System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-//	System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-//		
+		//System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
 		url = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=162302";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";

@@ -9,6 +9,7 @@ import com.isoftstone.crawl.template.impl.Selector;
 import com.isoftstone.crawl.template.impl.SelectorFilter;
 import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
+import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
@@ -22,29 +23,31 @@ public class CcgpGansuTest {
 		byte[] input = DownloadHtml.getHtml(url);
 		TemplateResult templateResult = CcgpGansuTemplate();
 		ParseResult parseResult = null;
-		//	parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
-	    parseResult = TemplateFactory.process(input, encoding,url);
-		System.out.println("templateResult:"+templateResult.toJSON());
+		// parseResult = TemplateFactory.localProcess(input, encoding,url,
+		// templateResult, Constants.TEMPLATE_LIST);
+		parseResult = TemplateFactory.process(input, encoding, url);
+		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
-		//System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-//	System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-//		
+		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
+		// System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		//
 		url = "http://www.ccgp-gansu.gov.cn/web/214/224183.html";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
 		parseResult = TemplateFactory.process(input, encoding, url);
-		//parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
+		// parseResult = TemplateFactory.localProcess(input, encoding,
+		// url,templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 
 	}
-	public static TemplateResult CcgpGansuTemplate()
-	{
+
+	public static TemplateResult CcgpGansuTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-		
+
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -58,38 +61,29 @@ public class CcgpGansuTest {
 		selector = new Selector();
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(2n-1) > td:nth-child(2) > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
-		list.add(selector);
-	
-		
+
 		// tstamp
-		selector = new Selector();
-		selector.setType(Constants.SELECTOR_LABEL);
+		Selector label = new Selector();
+		label.setType(Constants.SELECTOR_LABEL);
 		indexer = new SelectorIndexer();
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr:nth-child(2n-1) > td:nth-child(3)", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDD);
-		selector.initLabelSelector("label_list", "", indexer, filter, null);
+		label.initLabelSelector("tstamp", "", indexer, filter, null);
+		selector.setLabel(label);
 		list.add(selector);
-		
 		template.setList(list);
-		
-	
 
-		// pagitation outlink  js翻页无法处理
+		// pagitation outlink js翻页无法处理
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td:nth-child(1) > font:nth-child(2)",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td:nth-child(1) > font:nth-child(2)", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter("\\d+");
-		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER,
-				"##", "",
-				"http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=##&class_id=214", "2", null,
-				indexer, filter, null);
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER, "##", "", "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=##&class_id=214", "2", null, indexer, filter, null);
 		pagination.add(selector);
 		template.setPagination(pagination);
-		
-		
+
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
@@ -104,9 +98,9 @@ public class CcgpGansuTest {
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
 		template.setNews(news);
-		
+
 		RedisUtils.setTemplateResult(template, templateGuid);
 		return template;
 
-		}
+	}
 }

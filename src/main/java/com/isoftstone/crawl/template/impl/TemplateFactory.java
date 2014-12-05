@@ -42,7 +42,7 @@ public class TemplateFactory {
 				String parseResultGuid = templateResult.getParseResultGuid();
 				parseResult = RedisUtils.getParseResult(parseResultGuid);
 			} else {
-				LOG.error("This page " + url + " ， the type "+ templateResult.getType()+ " , it isn't defined in the Template.");
+				LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
 				return null;
 			}
 			int flag = 0;
@@ -55,7 +55,7 @@ public class TemplateFactory {
 					}
 				}
 			} else {
-				LOG.error("This page " + url + " ， the type "+ templateResult.getType()+ " , it isn't defined in the Template.");
+				LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
 				return null;
 			}
 			if (flag != -1) {
@@ -69,7 +69,7 @@ public class TemplateFactory {
 		return parseResult;
 	}
 
-	public static ParseResult localProcess(byte[] input, String encoding,String url, TemplateResult templateResult, String pageType) {
+	public static ParseResult localProcess(byte[] input, String encoding, String url, TemplateResult templateResult, String pageType) {
 		List<Selector> selectors = null;
 		ParseResult parseResult = new ParseResult();
 		String templateGuid = templateResult.getTemplateGuid();
@@ -77,7 +77,7 @@ public class TemplateFactory {
 		if (Constants.TEMPLATE_LIST.equals(pageType)) {
 			selectors = templateResult.getList();
 			if (selectors == null) {
-				LOG.error("This page " + url + " ， the type "+ templateResult.getType()+ " , it isn't defined in the Template.");
+				LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
 				return null;
 			}
 			if (templateResult.getPagination() != null) {
@@ -89,9 +89,7 @@ public class TemplateFactory {
 			// 获取新闻页模板
 			selectors = templateResult.getNews();
 		} else {
-			LOG.error("This page " + url + " ， the type "
-					+ templateResult.getType()
-					+ " , it isn't defined in the Template.");
+			LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
 			return null;
 		}
 		parseResult.setTemplateGuid(templateGuid);
@@ -112,7 +110,7 @@ public class TemplateFactory {
 					result = new ArrayList<String>();
 					int len = Integer.parseInt(results.get(Constants.CONTENT_OUTLINK));
 					for (int i = 0; i < len; i++) {
-						String outlink = results.get(Constants.CONTENT_OUTLINK+ "_" + i);
+						String outlink = results.get(Constants.CONTENT_OUTLINK + "_" + i);
 						result.add(outlink);
 					}
 				}
@@ -131,7 +129,7 @@ public class TemplateFactory {
 					int len = Integer.parseInt(results.get(Constants.PAGINATION_OUTLINK));
 					Set<String> keySet = results.keySet();
 					for (int i = 0; i < len; i++) {
-						if (keySet.contains(Constants.PAGINATION_OUTLINK + "_"+ i)) {
+						if (keySet.contains(Constants.PAGINATION_OUTLINK + "_" + i)) {
 							String outlink = results.get(Constants.PAGINATION_OUTLINK + "_" + i);
 							result.add(outlink);
 						} else {
@@ -157,8 +155,7 @@ public class TemplateFactory {
 		return result;
 	}
 
-	private static void saveOutlinkParseResultToRedis(ParseResult parseResult,
-			String templateGuid) {
+	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid) {
 		HashMap<String, String> hash = parseResult.getResult();
 		String contents = null;
 		if (hash.keySet().contains(Constants.CONTENT_OUTLINK)) {
@@ -175,13 +172,11 @@ public class TemplateFactory {
 			contentlength = Integer.parseInt(contents);
 			if (labelKeys != null && labelKeys.length > 0) {
 				for (int i = 0; i < contentlength; i++) {
-					String outlink = hash.get(Constants.CONTENT_OUTLINK + "_"
-							+ i);
+					String outlink = hash.get(Constants.CONTENT_OUTLINK + "_" + i);
 					if (outlink != null && !outlink.isEmpty()) {
 						TemplateResult t = new TemplateResult();
 						String guid = MD5Utils.MD5(outlink);
-						String parseResultGuid = guid
-								+ Constants.PARSE_RESULT_PREFIX;
+						String parseResultGuid = guid + Constants.PARSE_RESULT_PREFIX;
 						t.setType(Constants.TEMPLATE_NEWS);
 						t.setTemplateGuid(templateGuid);
 						t.setParseResultGuid(parseResultGuid);
@@ -200,13 +195,11 @@ public class TemplateFactory {
 				}
 			} else {
 				for (int i = 0; i < contentlength; i++) {
-					String outlink = hash.get(Constants.CONTENT_OUTLINK + "_"
-							+ i);
+					String outlink = hash.get(Constants.CONTENT_OUTLINK + "_" + i);
 					if (outlink != null && !outlink.isEmpty()) {
 						TemplateResult t = new TemplateResult();
 						String guid = MD5Utils.MD5(outlink);
-						String parseResultGuid = guid
-								+ Constants.PARSE_RESULT_PREFIX;
+						String parseResultGuid = guid + Constants.PARSE_RESULT_PREFIX;
 						t.setType(Constants.TEMPLATE_NEWS);
 						t.setTemplateGuid(templateGuid);
 						t.setParseResultGuid(parseResultGuid);
@@ -225,13 +218,14 @@ public class TemplateFactory {
 		int pagitationLength = 0;
 		if (pagitations != null && !pagitations.isEmpty()) {
 			pagitationLength = Integer.parseInt(pagitations);
+			TemplateResult rootTemplate = RedisUtils.getTemplateResult(templateGuid);
 			for (int i = 0; i < pagitationLength; i++) {
-				String outlink = hash.get(Constants.PAGINATION_OUTLINK + "_"
-						+ i);
+				String outlink = hash.get(Constants.PAGINATION_OUTLINK + "_" + i);
 				if (outlink != null && !outlink.isEmpty()) {
 					TemplateResult t = new TemplateResult();
 					String guid = MD5Utils.MD5(outlink);
 					t.setType(Constants.TEMPLATE_LIST);
+					t.setList(rootTemplate.getList());
 					t.setTemplateGuid(templateGuid);
 					RedisUtils.setTemplateResult(t, guid);
 				}
