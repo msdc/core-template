@@ -46,13 +46,13 @@ public class ContentSelector implements ISelectorHandler {
 						// }
 						String resultVale = results.get(j);
 						// 判断当前链接是否已经存在
-						boolean exists = RedisUtils.contains(MD5Utils.MD5(resultVale));
-						if (!exists)
+						//boolean exists = RedisUtils.contains(MD5Utils.MD5(resultVale));
+						//if (!exists)
 							parseResult.setResult(Constants.CONTENT_OUTLINK + "_" + j, resultVale);
-						else {
-							LOG.info("Already exists url " + resultVale);
-							count++;
-						}
+						//else {
+						//	LOG.info("Already exists url " + resultVale);
+						//	count++;
+						//}
 					}
 					 outlinkLength = number;
 				}

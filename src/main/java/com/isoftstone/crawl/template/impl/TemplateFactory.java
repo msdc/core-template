@@ -143,16 +143,19 @@ public class TemplateFactory {
 	}
 
 	public static ArrayList<String> getOutlink(ParseResult parseResult) {
-		ArrayList<String> result = new ArrayList<String>();
-		ArrayList<String> contents = getContentOutlink(parseResult);
-		if (contents != null && contents.size() > 0) {
-			result.addAll(contents);
+		if (parseResult != null) {
+			ArrayList<String> result = new ArrayList<String>();
+			ArrayList<String> contents = getContentOutlink(parseResult);
+			if (contents != null && contents.size() > 0) {
+				result.addAll(contents);
+			}
+			ArrayList<String> pagination = getPaginationOutlink(parseResult);
+			if (pagination != null && pagination.size() > 0) {
+				result.addAll(pagination);
+			}
+			return result;
 		}
-		ArrayList<String> pagination = getPaginationOutlink(parseResult);
-		if (pagination != null && pagination.size() > 0) {
-			result.addAll(pagination);
-		}
-		return result;
+		return null;
 	}
 
 	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid) {

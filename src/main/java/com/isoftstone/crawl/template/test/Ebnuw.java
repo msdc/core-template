@@ -18,7 +18,7 @@ import com.lj.util.http.DownloadHtml;
 public class Ebnuw {
 
 	public static void main(String[] args) {
-		String url = "http://www.ebnew.com/tradingIndex.view?key=&pubDateBegin=&pubDateEnd=&infoType=&fundSourceCodes=&zone=&normIndustry=&bidModel=&timeType=&sortMethod=&currentPage=1&length=20";
+		String url = "http://www.ebnew.com/tradingIndex.view?key=&pubDateBegin=&pubDateEnd=&infoType=&fundSourceCodes=&zone=&normIndustry=&bidModel=&timeType=&sortMethod=&currentPage=1&length=40";
 		String encoding = "utf-8";
 		// String html =DownloadHtml.getHtml(url, encoding);
 		// System.out.println(html);
@@ -30,8 +30,9 @@ public class Ebnuw {
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-		url = "http://www.ebnew.com/businessShow-v-id-489549690.html";
+		///System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		url = "http://www.ebnew.com/businessShow-v-id-489730665.html";
+			   
 		input = DownloadHtml.getHtml(url);
 		encoding = "utf-8";
 		parseResult = TemplateFactory.process(input, encoding, url);
@@ -43,7 +44,7 @@ public class Ebnuw {
 	public static TemplateResult EbnuwTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
-		String templateUrl = "http://www.ebnew.com/tradingIndex.view?key=&pubDateBegin=&pubDateEnd=&infoType=&fundSourceCodes=&zone=&normIndustry=&bidModel=&timeType=&sortMethod=&currentPage=1&length=20";
+		String templateUrl = "http://www.ebnew.com/tradingIndex.view?key=&pubDateBegin=&pubDateEnd=&infoType=&fundSourceCodes=&zone=&normIndustry=&bidModel=&timeType=&sortMethod=&currentPage=1&length=40";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 
