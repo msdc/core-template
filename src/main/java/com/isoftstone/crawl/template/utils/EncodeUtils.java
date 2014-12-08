@@ -3,8 +3,7 @@ package com.isoftstone.crawl.template.utils;
 import java.io.UnsupportedEncodingException;
 
 public class EncodeUtils {
-	public static String convertEncoding(String str, String fromEncoding,
-			String toEncoding) {
+	public static String convertEncoding(String str, String fromEncoding, String toEncoding) {
 		String toStr = null;
 		try {
 			byte[] fromStr = str.getBytes(fromEncoding);
@@ -16,7 +15,7 @@ public class EncodeUtils {
 		return toStr;
 	}
 
-	public static String convertEncoding(String str,String fromEncoding) {
+	public static String convertEncoding(String str, String fromEncoding) {
 		String toStr = null;
 		try {
 			toStr = new String(str.getBytes(fromEncoding));

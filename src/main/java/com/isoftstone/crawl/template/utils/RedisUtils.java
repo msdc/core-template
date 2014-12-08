@@ -28,8 +28,7 @@ public class RedisUtils {
 
 			int port = Constants.REDIS_PORT;
 			if (PropertiesUtils.getValue("template.redis.port") != null)
-				port = Integer.parseInt(PropertiesUtils
-						.getValue("template.redis.port"));
+				port = Integer.parseInt(PropertiesUtils.getValue("template.redis.port"));
 
 			pool = new JedisPool(config, ip, port);
 		}
@@ -49,7 +48,7 @@ public class RedisUtils {
 			pool = getPool();
 			jedis = pool.getResource();
 			String json = jedis.get(guid);
-			if(json!= null)
+			if (json != null)
 				return JSONUtils.getTemplateResultObject(json);
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
@@ -60,8 +59,7 @@ public class RedisUtils {
 		return null;
 	}
 
-	public static void setTemplateResult(TemplateResult templateResult,
-			String guid) {
+	public static void setTemplateResult(TemplateResult templateResult, String guid) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -94,15 +92,15 @@ public class RedisUtils {
 	}
 
 	public static ParseResult getParseResult(String guid) {
-	
+
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
 			pool = getPool();
 			jedis = pool.getResource();
-			System.out.println("guid="+guid);
+			System.out.println("guid=" + guid);
 			String json = jedis.get(guid);
-			System.out.println("json="+json);
+			System.out.println("json=" + json);
 			return JSONUtils.getParseResultObject(json);
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
