@@ -240,3 +240,9 @@
 80   INFO  [2014-12-03 17:07:47]  Already exists url http://www.cs.com.cn/xwzx/hg/201412/t20141202_4578524.html
 80   INFO  [2014-12-03 17:07:47]  Already exists url http://www.cs.com.cn/xwzx/hg/201412/t20141202_4578233.html
 80   INFO  [2014-12-03 17:07:47]  Already exists url http://www.cs.com.cn/xwzx/hg/201412/t20141202_4578194.html
+0    INFO  [2014-12-08 18:23:27]  I/O exception (org.apache.commons.httpclient.NoHttpResponseException) caught when processing request: The server www.ccgp-shandong.gov.cn failed to respond
+0    INFO  [2014-12-08 18:23:27]  Retrying request
+161  INFO  [2014-12-08 18:23:27]  I/O exception (org.apache.commons.httpclient.NoHttpResponseException) caught when processing request: The server www.ccgp-shandong.gov.cn failed to respond
+161  INFO  [2014-12-08 18:23:27]  Retrying request
+311  INFO  [2014-12-08 18:23:28]  I/O exception (org.apache.commons.httpclient.NoHttpResponseException) caught when processing request: The server www.ccgp-shandong.gov.cn failed to respond
+311  INFO  [2014-12-08 18:23:28]  Retrying request

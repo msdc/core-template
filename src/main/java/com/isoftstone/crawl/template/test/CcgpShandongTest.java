@@ -18,90 +18,88 @@ import com.lj.util.http.DownloadHtml;
 public class CcgpShandongTest {
 
 	public static void main(String[] args) {
-		//中国山东政府采购网公告
-		String url = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=0301";
-		String encoding = "gb2312";
-		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = CcgpTemplate();
-		ParseResult parseResult = null;
-		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
-	    parseResult = TemplateFactory.process(input, encoding,url);
-		System.out.println("templateResult:"+templateResult.toJSON());
-		System.out.println(parseResult.toJSON());
-		//System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		//System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-		url = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=162302";
-		input = DownloadHtml.getHtml(url);
-		encoding = "gb2312";
-		//parseResult = TemplateFactory.process(input, encoding, url);
-		parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
-		System.out.println(parseResult.toJSON());
+		// 中国山东政府采购网公告
+		for (int i = 1; i < 5; i++) {
+			String url = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=030" + i;
+			String encoding = "gb2312";
+			byte[] input = DownloadHtml.getHtml(url);
+			TemplateResult templateResult = CcgpTemplate(String.valueOf(i));
+			//ParseResult parseResult = null;
+			// parseResult = TemplateFactory.localProcess(input, encoding,url,
+			// templateResult, Constants.TEMPLATE_LIST);
+//			parseResult = TemplateFactory.process(input, encoding, url);
+//			System.out.println("templateResult:" + templateResult.toJSON());
+//			System.out.println(parseResult.toJSON());
+//			// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
+//			// System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+//			url = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=162302";
+//			input = DownloadHtml.getHtml(url);
+//			encoding = "gb2312";
+//			// parseResult = TemplateFactory.process(input, encoding, url);
+//			parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_NEWS);
+//			System.out.println(parseResult.toJSON());
+		}
 	}
-public static TemplateResult CcgpTemplate()
-{
-	TemplateResult template = new TemplateResult();
-	template.setType(Constants.TEMPLATE_LIST);
-	String templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=0301";
-	String templateGuid = MD5Utils.MD5(templateUrl);
-	template.setTemplateGuid(templateGuid);
-	
-	List<Selector> list = new ArrayList<Selector>();
-	List<Selector> news = new ArrayList<Selector>();
-	List<Selector> pagination = new ArrayList<Selector>();
-	SelectorIndexer indexer = null;
-	Selector selector = null;
-	SelectorFilter filter = null;
-	SelectorFormat format = null;
 
-	// content outlink
-	indexer = new SelectorIndexer();
-	selector = new Selector();
-	indexer.initJsoupIndexer("body > div:nth-child(4) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(2n-1) > td > a", Constants.ATTRIBUTE_HREF);
-	selector.initContentSelector(indexer, null);
-	list.add(selector);
-	template.setList(list);
+	public static TemplateResult CcgpTemplate(String qs) {
+		TemplateResult template = new TemplateResult();
+		template.setType(Constants.TEMPLATE_LIST);
+		String templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=030" + qs;
+		String templateGuid = MD5Utils.MD5(templateUrl);
+		template.setTemplateGuid(templateGuid);
 
-	// pagitation outlink  js翻页无法处理
-	indexer = new SelectorIndexer();
-	selector = new Selector();
-	indexer.initJsoupIndexer("body > div:nth-child(4) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(3) > tbody > tr > td > strong",
-			Constants.ATTRIBUTE_TEXT);
-	filter = new SelectorFilter();
-	filter.initMatchFilter("/(\\d+)");
-	selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER,
-			"##", "",
-			"http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?curpage=##&colcode=0301", "2", null,
-			indexer, filter, null);
-	pagination.add(selector);
-	template.setPagination(pagination);
-	
-	
-	// title
-	indexer = new SelectorIndexer();
-	selector = new Selector();
-	indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(1) > td > b", Constants.ATTRIBUTE_TEXT);
-	selector.initFieldSelector("title", "", indexer, null, null);
-	news.add(selector);
+		List<Selector> list = new ArrayList<Selector>();
+		List<Selector> news = new ArrayList<Selector>();
+		List<Selector> pagination = new ArrayList<Selector>();
+		SelectorIndexer indexer = null;
+		Selector selector = null;
+		SelectorFilter filter = null;
+		SelectorFormat format = null;
 
-	// content
-	indexer = new SelectorIndexer();
-	selector = new Selector();
-	indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody", Constants.ATTRIBUTE_TEXT);
-	selector.initFieldSelector("content", "", indexer, null, null);
-	news.add(selector);
+		// content outlink
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div:nth-child(4) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(2n-1) > td > a", Constants.ATTRIBUTE_HREF);
+		selector.initContentSelector(indexer, null);
+		list.add(selector);
+		template.setList(list);
 
-	// tstamp
-	selector = new Selector();
-	indexer = new SelectorIndexer();
-	indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-last-child(3) > td", Constants.ATTRIBUTE_TEXT);
-	filter = new SelectorFilter();
-	filter.initMatchFilter(Constants.YYYYMMDD);
-	selector.initFieldSelector("tstamp", "", indexer, filter, null);
-	news.add(selector);
-	template.setNews(news);
-	
-	RedisUtils.setTemplateResult(template, templateGuid);
-	return template;
+		// pagitation outlink js翻页无法处理
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div:nth-child(4) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(3) > tbody > tr > td > strong", Constants.ATTRIBUTE_TEXT);
+		filter = new SelectorFilter();
+		filter.initMatchFilter("/(\\d+)");
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER, "##", "", "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?curpage=##&colcode=0301", "2", null, indexer, filter, null);
+		pagination.add(selector);
+		template.setPagination(pagination);
+
+		// title
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(1) > td > b", Constants.ATTRIBUTE_TEXT);
+		selector.initFieldSelector("title", "", indexer, null, null);
+		news.add(selector);
+
+		// content
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody", Constants.ATTRIBUTE_TEXT);
+		selector.initFieldSelector("content", "", indexer, null, null);
+		news.add(selector);
+
+		// tstamp
+		selector = new Selector();
+		indexer = new SelectorIndexer();
+		indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-last-child(3) > td", Constants.ATTRIBUTE_TEXT);
+		filter = new SelectorFilter();
+		filter.initMatchFilter(Constants.YYYYMMDD);
+		selector.initFieldSelector("tstamp", "", indexer, filter, null);
+		news.add(selector);
+		template.setNews(news);
+
+		RedisUtils.setTemplateResult(template, templateGuid);
+		return template;
 
 	}
 }
