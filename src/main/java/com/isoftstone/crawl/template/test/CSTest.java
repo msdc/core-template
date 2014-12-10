@@ -53,28 +53,28 @@ public class CSTest {
 
 		// content outlink
 		indexer = new SelectorIndexer();
-		selector = new Selector();
-		indexer.initJsoupIndexer("div.column-box ul li a", Constants.ATTRIBUTE_HREF);
+		selector = new Selector();//
+		indexer.initJsoupIndexer("body > div.content > div.content_left > div > ul > li > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
 		template.setList(list);
 
 		// pagitation outlink  js翻页无法处理
-//		indexer = new SelectorIndexer();
-//		selector = new Selector();
-//		indexer.initJsoupIndexer("div.z_list_page a",
-//				Constants.ATTRIBUTE_HREF);
-//		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGE,
-//				"index", "index_",
-//				"http://www.cs.com.cn/xwzx/hg/index.html", "1", null,
-//				indexer, null, null);
-//		pagination.add(selector);
-//		template.setPagination(pagination);
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("div.z_list_page a",
+				Constants.ATTRIBUTE_HREF);
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGE,
+				"index", "index_",
+				"http://www.cs.com.cn/xwzx/hg/index.html", "1", null,
+				indexer, null, null);
+		pagination.add(selector);
+		template.setPagination(pagination);
 
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.column-box h1", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.content_left > div.column-box > h1", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
@@ -87,8 +87,8 @@ public class CSTest {
 
 		// tstamp
 		selector = new Selector();
-		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("div.column-box div span.ctime", Constants.ATTRIBUTE_TEXT);
+		indexer = new SelectorIndexer();//body > div:nth-child(10) > div.content_left > div.column-box > div:nth-child(5) > span.ctime
+		indexer.initJsoupIndexer("body > div:nth-child(10) > div.content_left > div.column-box > div:nth-child(5) > span.ctime", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDDHHMM);
 		selector.initFieldSelector("tstamp", "", indexer, filter, null);

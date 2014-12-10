@@ -40,6 +40,24 @@ public class CcgpShandongTest {
 //			System.out.println(parseResult.toJSON());
 		}
 	}
+<<<<<<< .mine
+public static TemplateResult CcgpTemplate()
+{
+	TemplateResult template = new TemplateResult();
+	template.setType(Constants.TEMPLATE_LIST);
+	String templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=0302";
+	String templateGuid = MD5Utils.MD5(templateUrl);
+	template.setTemplateGuid(templateGuid);
+	
+	List<Selector> list = new ArrayList<Selector>();
+	List<Selector> news = new ArrayList<Selector>();
+	List<Selector> pagination = new ArrayList<Selector>();
+	SelectorIndexer indexer = null;
+	Selector selector = null;
+	SelectorFilter filter = null;
+	SelectorFormat format = null;
+=======
+>>>>>>> .r933
 
 	public static TemplateResult CcgpTemplate(String qs) {
 		TemplateResult template = new TemplateResult();

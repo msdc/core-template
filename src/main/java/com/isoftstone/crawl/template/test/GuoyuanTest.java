@@ -56,7 +56,7 @@ public class GuoyuanTest {
 
 		// content outlink
 		indexer = new SelectorIndexer();
-		selector = new Selector();//body > div.top > div.nav > dl:nth-child(4) > dt:nth-child(2) > a
+		selector = new Selector();//body > div.main > div.main_left > div > div > dl:nth-child(1) > dt > a
 		indexer.initJsoupIndexer("body > div.main > div.main_left > div > div > dl > dt > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
@@ -78,21 +78,21 @@ public class GuoyuanTest {
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.title", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div.main > div.main_left.p5 > div > div.cont_b > div.title", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
 		// content
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.cont_c", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div.main > div.main_left.p5 > div > div.cont_b > div.cont_c", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
 
 		// tstamp
 		selector = new Selector();
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("div.ly", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div.main > div.main_left.p5 > div > div.cont_b > div.ly", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter("\\d{4}-\\d{2}-\\d{2}");
 		format = new SelectorFormat();

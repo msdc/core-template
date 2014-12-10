@@ -55,8 +55,8 @@ public class CTATest {
 
 		// content outlink
 		indexer = new SelectorIndexer();
-		selector = new Selector();
-		indexer.initJsoupIndexer("div.newsListRight ul.articleList li a", Constants.ATTRIBUTE_HREF);
+		selector = new Selector();//
+		indexer.initJsoupIndexer("body > div.table > div.newsListRight > ul > li > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
 		template.setList(list);
@@ -78,7 +78,7 @@ public class CTATest {
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();//body > div.table > div.newsListRight > div.detail > div.detailTitle
-		indexer.initJsoupIndexer("div.detailTitle", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div.table > div.newsListRight > div.detail > div.detailTitle", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
@@ -92,7 +92,7 @@ public class CTATest {
 		// tstamp
 		selector = new Selector();
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("div.detailTime", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div.table > div.newsListRight > div.detailTime", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDD);
 		selector.initFieldSelector("tstamp", "", indexer, filter, null);

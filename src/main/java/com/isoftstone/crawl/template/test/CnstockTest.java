@@ -54,30 +54,30 @@ public class CnstockTest {
 
 		// content outlink
 		indexer = new SelectorIndexer();
-		selector = new Selector();
-		indexer.initJsoupIndexer("div.publish-list.mt15 ul.new-list li a", Constants.ATTRIBUTE_HREF);
+		selector = new Selector();//body > div.container.video-wrap > div.main-wrap > div.publish-list.mt15 > ul > li:nth-child(1) > a
+		indexer.initJsoupIndexer("body > div.container.video-wrap > div.main-wrap > div.publish-list.mt15 > ul > li > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
 		template.setList(list);
 
 		// pagitation outlink
-//		indexer = new SelectorIndexer();
-//		selector = new Selector();
-//		indexer.initJsoupIndexer("div.pagination.pagination-centered ul li a:contains(末页)",
-//				Constants.ATTRIBUTE_HREF);
-//		filter = new SelectorFilter();
-//		filter.initMatchFilter("\\d+");
-//		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER,
-//				"0", "",
-//				"http://irm.cnstock.com/ivlist/index/yqjj/0", "1", null,
-//				indexer, filter, null);
-//		pagination.add(selector);
-//		template.setPagination(pagination);
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("div.pagination.pagination-centered ul li a:contains(末页)",
+				Constants.ATTRIBUTE_HREF);
+		filter = new SelectorFilter();
+		filter.initMatchFilter("\\d+");
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER,
+				"0", "",
+				"http://irm.cnstock.com/ivlist/index/yqjj/0", "1", null,
+				indexer, filter, null);
+		pagination.add(selector);
+		template.setPagination(pagination);
 
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.title-inner h1", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div.container.video-wrap > div.main-wrap.common-detail-blank > div.main-title > div > h1", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
@@ -90,8 +90,8 @@ public class CnstockTest {
 
 		// tstamp
 		selector = new Selector();
-		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("div.sub-title span.time", Constants.ATTRIBUTE_TEXT);
+		indexer = new SelectorIndexer();//body > div.container.video-wrap > div.main-wrap.common-detail-blank > div.main-title > div > div > span.time
+		indexer.initJsoupIndexer("body > div.container.video-wrap > div.main-wrap.common-detail-blank > div.main-title > div > div > span.time", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("tstamp", "", indexer, null, null);
 		news.add(selector);
 		template.setNews(news);
