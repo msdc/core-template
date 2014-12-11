@@ -25,16 +25,15 @@ public class TemplateFactory {
 			String templateGuid = templateResult.getTemplateGuid();
 			// 获取当前页面的类型
 			String type = templateResult.getType();
-
+			parseResult = new ParseResult();
+			
 			if (Constants.TEMPLATE_LIST.equals(type)) {
-				parseResult = new ParseResult();
 				selectors = templateResult.getList();
 				if (templateResult.getPagination() != null) {
 					selectors.addAll(templateResult.getPagination());
 				}
 			} else if (Constants.TEMPLATE_PAGITATION.equals(type)) {
 				selectors = RedisUtils.getTemplateResult(templateGuid).getList();
-				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_NEWS.equals(type)) {
 				// 获取新闻页模板
 				selectors = RedisUtils.getTemplateResult(templateGuid).getNews();
