@@ -17,6 +17,8 @@ public class Constants {
 	// 获取分页的末尾页数
 	public static final String PAGINATION_TYPE_PAGENUMBER = "number";
 	// 获取分页的记录数
+	public static final String PAGINATION_TYPE_PAGENUMBER_INTERVAL = "interval";
+	// 获取分页的记录数
 	public static final String PAGINATION_TYPE_PAGERECORD = "record";
 	// 默认返回最大页数
 	public static final int MAX_PAGE_COUNT =  Integer.MAX_VALUE;
@@ -33,7 +35,7 @@ public class Constants {
 	public static final String TEMPLATE_LIST = "list";
 	public static final String TEMPLATE_NEWS = "news";
 	public static final String TEMPLATE_PAGITATION = "pagitation";
-
+	
 	// 用于Selector，用于描述当前拾取器的功能
 	public static final String SELECTOR_FEILD = "field";
 	public static final String SELECTOR_LABEL = "label";

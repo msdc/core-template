@@ -31,7 +31,7 @@ public class ContentSelector implements ISelectorHandler {
 
 		// 当index ！= null时，通过索引器获取数据
 		if (indexers != null) {
-			 int outlinkLength = 0;
+			int outlinkLength = 0;
 			int count = 0;
 			for (int i = 0; i < indexers.size(); i++) {
 				ArrayList<String> results = indexers.get(i).process(input, encoding, url);
@@ -46,15 +46,15 @@ public class ContentSelector implements ISelectorHandler {
 						// }
 						String resultVale = results.get(j);
 						// 判断当前链接是否已经存在
-						//boolean exists = RedisUtils.contains(MD5Utils.MD5(resultVale));
-						//if (!exists)
+						boolean exists = RedisUtils.contains(MD5Utils.MD5(resultVale));
+						if (!exists) {
 							parseResult.setResult(Constants.CONTENT_OUTLINK + "_" + j, resultVale);
-						//else {
-						//	LOG.info("Already exists url " + resultVale);
-						//	count++;
-						//}
+						} else {
+							LOG.info("Already exists url " + resultVale);
+							count++;
+						}
 					}
-					 outlinkLength = number;
+					outlinkLength = number;
 				}
 			}
 			parseResult.setResult(Constants.CONTENT_OUTLINK, String.valueOf(outlinkLength - count));

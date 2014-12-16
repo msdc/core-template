@@ -30,7 +30,8 @@ public class PaginationSelector implements ISelectorHandler {
 		String replaceTo = this.selector.getReplaceTo();
 		String pagitationUrl = this.selector.getPagitationUrl();
 		String startNumber = this.selector.getStartNumber();
-
+		int interval = this.selector.getInterval();
+		
 		if (Constants.PAGINATION_TYPE_PAGE.equals(type)) {
 			if (indexers != null) {
 				ArrayList<String> outlinks = new ArrayList<String>();
@@ -112,6 +113,35 @@ public class PaginationSelector implements ISelectorHandler {
 				return 1;
 			} else {
 				LOG.error("Pagination selector defined error.");
+				return -1;
+			}
+		} else if (Constants.PAGINATION_TYPE_PAGENUMBER_INTERVAL.equals(type)) {
+			if (indexers != null) {
+				String lastNumber = "0";
+				for (int i = 0; i < indexers.size(); i++) {
+					ArrayList<String> results = indexers.get(i).process(input, encoding, url);
+					if (results.size() > 0) {
+						lastNumber = results.get(0);
+						break;
+					}
+				}
+				// 处理过滤器
+				List<SelectorFilter> filters = selector.getFilters();
+				if (filters != null) {
+					for (int j = 0; j < filters.size(); j++) {
+						lastNumber = filters.get(j).process(lastNumber);
+					}
+				}
+				int last = Integer.parseInt(lastNumber);
+				// 默认返回最多页数
+				int pageCount = last > Constants.MAX_PAGE_COUNT ? Constants.MAX_PAGE_COUNT : last;
+				parseResult.setResult(Constants.PAGINATION_OUTLINK, String.valueOf(pageCount));
+				for (int i = 0; i < pageCount; i++) {
+					parseResult.setResult(Constants.PAGINATION_OUTLINK + "_" + i, pagitationUrl.replace(current, String.valueOf(interval * (i+1))));
+				}
+				return 1;
+			} else {
+				LOG.error("Pagitation selector defined error.");
 				return -1;
 			}
 		} else {

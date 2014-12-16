@@ -41,6 +41,7 @@ public class Selector extends BaseSelector {
 	private String startNumber = "";
 	private String lastNumber = "";
 	private String recordNumber = "";
+	private int interval = 0;
 
 	private List<SelectorIndexer> indexers;
 	private List<SelectorFilter> filters;
@@ -122,7 +123,15 @@ public class Selector extends BaseSelector {
 	public void setRecordNumber(String recordNumber) {
 		this.recordNumber = recordNumber;
 	}
+	
+	public int getInterval() {
+		return interval;
+	}
 
+	public void setInterval(int interval) {
+		this.interval = interval;
+	}
+	
 	/**
 	 * 获取类别属性，用于说明当前拾取器类型，如content|field|pagitation|label
 	 * content，用于获取页面中的新闻页的URL列表 pagitation，用于获取页面中的分页的URL列表
@@ -427,7 +436,7 @@ public class Selector extends BaseSelector {
 	 */
 	public void initPagitationSelector(String type, String current,
 			String replaceTo, String pagitationUrl, String start,
-			String records, SelectorIndexer indexer, SelectorFilter filter,
+			String records,SelectorIndexer indexer, SelectorFilter filter,
 			SelectorFormat format) {
 		this.setType(Constants.SELECTOR_PAGITATION);
 		this.setPagitationType(type);
@@ -436,6 +445,23 @@ public class Selector extends BaseSelector {
 		this.setPagitationUrl(pagitationUrl);
 		this.setStartNumber(start);
 		this.setRecordNumber(records);
+		this.setIndexer(indexer);
+		this.setFilter(filter);
+		this.setFormat(format);
+	}
+	
+	public void initPagitationSelector(String type, String current,
+			String replaceTo, String pagitationUrl, String start,
+			String records,int interval, SelectorIndexer indexer, SelectorFilter filter,
+			SelectorFormat format) {
+		this.setType(Constants.SELECTOR_PAGITATION);
+		this.setPagitationType(type);
+		this.setCurrent(current);
+		this.setReplaceTo(replaceTo);
+		this.setPagitationUrl(pagitationUrl);
+		this.setStartNumber(start);
+		this.setRecordNumber(records);
+		this.setInterval(interval);
 		this.setIndexer(indexer);
 		this.setFilter(filter);
 		this.setFormat(format);
