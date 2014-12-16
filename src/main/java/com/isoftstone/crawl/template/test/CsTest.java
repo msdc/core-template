@@ -14,7 +14,7 @@ import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 import com.lj.util.http.DownloadHtml;
 
-public class CSTest {
+public class CsTest {
 
 	public static void main(String[] args) {
 		String url = "http://www.cs.com.cn/xwzx/hg/index.html";
