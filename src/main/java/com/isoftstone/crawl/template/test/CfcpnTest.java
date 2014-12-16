@@ -12,7 +12,6 @@ import com.isoftstone.crawl.template.impl.SelectorIndexer;
 import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
-import com.isoftstone.crawl.template.utils.RedisUtils;
 import com.lj.util.http.DownloadHtml;
 
 public class CfcpnTest {
@@ -20,8 +19,6 @@ public class CfcpnTest {
 	public static void main(String[] args) {
 		// 金采网
 		String templateUrl = "http://www.cfcpn.com/front/notice/advsearch_list.jsp?offset=0";
-		//http://www.bidnews.cn/news/dianligongsi-38291.html
-		// http://www.bidnews.cn/news/dianligongsi-38291.html
 		String encoding = "gb2312";
 	//	 String html =DownloadHtml.getHtml(templateUrl, encoding);
 	//	 System.out.println(html);
