@@ -1,5 +1,6 @@
 package com.isoftstone.crawl.template.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.utils.JSONUtils;
@@ -18,6 +19,15 @@ public class TemplateResult {
 	private List<Selector> pagination;
 	private List<Selector> news;
 	private long fetchTime;
+	private HashMap<String,Object> tags; 
+	
+	public HashMap<String, Object> getTags() {
+		return tags;
+	}
+
+	public void setTags(HashMap<String, Object> tags) {
+		this.tags = tags;
+	}
 
 	/**
 	 * 获取模板的GUID
@@ -158,6 +168,15 @@ public class TemplateResult {
 			str.append("PARSERESULTGUID: " + this.parseResultGuid + "\n");
 		if (this.type != null)
 			str.append("TYPE: " + this.type + "\n");
+		if (this.tags != null)
+		{
+			for(Object key: tags.keySet()) 
+			{
+				str.append(key);
+				str.append(":");
+				str.append(tags.get(key));
+			}
+		}
 		if (this.list != null) {
 			for (Selector l : this.list) {
 				str.append(l.toString());
