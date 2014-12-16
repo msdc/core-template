@@ -14,7 +14,7 @@ import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 import com.lj.util.http.DownloadHtml;
 
-public class CTATest {
+public class CtaTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
