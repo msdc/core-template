@@ -19,16 +19,8 @@ public class TemplateResult {
 	private List<Selector> pagination;
 	private List<Selector> news;
 	private long fetchTime;
-	private HashMap<String,Object> tags; 
+	private HashMap<String,String> tags; 
 	
-	public HashMap<String, Object> getTags() {
-		return tags;
-	}
-
-	public void setTags(HashMap<String, Object> tags) {
-		this.tags = tags;
-	}
-
 	/**
 	 * 获取模板的GUID
 	 * 
@@ -154,7 +146,14 @@ public class TemplateResult {
 	public void setFetchTime(long fetchTime) {
 		this.fetchTime = fetchTime;
 	}
+	
+	public HashMap<String, String> getTags() {
+		return tags;
+	}
 
+	public void setTags(HashMap<String, String> tags) {
+		this.tags = tags;
+	}
 	/**
 	 * 重写toString()，用户输出TemplateResult所有属性数据
 	 */
@@ -170,11 +169,13 @@ public class TemplateResult {
 			str.append("TYPE: " + this.type + "\n");
 		if (this.tags != null)
 		{
-			for(Object key: tags.keySet()) 
+			str.append("TAGS:");
+			for(String key: tags.keySet()) 
 			{
 				str.append(key);
 				str.append(":");
 				str.append(tags.get(key));
+				str.append(" ");
 			}
 		}
 		if (this.list != null) {

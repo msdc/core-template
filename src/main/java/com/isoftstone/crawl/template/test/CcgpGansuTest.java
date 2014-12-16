@@ -22,17 +22,16 @@ public class CcgpGansuTest {
 		String url = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = ccgpGansuTemplate();
+		TemplateResult templateResult = ccgpGansuTemplate(url);
 		ParseResult parseResult = null;
-		// parseResult = TemplateFactory.localProcess(input, encoding,url,
-		// templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, url);
-		System.out.println("templateResult:" + templateResult.toJSON());
-		System.out.println(parseResult.toJSON());
+		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
+		 parseResult = TemplateFactory.process(input, encoding, url);
+		 System.out.println("templateResult:" + templateResult.toJSON());
+		 System.out.println(parseResult.toJSON());
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 		// System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
 		//
-		url = "http://www.ccgp-gansu.gov.cn/web/214/224183.html";
+		url = "http://www.ccgp-gansu.gov.cn/web/214/225941.html";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
 		parseResult = TemplateFactory.process(input, encoding, url);
@@ -42,21 +41,29 @@ public class CcgpGansuTest {
 
 	}
 
-	public static TemplateResult ccgpGansuTemplate() {
+	public static TemplateResult ccgpGansuTemplate(String templateUrl) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
-		HashMap<String,Object> dictionary = new HashMap<String,Object>(); 
+		HashMap<String, String> dictionary = new HashMap<String, String>();
 		dictionary.put("行业", "财经");
-		dictionary.put("媒体","XXXX");
-		String templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=213";
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=215";
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=216";
-//		//138、140、141、220
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=138";
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=140";
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=141";
-//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=220";
+		dictionary.put("媒体", "XXXX");
+		// String templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=213";
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=215";
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=216";
+		// //138、140、141、220
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=138";
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=140";
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=141";
+		// templateUrl =
+		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=220";
 
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);

@@ -17,29 +17,36 @@ public class TemplateFactory {
 
 	public static ParseResult process(byte[] input, String encoding, String url) {
 		String guid = MD5Utils.MD5(url);
+		System.out.println("guid:"+guid);
 		List<Selector> selectors = null;
 		ParseResult parseResult = null;
 		TemplateResult templateResult = RedisUtils.getTemplateResult(guid);
 		if (templateResult != null) {
 			// 获取模板的GUID
 			String templateGuid = templateResult.getTemplateGuid();
+			System.out.println("templateGuid:"+guid);
 			// 获取当前页面的类型
 			String type = templateResult.getType();
-			parseResult = new ParseResult();
 			
 			if (Constants.TEMPLATE_LIST.equals(type)) {
 				selectors = templateResult.getList();
 				if (templateResult.getPagination() != null) {
 					selectors.addAll(templateResult.getPagination());
 				}
+				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_PAGITATION.equals(type)) {
 				selectors = RedisUtils.getTemplateResult(templateGuid).getList();
+				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_NEWS.equals(type)) {
 				// 获取新闻页模板
 				selectors = RedisUtils.getTemplateResult(templateGuid).getNews();
 				// 获取中间结果
 				String parseResultGuid = templateResult.getParseResultGuid();
 				parseResult = RedisUtils.getParseResult(parseResultGuid);
+				if(templateResult.getTags() !=null)
+				{
+					parseResult.setResult(Constants.TEMPLATE_STATIC, templateResult.getTags().toString());
+				}
 			} else {
 				LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
 				return null;
@@ -159,6 +166,7 @@ public class TemplateFactory {
 
 	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid) {
 		HashMap<String, String> hash = parseResult.getResult();
+		
 		String contents = null;
 		if (hash.keySet().contains(Constants.CONTENT_OUTLINK)) {
 			contents = hash.get(Constants.CONTENT_OUTLINK);
@@ -180,6 +188,7 @@ public class TemplateFactory {
 						String guid = MD5Utils.MD5(outlink);
 						String parseResultGuid = guid + Constants.PARSE_RESULT_PREFIX;
 						t.setType(Constants.TEMPLATE_NEWS);
+						t.setTags(RedisUtils.getTemplateResult(templateGuid).getTags());
 						t.setTemplateGuid(templateGuid);
 						t.setParseResultGuid(parseResultGuid);
 						ParseResult r = new ParseResult();
@@ -203,6 +212,7 @@ public class TemplateFactory {
 						String guid = MD5Utils.MD5(outlink);
 						String parseResultGuid = guid + Constants.PARSE_RESULT_PREFIX;
 						t.setType(Constants.TEMPLATE_NEWS);
+						t.setTags(RedisUtils.getTemplateResult(templateGuid).getTags());
 						t.setTemplateGuid(templateGuid);
 						t.setParseResultGuid(parseResultGuid);
 						ParseResult r = new ParseResult();
@@ -227,6 +237,7 @@ public class TemplateFactory {
 					TemplateResult t = new TemplateResult();
 					String guid = MD5Utils.MD5(outlink);
 					t.setType(Constants.TEMPLATE_LIST);
+					t.setTags(RedisUtils.getTemplateResult(templateGuid).getTags());
 					t.setList(rootTemplate.getList());
 					t.setTemplateGuid(templateGuid);
 					RedisUtils.setTemplateResult(t, guid);

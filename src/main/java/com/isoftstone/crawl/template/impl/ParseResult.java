@@ -13,7 +13,6 @@ import com.isoftstone.crawl.template.utils.JSONUtils;
 public class ParseResult {
 	private String templateGuid;
 	private HashMap<String, String> result;
-
 	/**
 	 * 获取模板的GUID
 	 * 
@@ -67,6 +66,7 @@ public class ParseResult {
 		this.result.put(key, value);
 	}
 
+	
 	/**
 	 * 重写toString()，用户输出ParseResult所有属性数据
 	 */

@@ -35,7 +35,7 @@ public class Constants {
 	public static final String TEMPLATE_LIST = "list";
 	public static final String TEMPLATE_NEWS = "news";
 	public static final String TEMPLATE_PAGITATION = "pagitation";
-	
+	public static final String TEMPLATE_STATIC = "tags";
 	// 用于Selector，用于描述当前拾取器的功能
 	public static final String SELECTOR_FEILD = "field";
 	public static final String SELECTOR_LABEL = "label";
