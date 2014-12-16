@@ -21,7 +21,7 @@ public class CnstockTest {
 		String url = "http://irm.cnstock.com/ivlist/index/yqjj/0";
 		String encoding = "utf-8";
 		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = CnstockTemplate();
+		TemplateResult templateResult = cnstockTemplate();
 		ParseResult parseResult = null;
 		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
 //	    parseResult = TemplateFactory.process(input, encoding,url);
@@ -37,7 +37,7 @@ public class CnstockTest {
 //		//parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
 //		System.out.println(parseResult.toJSON());
 	}
-	public static TemplateResult CnstockTemplate() {
+	public static TemplateResult cnstockTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://irm.cnstock.com/ivlist/index/yqjj/0";

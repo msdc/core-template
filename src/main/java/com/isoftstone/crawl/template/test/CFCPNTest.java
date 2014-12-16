@@ -15,32 +15,36 @@ import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 import com.lj.util.http.DownloadHtml;
 
-public class CFCPNTest {
+public class CfcpnTest {
+
 	public static void main(String[] args) {
-		String url = "http://www.cfcpn.com/front/notice/cggg_list.jsp";
+		// 金采网
+		String templateUrl = "http://www.cfcpn.com/front/notice/advsearch_list.jsp?offset=0";
+		//http://www.bidnews.cn/news/dianligongsi-38291.html
+		// http://www.bidnews.cn/news/dianligongsi-38291.html
 		String encoding = "gb2312";
-		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = CFCPNTemplate();
+	//	 String html =DownloadHtml.getHtml(templateUrl, encoding);
+	//	 System.out.println(html);
+		byte[] input = DownloadHtml.getHtml(templateUrl);
+		TemplateResult templateResult = cfcpnTemplate(templateUrl);
 		ParseResult parseResult = null;
-		
-		parseResult = TemplateFactory.process(input, encoding, url);
+		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
+		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
+		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
+		// /System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		templateUrl = "http://www.cfcpn.com/front/notice/show_news_detail.jsp?rec_id=240401&hyid=0";
 
-//		url = "http://www.cfcpn.com/front/notice/show_news_detail.jsp?rec_id=240707&hyid=0";
-//		input = DownloadHtml.getHtml(url);
-//		encoding = "gb2312";
-//		parseResult = TemplateFactory.process(input, encoding, url);
-//		// parseResult = TemplateFactory.localProcess(input, encoding,
-//		// url,templateResult, Constants.TEMPLATE_NEWS);
-//		System.out.println(parseResult.toJSON());
-
+		input = DownloadHtml.getHtml(templateUrl);
+		encoding = "gb2312";
+		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
+		System.out.println(parseResult.toJSON());
 	}
-	
-	public static TemplateResult CFCPNTemplate() {
+	public static TemplateResult cfcpnTemplate(String templateUrl) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
-		String templateUrl = "http://www.cfcpn.com/front/notice/cggg_list.jsp";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 
@@ -53,38 +57,27 @@ public class CFCPNTest {
 		SelectorFormat format = null;
 
 		// content outlink
-		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("#list_table > tbody:nth-child(2)>tr> td:nth-child(2)>a", Constants.ATTRIBUTE_HREF);
-		selector.initContentSelector(indexer, null);
-
-		// tstamp
-		Selector label = new Selector();
-		label.setType(Constants.SELECTOR_LABEL);
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("#list_table > tbody:nth-child(2)>tr> td:nth-child(3)", Constants.ATTRIBUTE_TEXT);
-		filter = new SelectorFilter();
-		filter.initMatchFilter(Constants.YYYYMMDD);
-		label.initLabelSelector("tstamp", "", indexer, filter, null);
-		selector.setLabel(label);
+		indexer.initJsoupIndexer("#list_table > tbody > tr > td:nth-child(2) > a", Constants.ATTRIBUTE_HREF);
+		selector.initContentSelector(indexer, null);
 		list.add(selector);
 		template.setList(list);
 
 		// pagitation outlink js翻页无法处理
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer(".pager", Constants.ATTRIBUTE_TEXT);		
+		indexer.initJsoupIndexer("body > div:nth-child(1) > div.auto.top10 > div.w720.left > div.auto.padding10.border_ccc.top10 > div", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter("共(\\d+)页");
-		//这里的页面抓取的 页码数加减有问题
-		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER, "##", "20", "http://www.cfcpn.com/front/notice/cggg_list.jsp?offset=##", "0", null, indexer, filter, null);
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER_INTERVAL, "##", "", "http://www.cfcpn.com/front/notice/advsearch_list.jsp?offset=##", "", "",20, indexer, filter, null);
 		pagination.add(selector);
 		template.setPagination(pagination);
 
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.aticle_tit:nth-child(1)", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > div:nth-child(1) > div > div.w720.left > div.border_ccc.auto.top10.aticle > div:nth-child(1)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
@@ -94,9 +87,19 @@ public class CFCPNTest {
 		indexer.initJsoupIndexer("#content", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
+
+		// tstamp
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div:nth-child(1) > div > div.w720.left > div.border_ccc.auto.top10.aticle > div.aticle_time.txtCenter", Constants.ATTRIBUTE_TEXT);
+		filter = new SelectorFilter();
+		filter.initMatchFilter(Constants.YYYYMMDDHHMMSS);
+		selector.initFieldSelector("tstamp", "", indexer, filter, null);
+		news.add(selector);
+
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		//RedisUtils.setTemplateResult(template, templateGuid);
 		return template;
 
 	}

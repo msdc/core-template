@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.global.Constants;
@@ -21,7 +22,7 @@ public class CcgpGansuTest {
 		String url = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = CcgpGansuTemplate();
+		TemplateResult templateResult = ccgpGansuTemplate();
 		ParseResult parseResult = null;
 		// parseResult = TemplateFactory.localProcess(input, encoding,url,
 		// templateResult, Constants.TEMPLATE_LIST);
@@ -41,13 +42,25 @@ public class CcgpGansuTest {
 
 	}
 
-	public static TemplateResult CcgpGansuTemplate() {
+	public static TemplateResult ccgpGansuTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
-		String templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
+		HashMap<String,Object> dictionary = new HashMap<String,Object>(); 
+		dictionary.put("行业", "财经");
+		dictionary.put("媒体","XXXX");
+		String templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=213";
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=215";
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=216";
+//		//138、140、141、220
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=138";
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=140";
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=141";
+//		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=220";
+
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setTags(dictionary);
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

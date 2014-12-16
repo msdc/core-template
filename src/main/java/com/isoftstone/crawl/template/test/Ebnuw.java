@@ -23,7 +23,7 @@ public class Ebnuw {
 		// String html =DownloadHtml.getHtml(url, encoding);
 		// System.out.println(html);
 		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = EbnuwTemplate();
+		TemplateResult templateResult = ebnuwTemplate();
 		ParseResult parseResult = null;
 		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
 		parseResult = TemplateFactory.process(input, encoding, url);
@@ -41,7 +41,7 @@ public class Ebnuw {
 
 	}
 
-	public static TemplateResult EbnuwTemplate() {
+	public static TemplateResult ebnuwTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.ebnew.com/tradingIndex.view?key=&pubDateBegin=&pubDateEnd=&infoType=&fundSourceCodes=&zone=&normIndustry=&bidModel=&timeType=&sortMethod=&currentPage=1&length=40";

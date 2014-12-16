@@ -20,7 +20,7 @@ public class CSTest {
 		String url = "http://www.cs.com.cn/xwzx/hg/index.html";
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = CSTemplate();
+		TemplateResult templateResult = cSTemplate();
 //		ParseResult parseResult = null;
 //		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
 //		 parseResult = TemplateFactory.process(input, encoding,url);
@@ -36,7 +36,7 @@ public class CSTest {
 //		System.out.println(parseResult.toJSON());
 
 	}
-	public static TemplateResult CSTemplate() {
+	public static TemplateResult cSTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.cs.com.cn/xwzx/hg/index.html";

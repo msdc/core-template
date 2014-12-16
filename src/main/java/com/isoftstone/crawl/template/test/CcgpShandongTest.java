@@ -23,7 +23,7 @@ public class CcgpShandongTest {
 			String url = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=030" + i;
 			String encoding = "gb2312";
 			byte[] input = DownloadHtml.getHtml(url);
-			TemplateResult templateResult = CcgpTemplate();
+			TemplateResult templateResult = ccgpTemplate();
 			//ParseResult parseResult = null;
 			// parseResult = TemplateFactory.localProcess(input, encoding,url,
 			// templateResult, Constants.TEMPLATE_LIST);
@@ -42,7 +42,7 @@ public class CcgpShandongTest {
 	}
 
 
-	public static TemplateResult CcgpTemplate() {
+	public static TemplateResult ccgpTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=0301";

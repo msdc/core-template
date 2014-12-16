@@ -23,14 +23,14 @@ public class EZhanWangTest {
 		String filePath = "D:/Develop/resource/AjaxSearcher.aspx.html";
 		String encoding = "utf8";
 		byte[] input = readTextFile(filePath, encoding);
-		TemplateResult templateResult = EZhanWangTemplate();
+		TemplateResult templateResult = eZhanWangTemplate();
 		System.out.println(templateResult.toJSON());
-		ParseResult parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
+		ParseResult parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
 		// System.out.println(parseResult.toJSON());
 		System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 	}
 
-	public static TemplateResult EZhanWangTemplate() {
+	public static TemplateResult eZhanWangTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.eshow365.com/ZhanHui/Ajax/AjaxSearcher.aspx?1=1&starttime=19000101&tag=0&page=1";
@@ -56,23 +56,16 @@ public class EZhanWangTest {
 		indexer = new SelectorIndexer();
 		selector = new Selector();
 		filter = new SelectorFilter();
-		indexer.initJsoupIndexer("div.searchpage ul#pagestr li.recount",
-				Constants.ATTRIBUTE_TEXT);
-		
-		selector.initPagitationSelector(
-				Constants.PAGINATION_TYPE_PAGERECORD,
-				"index",
-				"index_",
-				"http://www.zhongguoxintuo.com/xtxw/index.html",
-				"2", "23", indexer, null, null);
+		indexer.initJsoupIndexer("div.searchpage ul#pagestr li.recount", Constants.ATTRIBUTE_TEXT);
+
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGERECORD, "index", "index_", "http://www.zhongguoxintuo.com/xtxw/index.html", "2", "23", indexer, null, null);
 		pagination.add(selector);
 		template.setPagination(pagination);
 
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.zhmaincontent h1",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.zhmaincontent h1", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
@@ -107,25 +100,21 @@ public class EZhanWangTest {
 		// area
 		selector = new Selector();
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(3)",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(3)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("area", "", indexer, null, null);
 		news.add(selector);
 
 		// industry;
 		selector = new Selector();
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer(
-				"div.zhmaincontent div.zhxxcontent p:eq(2) a:eq(0)",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(2) a:eq(0)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("industry", "", indexer, null, null);
 		news.add(selector);
 
 		// pavilion
 		selector = new Selector();
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent a:eq(0)",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent a:eq(0)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("pavilion", "", indexer, null, null);
 		news.add(selector);
 
@@ -136,8 +125,7 @@ public class EZhanWangTest {
 		filter.initRemoveFilter("举办时间：");
 		format = new SelectorFormat();
 		format.initDateFormat("yyyy/MM/dd");
-		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(0)",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(0)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("startDate", "", indexer, filter, format);
 		filter = new SelectorFilter();
 		filter.initMatchFilter("(\\d{4}/\\d{2}/\\d{2})-");
@@ -151,8 +139,7 @@ public class EZhanWangTest {
 		filter.initRemoveFilter("举办时间：");
 		format = new SelectorFormat();
 		format.initDateFormat("yyyy/MM/dd");
-		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(0)",
-				Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("div.zhmaincontent div.zhxxcontent p:eq(0)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("endDate", "", indexer, filter, format);
 		filter = new SelectorFilter();
 		filter.initMatchFilter("-(\\d{4}/\\d{2}/\\d{2})");
@@ -167,8 +154,7 @@ public class EZhanWangTest {
 		java.io.BufferedReader reader = null;
 		File f = new File(filePath);
 		try {
-			inputReader = new java.io.InputStreamReader(
-					new java.io.FileInputStream(f), encoding);
+			inputReader = new java.io.InputStreamReader(new java.io.FileInputStream(f), encoding);
 			reader = new java.io.BufferedReader(inputReader);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

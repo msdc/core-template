@@ -23,7 +23,7 @@ public class GuoyuanTest {
 		String url = "http://www.zhongguoxintuo.com/xtxw/index.html";
 		String encoding = "gb2312";
 		byte[] input =DownloadHtml.getHtml(url);
-		TemplateResult templateResult = GuanyuanTemplate();
+		TemplateResult templateResult = guanyuanTemplate();
 //		System.out.println(templateResult.toJSON());
 ////		ParseResult parseResult = TemplateFactory.localProcess(input, encoding,
 ////				url, templateResult, Constants.TEMPLATE_LIST);
@@ -39,7 +39,7 @@ public class GuoyuanTest {
 //		System.out.println(parseResult.toJSON());
 	}
 
-	public static TemplateResult GuanyuanTemplate() {
+	public static TemplateResult guanyuanTemplate() {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateUrl = "http://www.zhongguoxintuo.com/xtxw/index.html";

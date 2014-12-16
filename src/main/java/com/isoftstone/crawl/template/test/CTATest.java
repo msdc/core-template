@@ -21,7 +21,7 @@ public class CTATest {
 				String url = "http://www.xtxh.net/xtxh/finance/index.htm";
 				String encoding = "utf-8";
 				byte[] input = DownloadHtml.getHtml(url);
-				TemplateResult templateResult = ChinaTrusteeAssociationTemplate();
+				TemplateResult templateResult = chinaTrusteeAssociationTemplate();
 //				ParseResult parseResult = null;
 //				//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
 //			    parseResult = TemplateFactory.process(input, encoding,url);
@@ -37,7 +37,7 @@ public class CTATest {
 //				parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
 //				System.out.println(parseResult.toJSON());
 	}
-	public static TemplateResult ChinaTrusteeAssociationTemplate()
+	public static TemplateResult chinaTrusteeAssociationTemplate()
 	{
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
