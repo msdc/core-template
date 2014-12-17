@@ -16,7 +16,7 @@ public class Constants {
 	public static final String PAGINATION_TYPE_PAGE = "page";
 	// 获取分页的末尾页数
 	public static final String PAGINATION_TYPE_PAGENUMBER = "number";
-	// 获取分页的记录数
+	// 获取分页步进数
 	public static final String PAGINATION_TYPE_PAGENUMBER_INTERVAL = "interval";
 	// 获取分页的记录数
 	public static final String PAGINATION_TYPE_PAGERECORD = "record";

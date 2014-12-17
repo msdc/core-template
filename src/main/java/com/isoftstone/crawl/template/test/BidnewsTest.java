@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.impl.ParseResult;
 import com.isoftstone.crawl.template.impl.Selector;
@@ -19,39 +20,43 @@ import com.lj.util.http.DownloadHtml;
 public class BidnewsTest {
 
 	public static void main(String[] args) {
-		//全国招标信息网
+		// 全国招标信息网
+
+		// 1、生成模板
 		String templateUrl = "http://www.bidnews.cn/caigou/gonggao-38046.html";
-		                     //http://www.bidnews.cn/news/dianligongsi-38291.html
-		String encoding = "utf-8";
-		// String html =DownloadHtml.getHtml(url, encoding);
-		// System.out.println(html);
-		byte[] input = DownloadHtml.getHtml(templateUrl);
+		// http://www.bidnews.cn/news/dianligongsi-38291.html
 		TemplateResult templateResult = bidbewsTemplate(templateUrl);
+		// 2、测试列表页
+		String encoding = "utf-8";
+		byte[] input = DownloadHtml.getHtml(templateUrl);
+		System.out.println(JSON.toJSONString(templateResult));
 		ParseResult parseResult = null;
-		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
+		// parseResult = TemplateFactory.localProcess(input, encoding,
+		// templateUrl, templateResult, Constants.TEMPLATE_LIST);
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		///System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		// /System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		// 3、测试内容页
 		templateUrl = "http://www.bidnews.cn/caigou/zhaobiao-1803747.html";
-			   
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "utf-8";
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
-		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
+		// parseResult = TemplateFactory.localProcess(input, encoding,
+		// templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 	}
-	
+
 	public static TemplateResult bidbewsTemplate(String templateUrl) {
-		HashMap<String,String> dictionary = new HashMap<String,String>(); 
+		HashMap<String, String> dictionary = new HashMap<String, String>();
 		TemplateResult template = new TemplateResult();
-		
+
 		template.setType(Constants.TEMPLATE_LIST);
 		dictionary.put("行业", "财经");
-		dictionary.put("媒体","XXXX");
+		dictionary.put("媒体", "XXXX");
 		template.setTags(dictionary);
-		
+
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 

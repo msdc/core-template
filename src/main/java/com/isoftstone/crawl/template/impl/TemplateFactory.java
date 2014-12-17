@@ -166,7 +166,7 @@ public class TemplateFactory {
 
 	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid) {
 		HashMap<String, String> hash = parseResult.getResult();
-		
+		HashMap<String, String> tags = RedisUtils.getTemplateResult(templateGuid).getTags();
 		String contents = null;
 		if (hash.keySet().contains(Constants.CONTENT_OUTLINK)) {
 			contents = hash.get(Constants.CONTENT_OUTLINK);
@@ -188,7 +188,7 @@ public class TemplateFactory {
 						String guid = MD5Utils.MD5(outlink);
 						String parseResultGuid = guid + Constants.PARSE_RESULT_PREFIX;
 						t.setType(Constants.TEMPLATE_NEWS);
-						t.setTags(RedisUtils.getTemplateResult(templateGuid).getTags());
+						t.setTags(tags);
 						t.setTemplateGuid(templateGuid);
 						t.setParseResultGuid(parseResultGuid);
 						ParseResult r = new ParseResult();
@@ -212,7 +212,7 @@ public class TemplateFactory {
 						String guid = MD5Utils.MD5(outlink);
 						String parseResultGuid = guid + Constants.PARSE_RESULT_PREFIX;
 						t.setType(Constants.TEMPLATE_NEWS);
-						t.setTags(RedisUtils.getTemplateResult(templateGuid).getTags());
+						t.setTags(tags);
 						t.setTemplateGuid(templateGuid);
 						t.setParseResultGuid(parseResultGuid);
 						ParseResult r = new ParseResult();
@@ -237,7 +237,7 @@ public class TemplateFactory {
 					TemplateResult t = new TemplateResult();
 					String guid = MD5Utils.MD5(outlink);
 					t.setType(Constants.TEMPLATE_LIST);
-					t.setTags(RedisUtils.getTemplateResult(templateGuid).getTags());
+					t.setTags(tags);
 					t.setList(rootTemplate.getList());
 					t.setTemplateGuid(templateGuid);
 					RedisUtils.setTemplateResult(t, guid);

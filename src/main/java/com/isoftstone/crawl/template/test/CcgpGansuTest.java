@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.impl.ParseResult;
 import com.isoftstone.crawl.template.impl.Selector;
@@ -53,7 +54,6 @@ public class CcgpGansuTest {
 		HashMap<String, String> dictionary = new HashMap<String, String>();
 		dictionary.put("行业", "财经");
 		dictionary.put("媒体", "XXXX");
-
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 		template.setTags(dictionary);

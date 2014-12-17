@@ -35,8 +35,7 @@ public class ReplaceFilter implements IFilterHandler {
 			if (str.contains(value) || str.matches(value)) {
 				return str.replace(value, replaceTo);
 			} else {
-				LOG.warn("Don't get the Replace data (" + value + ") from "
-						+ str + ".");
+				LOG.warn("Don't get the Replace data (" + value + ") from " + str + ".");
 				return str;
 			}
 		} else {

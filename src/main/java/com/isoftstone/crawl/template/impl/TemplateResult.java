@@ -1,7 +1,9 @@
 package com.isoftstone.crawl.template.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.isoftstone.crawl.template.utils.JSONUtils;
 
@@ -154,6 +156,8 @@ public class TemplateResult {
 	public void setTags(HashMap<String, String> tags) {
 		this.tags = tags;
 	}
+	
+
 	/**
 	 * 重写toString()，用户输出TemplateResult所有属性数据
 	 */
