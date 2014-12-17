@@ -18,21 +18,21 @@ public class CfcpnTest {
 
 	public static void main(String[] args) {
 		// 金采网
+		
+		// 1、生成模板
 		String templateUrl = "http://www.cfcpn.com/front/notice/advsearch_list.jsp?offset=0";
-		String encoding = "gb2312";
-	//	 String html =DownloadHtml.getHtml(templateUrl, encoding);
-	//	 System.out.println(html);
-		byte[] input = DownloadHtml.getHtml(templateUrl);
 		TemplateResult templateResult = cfcpnTemplate(templateUrl);
+		
+		// 2、测试列表页
+		String encoding = "gb2312";
+		byte[] input = DownloadHtml.getHtml(templateUrl);
 		ParseResult parseResult = null;
 		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
 		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
-		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		// /System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		// 3、测试内容页
 		templateUrl = "http://www.cfcpn.com/front/notice/show_news_detail.jsp?rec_id=240401&hyid=0";
-
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gb2312";
 		// parseResult = TemplateFactory.process(input, encoding, templateUrl);

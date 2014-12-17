@@ -9,6 +9,7 @@ import com.isoftstone.crawl.template.impl.Selector;
 import com.isoftstone.crawl.template.impl.SelectorFilter;
 import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
+import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
@@ -17,32 +18,34 @@ import com.lj.util.http.DownloadHtml;
 public class CsTest {
 
 	public static void main(String[] args) {
+
+		// 1、生成模板
 		String url = "http://www.cs.com.cn/xwzx/hg/index.html";
+		TemplateResult templateResult = cSTemplate(url);
+		// 2、测试列表页
+		ParseResult parseResult = null;
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = cSTemplate();
-//		ParseResult parseResult = null;
-//		//parseResult = TemplateFactory.localProcess(input, encoding,url, templateResult, Constants.TEMPLATE_LIST);
-//		 parseResult = TemplateFactory.process(input, encoding,url);
-//		System.out.println(parseResult.toJSON());
-//		System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-//		//System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-//		
-//		url = "http://www.cs.com.cn/xwzx/hg/201411/t20141125_4572144.html";
-//		input = DownloadHtml.getHtml(url);
-//		encoding = "gb2312";
-//		parseResult = TemplateFactory.localProcess(input, encoding, url,templateResult, Constants.TEMPLATE_NEWS);
-//		//parseResult = TemplateFactory.process(input, encoding, url);
-//		System.out.println(parseResult.toJSON());
+		// parseResult = TemplateFactory.localProcess(input, encoding,url,
+		// templateResult, Constants.TEMPLATE_LIST);
+		parseResult = TemplateFactory.process(input, encoding, url);
+		System.out.println(parseResult.toJSON());
+		// 3、测试内容页
+		url = "http://www.cs.com.cn/xwzx/hg/201411/t20141125_4572144.html";
+		input = DownloadHtml.getHtml(url);
+		encoding = "gb2312";
+		parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_NEWS);
+		// parseResult = TemplateFactory.process(input, encoding, url);
+		System.out.println(parseResult.toJSON());
 
 	}
-	public static TemplateResult cSTemplate() {
+
+	public static TemplateResult cSTemplate(String templateUrl) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
-		String templateUrl = "http://www.cs.com.cn/xwzx/hg/index.html";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-		
+
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -59,15 +62,11 @@ public class CsTest {
 		list.add(selector);
 		template.setList(list);
 
-		// pagitation outlink  js翻页无法处理
+		// pagitation outlink js翻页无法处理
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("div.z_list_page a",
-				Constants.ATTRIBUTE_HREF);
-		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGE,
-				"index", "index_",
-				"http://www.cs.com.cn/xwzx/hg/index.html", "1", null,
-				indexer, null, null);
+		indexer.initJsoupIndexer("div.z_list_page a", Constants.ATTRIBUTE_HREF);
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGE, "index", "index_", templateUrl, "1", null, indexer, null, null);
 		pagination.add(selector);
 		template.setPagination(pagination);
 
@@ -87,14 +86,16 @@ public class CsTest {
 
 		// tstamp
 		selector = new Selector();
-		indexer = new SelectorIndexer();//body > div:nth-child(10) > div.content_left > div.column-box > div:nth-child(5) > span.ctime
+		indexer = new SelectorIndexer();// body > div:nth-child(10) >
+										// div.content_left > div.column-box >
+										// div:nth-child(5) > span.ctime
 		indexer.initJsoupIndexer("body > div:nth-child(10) > div.content_left > div.column-box > div:nth-child(5) > span.ctime", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDDHHMM);
 		selector.initFieldSelector("tstamp", "", indexer, filter, null);
 		news.add(selector);
 		template.setNews(news);
-		
+
 		RedisUtils.setTemplateResult(template, templateGuid);
 		return template;
 	}

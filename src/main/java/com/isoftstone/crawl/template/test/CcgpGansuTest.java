@@ -19,51 +19,40 @@ import com.lj.util.http.DownloadHtml;
 public class CcgpGansuTest {
 
 	public static void main(String[] args) {
-		String url = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
+		int[] number = { 138, 140, 141, 220, 213, 214, 215, 216 };
+		// 1、生成模板
+		String nextPage = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=##&class_id=";
+		String templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=";
 		String encoding = "gb2312";
-		byte[] input = DownloadHtml.getHtml(url);
-		TemplateResult templateResult = ccgpGansuTemplate(url);
+		TemplateResult templateResult = null;
 		ParseResult parseResult = null;
-		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
-		 parseResult = TemplateFactory.process(input, encoding, url);
-		 System.out.println("templateResult:" + templateResult.toJSON());
-		 System.out.println(parseResult.toJSON());
-		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		// System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-		//
-		url = "http://www.ccgp-gansu.gov.cn/web/214/225941.html";
-		input = DownloadHtml.getHtml(url);
-		encoding = "gb2312";
-		parseResult = TemplateFactory.process(input, encoding, url);
-		// parseResult = TemplateFactory.localProcess(input, encoding,
-		// url,templateResult, Constants.TEMPLATE_NEWS);
+
+		for (int i = 0; i < number.length; i++) {
+			int n = number[i];
+			templateResult = ccgpGansuTemplate(templateUrl + n, nextPage + n);
+		}
+		// 2、测试列表页
+		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=213";
+		byte[] input = DownloadHtml.getHtml(templateUrl);
+		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
+		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		System.out.println("templateResult:" + templateResult.toJSON());
+		System.out.println(parseResult.toJSON());
+		// 3、测试内容页
+		templateUrl = "http://www.ccgp-gansu.gov.cn/web/214/225941.html";
+		input = DownloadHtml.getHtml(templateUrl);
+		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 
 	}
 
-	public static TemplateResult ccgpGansuTemplate(String templateUrl) {
+	public static TemplateResult ccgpGansuTemplate(String templateUrl, String nextPageUrl) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		HashMap<String, String> dictionary = new HashMap<String, String>();
 		dictionary.put("行业", "财经");
 		dictionary.put("媒体", "XXXX");
-		// String templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=213";
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=215";
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=216";
-		// //138、140、141、220
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=138";
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=140";
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=141";
-		// templateUrl =
-		// "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=220";
 
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
@@ -100,7 +89,7 @@ public class CcgpGansuTest {
 		indexer.initJsoupIndexer("body > form > table:nth-child(2) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td:nth-child(1) > font:nth-child(2)", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter("\\d+");
-		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER, "##", "", "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=##&class_id=214", "2", null, indexer, filter, null);
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGENUMBER, "##", "", nextPageUrl, "2", null, indexer, filter, null);
 		pagination.add(selector);
 		template.setPagination(pagination);
 
