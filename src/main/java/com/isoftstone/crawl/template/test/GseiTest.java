@@ -19,21 +19,22 @@ public class GseiTest {
 
 	public static void main(String[] args) {
 		//甘肃经济信息网
+		
+		// 1、生成模板
 		String templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg/index.html";
-		String encoding = "gb2312";
-		// String html =DownloadHtml.getHtml(url, encoding);
-		// System.out.println(html);
-		byte[] input = DownloadHtml.getHtml(templateUrl);
 		TemplateResult templateResult = gseiTemplate(templateUrl);
+		
+		// 2、测试列表页
+		byte[] input = DownloadHtml.getHtml(templateUrl);
+		String encoding = "gb2312";
 		ParseResult parseResult = null;
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
-		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-		///System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
+		
+		// 3、测试内容页	
 		templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg_2014-12-10/97241.html";
-			   
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gb2312";
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);

@@ -13,6 +13,7 @@ import com.isoftstone.crawl.template.impl.Selector;
 import com.isoftstone.crawl.template.impl.SelectorFilter;
 import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
+import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
@@ -20,32 +21,32 @@ import com.lj.util.http.DownloadHtml;
 
 public class GuoyuanTest {
 	public static void main(String[] args) {
-		String url = "http://www.zhongguoxintuo.com/xtxw/index.html";
+		// 1、生成模板
+		String templateUrl = "http://www.zhongguoxintuo.com/xtxw/index.html";
+		TemplateResult templateResult = guanyuanTemplate(templateUrl);
+		System.out.println(templateResult.toJSON());
+		// 2、测试列表页
 		String encoding = "gb2312";
-		byte[] input =DownloadHtml.getHtml(url);
-		TemplateResult templateResult = guanyuanTemplate();
-//		System.out.println(templateResult.toJSON());
-////		ParseResult parseResult = TemplateFactory.localProcess(input, encoding,
-////				url, templateResult, Constants.TEMPLATE_LIST);
-//		ParseResult parseResult = TemplateFactory.process(input, encoding,
-//				url);
-//		System.out.println(TemplateFactory.getPaginationOutlink(parseResult));
-//		//System.out.println(TemplateFactory.getOutlink(parseResult).toString());
-
-//		url = "http://www.zhongguoxintuo.com/xtxw/5815.html";
-//		input =DownloadHtml.getHtml(url);
-//		parseResult = TemplateFactory.localProcess(input, encoding, url,
-//				templateResult, Constants.TEMPLATE_NEWS);
-//		System.out.println(parseResult.toJSON());
+		ParseResult parseResult =null;
+		byte[] input = DownloadHtml.getHtml(templateUrl);
+		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		System.out.println(parseResult.toJSON());
+		// 3、测试内容页
+		templateUrl = "http://www.zhongguoxintuo.com/xtxw/5815.html";
+		input = DownloadHtml.getHtml(templateUrl);
+		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		System.out.println(parseResult.toJSON());
 	}
 
-	public static TemplateResult guanyuanTemplate() {
+	public static TemplateResult guanyuanTemplate(String templateUrl) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
-		String templateUrl = "http://www.zhongguoxintuo.com/xtxw/index.html";
+
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-		
+
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -56,7 +57,8 @@ public class GuoyuanTest {
 
 		// content outlink
 		indexer = new SelectorIndexer();
-		selector = new Selector();//body > div.main > div.main_left > div > div > dl:nth-child(1) > dt > a
+		selector = new Selector();// body > div.main > div.main_left > div > div
+									// > dl:nth-child(1) > dt > a
 		indexer.initJsoupIndexer("body > div.main > div.main_left > div > div > dl > dt > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
@@ -66,12 +68,8 @@ public class GuoyuanTest {
 		indexer = new SelectorIndexer();
 		selector = new Selector();
 		filter = new SelectorFilter();
-		indexer.initJsoupIndexer("div.page a:nth-child(1) b:nth-child(1)",
-				Constants.ATTRIBUTE_TEXT);
-		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGERECORD,
-				"index", "index_",
-				"http://www.zhongguoxintuo.com/xtxw/index.html", "2", "23",
-				indexer, null, null);
+		indexer.initJsoupIndexer("div.page a:nth-child(1) b:nth-child(1)", Constants.ATTRIBUTE_TEXT);
+		selector.initPagitationSelector(Constants.PAGINATION_TYPE_PAGERECORD, "index", "index_", templateUrl, "2", "23", indexer, null, null);
 		pagination.add(selector);
 		template.setPagination(pagination);
 
@@ -109,8 +107,7 @@ public class GuoyuanTest {
 		java.io.BufferedReader reader = null;
 		File f = new File(filePath);
 		try {
-			inputReader = new java.io.InputStreamReader(
-					new java.io.FileInputStream(f), encoding);
+			inputReader = new java.io.InputStreamReader(new java.io.FileInputStream(f), encoding);
 			reader = new java.io.BufferedReader(inputReader);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
