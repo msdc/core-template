@@ -76,19 +76,20 @@ public class RedisUtils {
 		}
 	}
 
-	public static void remove(String guid) {
+	public static long remove(String guid) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
 			pool = getPool();
 			jedis = pool.getResource();
-			jedis.del(guid);
+			return jedis.del(guid);
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
 			e.printStackTrace();
 		} finally {
 			returnResource(pool, jedis);
 		}
+		return -1;
 	}
 
 	public static ParseResult getParseResult(String guid) {
@@ -98,9 +99,9 @@ public class RedisUtils {
 		try {
 			pool = getPool();
 			jedis = pool.getResource();
-			System.out.println("guid=" + guid);
+			//System.out.println("guid=" + guid);
 			String json = jedis.get(guid);
-			System.out.println("json=" + json);
+			//System.out.println("json=" + json);
 			return JSONUtils.getParseResultObject(json);
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
