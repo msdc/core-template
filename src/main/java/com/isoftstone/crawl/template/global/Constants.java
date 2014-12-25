@@ -27,9 +27,14 @@ public class Constants {
 
 	public static final String PARSE_RESULT_PREFIX = "_PS";
 	
-	public static final String TEMPLATE_PREFIX = "_LIST";
+	public static final String LIST_PREFIX = "_LIST";
 	
-	public static final String NEWS_PREFIX = "_NESW";
+	public static final String NEWS_PREFIX = "_NEWS";
+	
+	public static final String TEMPLATE_PREFIX = "_TEMPLATE";
+	
+	public static final String UN_FETCH ="un_fetch";
+	public static final String FETCH ="fetch";
 
 	// 用于Template，区分模板的使用类型，如当前是列表页则获取list拾取器模板，如果是内容页则获取news拾取器模板
 	public static final String TEMPLATE_LIST = "list";
