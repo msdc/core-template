@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.impl.ParseResult;
 import com.isoftstone.crawl.template.impl.Selector;
@@ -31,19 +30,20 @@ public class CcgpGansuTest {
 		for (int i = 0; i < number.length; i++) {
 			int n = number[i];
 			templateResult = ccgpGansuTemplate(templateUrl + n, nextPage + n);
+			System.out.println(templateResult);
 		}
 		// 2、测试列表页
-		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=213";
+		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
-		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://www.ccgp-gansu.gov.cn/web/214/225941.html";
 		input = DownloadHtml.getHtml(templateUrl);
-		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
-		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		 //parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 
 	}
@@ -57,6 +57,7 @@ public class CcgpGansuTest {
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 		template.setTags(dictionary);
+		template.setState(Constants.UN_FETCH);
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

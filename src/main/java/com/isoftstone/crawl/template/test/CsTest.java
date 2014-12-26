@@ -45,7 +45,7 @@ public class CsTest {
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setState(Constants.UN_FETCH);
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -62,7 +62,7 @@ public class CsTest {
 		list.add(selector);
 		template.setList(list);
 
-		// pagitation outlink js翻页无法处理
+		
 		indexer = new SelectorIndexer();
 		selector = new Selector();
 		indexer.initJsoupIndexer("div.z_list_page a", Constants.ATTRIBUTE_HREF);

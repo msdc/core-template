@@ -34,7 +34,7 @@ public class GseiTest {
 		System.out.println(parseResult.toJSON());
 		
 		// 3、测试内容页	
-		templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg_2014-12-10/97241.html";
+		templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg_2014-12-25/1956911.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gb2312";
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
@@ -46,7 +46,8 @@ public class GseiTest {
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setState(Constants.UN_FETCH);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

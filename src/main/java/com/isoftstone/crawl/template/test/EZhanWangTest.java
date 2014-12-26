@@ -36,6 +36,7 @@ public class EZhanWangTest {
 		String templateUrl = "http://www.eshow365.com/ZhanHui/Ajax/AjaxSearcher.aspx?1=1&starttime=19000101&tag=0&page=1";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
+		template.setState(Constants.UN_FETCH);
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

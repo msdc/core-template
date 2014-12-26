@@ -33,7 +33,7 @@ public class GuoyuanTest {
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
-		templateUrl = "http://www.zhongguoxintuo.com/xtxw/5815.html";
+		templateUrl = "http://www.zhongguoxintuo.com/xtxw/5977.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
@@ -46,7 +46,8 @@ public class GuoyuanTest {
 
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setState(Constants.UN_FETCH);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

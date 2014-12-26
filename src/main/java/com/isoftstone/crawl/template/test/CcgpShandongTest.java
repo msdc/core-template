@@ -52,7 +52,7 @@ public class CcgpShandongTest {
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setState(Constants.UN_FETCH);
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

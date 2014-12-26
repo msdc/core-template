@@ -47,7 +47,7 @@ public class Ebnuw {
 		String templateUrl = "http://www.ebnew.com/tradingIndex.view?key=&pubDateBegin=&pubDateEnd=&infoType=&fundSourceCodes=&zone=&normIndustry=&bidModel=&timeType=&sortMethod=&currentPage=1&length=40";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setState(Constants.UN_FETCH);
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();

@@ -43,7 +43,8 @@ public class FuJianGovTest {
 		String templateUrl = "http://www.ccgp-fujian.gov.cn/secpag.cfm?caidan=%B2%C9%B9%BA%B9%AB%B8%E6&caidan2=%B9%AB%BF%AA%D5%D0%B1%EA&level=province&area=&yqgg=0";
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
-
+		template.setState(Constants.UN_FETCH);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
