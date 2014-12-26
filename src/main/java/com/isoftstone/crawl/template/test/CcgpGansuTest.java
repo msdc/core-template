@@ -58,6 +58,7 @@ public class CcgpGansuTest {
 		template.setTemplateGuid(templateGuid);
 		template.setTags(dictionary);
 		template.setState(Constants.UN_FETCH);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
