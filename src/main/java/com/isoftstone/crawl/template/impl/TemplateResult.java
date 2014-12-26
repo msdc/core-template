@@ -1,9 +1,7 @@
 package com.isoftstone.crawl.template.impl;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import com.isoftstone.crawl.template.utils.JSONUtils;
 
@@ -21,8 +19,19 @@ public class TemplateResult {
 	private List<Selector> pagination;
 	private List<Selector> news;
 	private long fetchTime;
-	private HashMap<String,String> tags; 
+	private HashMap<String,String> tags; //网页标签
+	private String state;//状态
 	
+	public TemplateResult() {
+
+	}
+
+	public TemplateResult(String templateGuid, String parseResultGuid,
+			String type) {
+		this.templateGuid = templateGuid;
+		this.parseResultGuid = parseResultGuid;
+		this.type = type;
+	}
 	/**
 	 * 获取模板的GUID
 	 * 
@@ -130,17 +139,6 @@ public class TemplateResult {
 		this.news = news;
 	}
 
-	public TemplateResult() {
-
-	}
-
-	public TemplateResult(String templateGuid, String parseResultGuid,
-			String type) {
-		this.templateGuid = templateGuid;
-		this.parseResultGuid = parseResultGuid;
-		this.type = type;
-	}
-
 	public long getFetchTime() {
 		return fetchTime;
 	}
@@ -157,6 +155,13 @@ public class TemplateResult {
 		this.tags = tags;
 	}
 	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	/**
 	 * 重写toString()，用户输出TemplateResult所有属性数据
