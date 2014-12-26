@@ -43,7 +43,6 @@ public class DateFormatter {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		return null;
 	}
 

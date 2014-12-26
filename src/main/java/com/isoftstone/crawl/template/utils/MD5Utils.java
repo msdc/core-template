@@ -51,7 +51,7 @@ public class MD5Utils {
 	}
 	public static void main(String[] args) {
 		
-		System.out.println(MD5(DownloadHtml.getHtml("http://www.zhongguoxintuo.com/xtxw/5846.html","gb2312")));
+		System.out.println(MD5("http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg_2014-12-25/1956911.html"));
 	}
 	
 }

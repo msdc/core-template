@@ -54,6 +54,7 @@ public class JsoupIndexer implements IIndexerHandler {
 				value = EncodeUtils.convertEncoding(value,Constants.DEFAULT_ENCODING, encoding);
 				doc = org.jsoup.Jsoup.parse(in, encoding, url);
 				//System.out.println(doc);
+				
 				elements = doc.select(value);
 			} else {
 				LOG.error("JSOUP indexer defined error.");
