@@ -5,16 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 
 public class TemplateFactory {
-	private static final Log LOG = LogFactory.getLog(TemplateFactory.class);
-
+	private static final Logger LOG =LoggerFactory.getLogger(TemplateFactory.class);
 	public static ParseResult process(byte[] input, String encoding, String url) {
 		String guid = MD5Utils.MD5(url);
 		//System.out.println("guid:" + guid);
@@ -66,6 +65,9 @@ public class TemplateFactory {
 					 //RedisUtils.remove(templateResult.getParseResultGuid());
 				}
 			}
+		}else
+		{
+			LOG.error("This page " + url + " ， not found the Template.");
 		}
 		return parseResult;
 	}

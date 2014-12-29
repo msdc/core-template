@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.itf.IFormaterHandler;
 
@@ -19,8 +19,7 @@ import com.isoftstone.crawl.template.itf.IFormaterHandler;
  * 
  */
 public class DateFormat implements IFormaterHandler {
-	private static final Log LOG = LogFactory.getLog(DateFormat.class);
-
+	private static final Logger LOG =LoggerFactory.getLogger(DateFormat.class);
 	private static final SimpleDateFormat DEFAULT_DATEFORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm");
 	private SelectorFormat format = null;
@@ -58,7 +57,7 @@ public class DateFormat implements IFormaterHandler {
 			}
 		} catch (ParseException e) {
 			LOG.error("Date Format value defined error.");
-			LOG.error(e);
+			LOG.error(e.getMessage());
 		}
 		return dateStr;
 	}

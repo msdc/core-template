@@ -3,15 +3,14 @@ package com.isoftstone.crawl.template.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.itf.ISelectorHandler;
 
 public class PaginationSelector implements ISelectorHandler {
-	private static final Log LOG = LogFactory.getLog(PaginationSelector.class);
-
+	private static final Logger LOG = LoggerFactory.getLogger(PaginationSelector.class);
 	private Selector selector;
 
 	public PaginationSelector() {

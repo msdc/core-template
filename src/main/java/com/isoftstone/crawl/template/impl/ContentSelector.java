@@ -3,17 +3,14 @@ package com.isoftstone.crawl.template.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.itf.ISelectorHandler;
-import com.isoftstone.crawl.template.utils.MD5Utils;
-import com.isoftstone.crawl.template.utils.RedisUtils;
 
 public class ContentSelector implements ISelectorHandler {
-	private static final Log LOG = LogFactory.getLog(ContentSelector.class);
-
+	private static final Logger LOG =LoggerFactory.getLogger(ContentSelector.class);
 	private Selector selector = null;
 
 	public ContentSelector() {

@@ -3,8 +3,8 @@ package com.isoftstone.crawl.template.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.itf.IFilterHandler;
 
@@ -17,8 +17,7 @@ import com.isoftstone.crawl.template.itf.IFilterHandler;
  * 
  */
 public class MatchFilter implements IFilterHandler {
-	private static final Log LOG = LogFactory.getLog(MatchFilter.class);
-
+	private static final Logger LOG = LoggerFactory.getLogger(MatchFilter.class);
 	private SelectorFilter filter = null;
 
 	public MatchFilter() {
@@ -62,8 +61,7 @@ public class MatchFilter implements IFilterHandler {
 
 		// 如果未找到需要匹配的内容，则返回str的值
 		if (result.length() == 0) {
-			LOG.warn("Don't get the match data (" + value + ") from " + str
-					+ ".");
+			LOG.warn("Don't get the match data (" + value + ") from " + str + ".");
 			result.append(str);
 		}
 		return result.toString();

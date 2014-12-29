@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.itf.IIndexerHandler;
@@ -22,7 +22,7 @@ import com.isoftstone.crawl.template.utils.EncodeUtils;
  * 
  */
 public class JsoupIndexer implements IIndexerHandler {
-	private static final Log LOG = LogFactory.getLog(JsoupIndexer.class);
+	private static final Logger LOG =LoggerFactory.getLogger(JsoupIndexer.class);
 	private SelectorIndexer index = null;
 
 	public JsoupIndexer() {
@@ -67,10 +67,10 @@ public class JsoupIndexer implements IIndexerHandler {
 			return attributorHandler(elements, encoding);
 		} catch (UnsupportedEncodingException e1) {
 			LOG.error("JSOUP indexer defined error.");
-			LOG.error(e1);
+			LOG.error(e1.getMessage());
 		} catch (IOException e) {
 			LOG.error("JSOUP indexer defined error.");
-			LOG.error(e);
+			LOG.error(e.getMessage());
 		}
 		return null;
 	}
