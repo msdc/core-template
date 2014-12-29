@@ -95,6 +95,14 @@ public class CcgpGansuTest {
 		pagination.add(selector);
 		template.setPagination(pagination);
 
+		
+		// html
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("html", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("html", "", indexer, null, null);
+		news.add(selector);
+						
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
