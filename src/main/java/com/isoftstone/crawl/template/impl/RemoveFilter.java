@@ -1,7 +1,7 @@
 package com.isoftstone.crawl.template.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.itf.IFilterHandler;
 
@@ -14,7 +14,7 @@ import com.isoftstone.crawl.template.itf.IFilterHandler;
  * 
  */
 public class RemoveFilter implements IFilterHandler {
-	private static final Log LOG = LogFactory.getLog(RemoveFilter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RemoveFilter.class);
 	private SelectorFilter filter = null;
 
 	public RemoveFilter() {
@@ -39,7 +39,7 @@ public class RemoveFilter implements IFilterHandler {
 		if (!str.isEmpty() && !value.isEmpty()) {
 			// value支持正则，可以替换掉匹配的内容
 			if (str.contains(value) || str.matches(value)) {
-				return str.replace(value, "");
+				return str.replaceAll(value, "");
 			} else {
 				LOG.warn("Don't get the remove data (" + value + ") from "
 						+ str + ".");

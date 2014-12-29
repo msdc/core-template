@@ -110,7 +110,7 @@ public class SelectorFilter extends BaseSelector {
 				this.filterHandler = new RemoveFilter(this);
 			} else if (Constants.FILTER_MATCH.equals(type)) {
 				this.filterHandler = new MatchFilter(this);
-			} else if (Constants.FILTER_MATCH.equals(type)) {
+			} else if (Constants.FILTER_REPLACE.equals(type)) {
 				this.filterHandler = new ReplaceFilter(this);
 			}
 		} else {
