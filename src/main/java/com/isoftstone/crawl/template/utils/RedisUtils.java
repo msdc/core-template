@@ -1,20 +1,21 @@
 package com.isoftstone.crawl.template.utils;
 
-import com.isoftstone.crawl.template.global.Constants;
-import com.isoftstone.crawl.template.impl.ParseResult;
-import com.isoftstone.crawl.template.impl.TemplateResult;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import com.isoftstone.crawl.template.global.Constants;
+import com.isoftstone.crawl.template.impl.ParseResult;
+import com.isoftstone.crawl.template.impl.TemplateResult;
+
 public class RedisUtils {
 	private static JedisPool pool = null;
-
+	private static PropertiesUtils propert = PropertiesUtils.getInstance();
+	
 	public static JedisPool getPool() {
 		if (pool == null) {
 			JedisPoolConfig config = new JedisPoolConfig();
-
+			
 			config.setMaxIdle(500);
 
 			config.setMaxIdle(5);
@@ -23,12 +24,12 @@ public class RedisUtils {
 			config.setTestOnBorrow(true);
 
 			String ip = Constants.REDIS_IP;
-			if (PropertiesUtils.getValue("template.redis.ip") != null)
-				ip = PropertiesUtils.getValue("template.redis.ip");
+			if (propert.getValue("template.redis.ip") != null)
+				ip = propert.getValue("template.redis.ip");
 
 			int port = Constants.REDIS_PORT;
-			if (PropertiesUtils.getValue("template.redis.port") != null)
-				port = Integer.parseInt(PropertiesUtils.getValue("template.redis.port"));
+			if (propert.getValue("template.redis.port") != null)
+				port = Integer.parseInt(propert.getValue("template.redis.port"));
 
 			pool = new JedisPool(config, ip, port);
 		}
