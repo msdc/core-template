@@ -21,7 +21,8 @@ public class GseiTest {
 		//甘肃经济信息网
 		
 		// 1、生成模板
-		String templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg/index.html";
+		//String templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg/index.html";
+		String templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgs/index.html";
 		TemplateResult templateResult = gseiTemplate(templateUrl);
 		
 		// 2、测试列表页
