@@ -3,6 +3,7 @@ package com.isoftstone.crawl.template.global;
 import com.isoftstone.crawl.template.utils.PropertiesUtils;
 
 public class Constants {
+	private static PropertiesUtils propert = PropertiesUtils.getInstance();
 	// Redis的设置，如IP及PORT
 	public static String REDIS_IP = "127.0.0.1";
 	public static int REDIS_PORT = 6379;
@@ -71,6 +72,5 @@ public class Constants {
 	public static final String YYYYMMDDHHMM = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2})";
 	public static final String YYYYMMDD = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)";
 	
-	public static final String INCREMENT = PropertiesUtils
-			.getValue("template.config.increment");
+	public static final String INCREMENT = propert.getValue("template.config.increment");
 }
