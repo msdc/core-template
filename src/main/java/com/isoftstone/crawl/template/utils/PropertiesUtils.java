@@ -57,6 +57,7 @@ public class PropertiesUtils {
 			props = new Properties();
 			try {
 				props.load(fileinputstream);
+				System.err.println(fileinputstream + "加载成功");
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println("不能读取属性文件. " + "请确保"+fileName+"在CLASSPATH指定的路径中");
@@ -64,7 +65,7 @@ public class PropertiesUtils {
 			}
 		}else
 		{
-			System.err.println(fileName +"not fount.");
+			System.err.println(fileName +"未发现.");
 		}
 		
 	}
