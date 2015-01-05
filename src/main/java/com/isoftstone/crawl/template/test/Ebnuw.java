@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.global.Constants;
@@ -31,7 +32,7 @@ public class Ebnuw {
 		System.out.println(parseResult.toJSON());
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 		///System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
-		url = "http://www.ebnew.com/businessShow-v-id-489730665.html";
+		url = "http://www.ebnew.com/businessShow-v-id-498802107.html";
 			   
 		input = DownloadHtml.getHtml(url);
 		encoding = "utf-8";
@@ -49,6 +50,11 @@ public class Ebnuw {
 		template.setTemplateGuid(templateGuid);
 		template.setState(Constants.UN_FETCH);
 		
+		HashMap<String, String> dictionary = new HashMap<String, String>();
+		dictionary.put("分类", "必联网");
+		dictionary.put("项目", "商机通");
+		template.setTags(dictionary);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -62,6 +68,32 @@ public class Ebnuw {
 		indexer = new SelectorIndexer();
 		indexer.initJsoupIndexer("body > div.sj_content > div.left_box.sj-result > div > div > p.data_main > span.tit > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
+		
+		// 所属行业
+		Selector lbtrade = new Selector();
+		lbtrade.setType(Constants.SELECTOR_LABEL);
+		indexer = new SelectorIndexer();
+		indexer.initJsoupIndexer("body > div.sj_content > div.left_box.sj-result > div > div > p.subjoin > span.sshy > i > a", Constants.ATTRIBUTE_TEXT);
+		lbtrade.initLabelSelector("trade", "", indexer, null, null);
+		selector.setLabel(lbtrade);
+		// 项目地区
+		Selector lbarea = new Selector();
+		lbarea.setType(Constants.SELECTOR_LABEL);
+		indexer = new SelectorIndexer();
+		indexer.initJsoupIndexer("body > div.sj_content > div.left_box.sj-result > div > div > p.subjoin > span:nth-child(2) > i > a", Constants.ATTRIBUTE_TEXT);
+		lbarea.initLabelSelector("area", "", indexer, null, null);
+		selector.setLabel(lbarea);
+				
+		// tstamp
+		Selector lbtstamp = new Selector();
+		lbtstamp.setType(Constants.SELECTOR_LABEL);
+		indexer = new SelectorIndexer();
+		indexer.initJsoupIndexer("body > div.sj_content > div.left_box.sj-result > div > div > p.data_main > span.float_rt", Constants.ATTRIBUTE_TEXT);
+		filter = new SelectorFilter();
+		filter.initMatchFilter(Constants.YYYYMMDD);
+		lbtstamp.initLabelSelector("tstamp", "", indexer, filter, null);
+		selector.setLabel(lbtstamp);
+		
 		list.add(selector);
 		template.setList(list);
 
@@ -75,6 +107,13 @@ public class Ebnuw {
 		pagination.add(selector);
 		template.setPagination(pagination);
 
+		// html
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("#mainarea > div:nth-child(1) > div.mbox.bder > div:nth-child(3)", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("page_content", "", indexer, null, null);
+		news.add(selector);
+				
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
@@ -87,15 +126,6 @@ public class Ebnuw {
 		selector = new Selector();
 		indexer.initJsoupIndexer("#mainarea > div:nth-child(1) > div.mbox.bder > div:nth-child(3)", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
-		news.add(selector);
-
-		// tstamp
-		indexer = new SelectorIndexer();
-		selector = new Selector();
-		indexer.initJsoupIndexer("#mainarea > div:nth-child(1) > div.mbox.bder > div:nth-child(2) > table > tbody > tr:nth-child(1) > td:nth-child(2)", Constants.ATTRIBUTE_TEXT);
-		filter = new SelectorFilter();
-		filter.initMatchFilter(Constants.YYYYMMDD);
-		selector.initFieldSelector("tstamp", "", indexer, filter, null);
 		news.add(selector);
 
 		template.setNews(news);
