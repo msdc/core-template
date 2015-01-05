@@ -20,6 +20,7 @@ import com.isoftstone.crawl.template.utils.MD5Utils;
 public class EZhanWangTest {
 	public static void main(String[] args) {
 		String url = "http://www.eshow365.com/ZhanHui/Ajax/AjaxSearcher.aspx?1=1&starttime=19000101&tag=0&page=1";
+		//http://www.eshow365.com/zhanhui/gnzhj.aspx?id=aAreaAdd1&pageIndex=1
 		String filePath = "D:/Develop/resource/AjaxSearcher.aspx.html";
 		String encoding = "utf8";
 		byte[] input = readTextFile(filePath, encoding);
