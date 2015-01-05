@@ -12,9 +12,9 @@ import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
 import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
+import com.isoftstone.crawl.template.utils.DownloadHtml;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
-import com.lj.util.http.DownloadHtml;
 
 public class Ebnuw {
 
@@ -83,7 +83,6 @@ public class Ebnuw {
 		indexer.initJsoupIndexer("body > div.sj_content > div.left_box.sj-result > div > div > p.subjoin > span:nth-child(2) > i > a", Constants.ATTRIBUTE_TEXT);
 		lbarea.initLabelSelector("area", "", indexer, null, null);
 		selector.setLabel(lbarea);
-				
 		// tstamp
 		Selector lbtstamp = new Selector();
 		lbtstamp.setType(Constants.SELECTOR_LABEL);

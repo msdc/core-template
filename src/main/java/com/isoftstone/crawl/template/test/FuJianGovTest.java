@@ -11,9 +11,9 @@ import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
 import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
+import com.isoftstone.crawl.template.utils.DownloadHtml;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
-import com.lj.util.http.DownloadHtml;
 
 public class FuJianGovTest {
 	public static void main(String[] args) {

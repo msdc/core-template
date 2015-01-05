@@ -12,9 +12,9 @@ import com.isoftstone.crawl.template.impl.SelectorFormat;
 import com.isoftstone.crawl.template.impl.SelectorIndexer;
 import com.isoftstone.crawl.template.impl.TemplateFactory;
 import com.isoftstone.crawl.template.impl.TemplateResult;
+import com.isoftstone.crawl.template.utils.DownloadHtml;
 import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
-import com.lj.util.http.DownloadHtml;
 
 public class CtaTest {
 
@@ -50,7 +50,7 @@ public class CtaTest {
 		
 		HashMap<String, String> dictionary = new HashMap<String, String>();
 		dictionary.put("分类", "中国依托业协会");
-		dictionary.put("项目", "商机通");
+		dictionary.put("项目", "企业舆情-信托");
 		template.setTags(dictionary);
 		
 		List<Selector> list = new ArrayList<Selector>();
