@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.global.Constants;
@@ -47,6 +48,11 @@ public class CsTest {
 		template.setTemplateGuid(templateGuid);
 		template.setState(Constants.UN_FETCH);
 		
+		HashMap<String, String> dictionary = new HashMap<String, String>();
+		dictionary.put("分类", "中证网");
+		dictionary.put("项目", "商机通");
+		template.setTags(dictionary);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -71,6 +77,13 @@ public class CsTest {
 		pagination.add(selector);
 		template.setPagination(pagination);
 
+		// html
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("div#ozoom1", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("page_content", "", indexer, null, null);
+		news.add(selector);
+		
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
@@ -87,9 +100,7 @@ public class CsTest {
 
 		// tstamp
 		selector = new Selector();
-		indexer = new SelectorIndexer();// body > div:nth-child(10) >
-										// div.content_left > div.column-box >
-										// div:nth-child(5) > span.ctime
+		indexer = new SelectorIndexer();
 		indexer.initJsoupIndexer("body > div:nth-child(10) > div.content_left > div.column-box > div:nth-child(5) > span.ctime", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDDHHMM);

@@ -17,15 +17,15 @@ import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 import com.lj.util.http.DownloadHtml;
 
-public class BidnewsTest {
+public class BidnewsTest2 {
 
 	public static void main(String[] args) {
 		// 全国招标信息网
 		
 		// 1、生成模板
-		String templateUrl = "http://www.bidnews.cn/caigou/gonggao-38046.html";
-		// http://www.bidnews.cn/news/dianligongsi-38291.html  模板不一致
+		String templateUrl = "http://www.bidnews.cn/news/dianligongsi-38291.html";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
+		
 		TemplateResult templateResult = bidbewsTemplate(templateUrl,input);
 		// 2、测试列表页
 		
@@ -40,7 +40,7 @@ public class BidnewsTest {
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
 		// /System.out.println(TemplateFactory.getPaginationOutlink(parseResult).toString());
 		// 3、测试内容页
-		templateUrl = "http://www.bidnews.cn/caigou/zhaobiao-1813528.html";
+		templateUrl = "http://www.bidnews.cn/news/zhaobiao-219300.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "utf-8";
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
@@ -73,7 +73,7 @@ public class BidnewsTest {
 		// content outlink
 		selector = new Selector();
 		indexer = new SelectorIndexer();
-		indexer.initJsoupIndexer("#DataList1 > tbody > tr > td > div > div.sf-listxxbt > ul > li > a", Constants.ATTRIBUTE_HREF);
+		indexer.initJsoupIndexer("#DataList1 > tbody > tr > td > div > div.sf-listxxbt > ul > li > a:nth-child(2)", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
 		template.setList(list);
@@ -91,28 +91,28 @@ public class BidnewsTest {
 		// html
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("#contact > div.content", Constants.ATTRIBUTE_HTML);
+		indexer.initJsoupIndexer("body > table > tbody > tr > td > table:nth-child(5) > tbody > tr:nth-child(1) > td > table", Constants.ATTRIBUTE_HTML);
 		selector.initFieldSelector("page_content", "", indexer, null, null);
 		news.add(selector);
 		
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("#tdTitle > div > font > b", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > table > tbody > tr > td > table:nth-child(3) > tbody > tr:nth-child(1) > td > h3", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("title", "", indexer, null, null);
 		news.add(selector);
 
 		// content
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("#contact > div.content", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > table > tbody > tr > td > table:nth-child(5) > tbody > tr:nth-child(1) > td > table", Constants.ATTRIBUTE_TEXT);
 		selector.initFieldSelector("content", "", indexer, null, null);
 		news.add(selector);
 
 		// tstamp
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("body > table > tbody > tr:nth-child(3) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(2) > td > font", Constants.ATTRIBUTE_TEXT);
+		indexer.initJsoupIndexer("body > table > tbody > tr > td > table:nth-child(4) > tbody > tr > td:nth-child(1) > ul > ul > li", Constants.ATTRIBUTE_TEXT);
 		filter = new SelectorFilter();
 		filter.initMatchFilter(Constants.YYYYMMDD);
 		selector.initFieldSelector("tstamp", "", indexer, filter, null);

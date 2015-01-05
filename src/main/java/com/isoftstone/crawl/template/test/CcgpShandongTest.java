@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.global.Constants;
@@ -34,15 +35,15 @@ public class CcgpShandongTest {
 		ParseResult parseResult = null;
 		templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=0301";
 		input = DownloadHtml.getHtml(templateUrl);
-		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		// parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
+		 parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=167523";
 		input = DownloadHtml.getHtml(templateUrl);
-		parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
-		//parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 	}
@@ -53,6 +54,11 @@ public class CcgpShandongTest {
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 		template.setState(Constants.UN_FETCH);
+		
+		HashMap<String, String> dictionary = new HashMap<String, String>();
+		dictionary.put("分类", "山东政府采购网");
+		dictionary.put("项目", "商机通");
+		template.setTags(dictionary);
 		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
@@ -80,6 +86,13 @@ public class CcgpShandongTest {
 		pagination.add(selector);
 		template.setPagination(pagination);
 
+		// html
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div:nth-child(3) > table > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > table:nth-child(2) > tbody", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("page_content", "", indexer, null, null);
+		news.add(selector);
+		
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();

@@ -40,7 +40,7 @@ public class CcgpGansuTest {
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
-		templateUrl = "http://www.ccgp-gansu.gov.cn/web/214/225941.html";
+		templateUrl = "http://www.ccgp-gansu.gov.cn/web/214/228481.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		 //parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
@@ -52,8 +52,8 @@ public class CcgpGansuTest {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		HashMap<String, String> dictionary = new HashMap<String, String>();
-		dictionary.put("行业", "财经");
-		dictionary.put("媒体", "XXXX");
+		dictionary.put("分类", "甘肃政府采购网");
+		dictionary.put("项目", "商机通");
 		String templateGuid = MD5Utils.MD5(templateUrl);
 		template.setTemplateGuid(templateGuid);
 		template.setTags(dictionary);
@@ -96,11 +96,11 @@ public class CcgpGansuTest {
 		template.setPagination(pagination);
 
 		
-		// html
+		// page_content
 		indexer = new SelectorIndexer();
 		selector = new Selector();
-		indexer.initJsoupIndexer("html", Constants.ATTRIBUTE_HTML);
-		selector.initFieldSelector("html", "", indexer, null, null);
+		indexer.initJsoupIndexer("body > table:nth-child(2) > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr > td > div", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("page_content", "", indexer, null, null);
 		news.add(selector);
 						
 		// title

@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.global.Constants;
@@ -47,6 +48,11 @@ public class CtaTest {
 		template.setTemplateGuid(templateGuid);
 		template.setState(Constants.UN_FETCH);
 		
+		HashMap<String, String> dictionary = new HashMap<String, String>();
+		dictionary.put("分类", "中国依托业协会");
+		dictionary.put("项目", "商机通");
+		template.setTags(dictionary);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -73,6 +79,13 @@ public class CtaTest {
 		pagination.add(selector);
 		template.setPagination(pagination);
 
+		// html
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("div#ziti", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("page_content", "", indexer, null, null);
+		news.add(selector);
+		
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();// body > div.table > div.newsListRight >
