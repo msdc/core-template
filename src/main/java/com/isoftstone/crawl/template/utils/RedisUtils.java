@@ -22,12 +22,13 @@ public class RedisUtils {
 			config.setMaxWaitMillis(1000 * 100);
 
 			config.setTestOnBorrow(true);
-
+		
 			String ip = Constants.REDIS_IP;
 			if (propert.getValue("template.redis.ip") != null)
 				ip = propert.getValue("template.redis.ip");
 
 			int port = Constants.REDIS_PORT;
+		
 			if (propert.getValue("template.redis.port") != null)
 				port = Integer.parseInt(propert.getValue("template.redis.port"));
 

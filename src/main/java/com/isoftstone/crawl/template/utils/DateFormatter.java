@@ -3,11 +3,6 @@ package com.isoftstone.crawl.template.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.alibaba.fastjson.JSON;
-import com.lj.util.string.StringHelper;
 
 /**
  * 
@@ -29,11 +24,6 @@ public class DateFormatter {
 	public static final String LONG = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})";
 	public static final String MIDDLE = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2})";
 	public static final String SHORT = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)";
-
-	private static Pattern pattern_hhmm = StringHelper.initPattern("天\\s*(?<hh>\\d{2}):(?<mm>\\d{2})");
-	private static Pattern pattern_mm = StringHelper.initPattern("(?<mm>\\d+).*?前");
-	private static Matcher matcher_hhmm, matcher_mm;
-	private static Calendar calendar = Calendar.getInstance();
 
 	public static String formatDate2Str(Date date, String format) {
 		try {
@@ -81,8 +71,7 @@ public class DateFormatter {
 	 */
 	public static Date formatDate(String date) {
 		try {
-			if(date!=null && date != "")
-			{
+			if (date != null && date != "") {
 				// 1、标准化
 				date = date.replaceAll("\\s+", " ").replaceAll("年|月|/", "-").replace("日", "").trim();
 				// 2、判断日期格式,将其统一
@@ -99,48 +88,6 @@ public class DateFormatter {
 			ex.printStackTrace();
 		}
 		return new Date();
-	}
-
-	public static Date format(String date, String format, String source) {
-		try {
-
-			calendar.setTime(new Date());
-			if (source == "网易微博") {
-				matcher_hhmm = pattern_hhmm.matcher(date);
-				matcher_mm = pattern_mm.matcher(date);
-				int hh = 0, mm = 0;
-				if (matcher_hhmm.find()) {
-					mm = Integer.parseInt(matcher_hhmm.group("mm"));
-					hh = Integer.parseInt(matcher_hhmm.group("hh"));
-				} else if (matcher_mm.find()) {
-					mm = Integer.parseInt(matcher_mm.group("mm"));
-				}
-
-				if (date.contains("今天")) {
-					calendar.set(calendar.MINUTE, mm);
-					calendar.set(calendar.HOUR_OF_DAY, hh);
-					return calendar.getTime();
-				} else if (date.contains("昨天")) {
-					calendar.set(calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) - 1);
-					calendar.set(calendar.MINUTE, mm);
-					calendar.set(calendar.HOUR_OF_DAY, hh);
-					return calendar.getTime();
-				} else if (date.contains("分钟前")) {
-					calendar.set(calendar.MINUTE, calendar.get(calendar.MINUTE) - mm);
-					return calendar.getTime();
-				} else if (date.contains("秒前")) {
-					calendar.set(calendar.SECOND, calendar.get(calendar.SECOND) - mm);
-					return calendar.getTime();
-				} else {
-					return DateFormatter.formatStr2Date(date, DateFormatter.YYYYMMDDHHMM);
-				}
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		return null;
 	}
 
 	/**

@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 
 * @ClassName: Property 
@@ -17,6 +20,7 @@ public class PropertiesUtils {
 	private static Properties props = null;
 	private static PropertiesUtils instance=null;
 	private static final String properties_fileName = "template.properties";
+	private static final Logger LOG = LoggerFactory.getLogger(PropertiesUtils.class);
 	
 	public static synchronized PropertiesUtils getInstance(String fileName){
 		if(instance==null){
@@ -45,27 +49,26 @@ public class PropertiesUtils {
 		try {
 			fileinputstream = new FileInputStream(fileName);
 		} catch (FileNotFoundException e1) {
-			System.err.println("InputStream 未找到"+fileName+"文件");
-			System.err.println(e1.getMessage());
+			LOG.info("InputStream 未找到"+fileName+"文件 :" + e1.getMessage());
 		}
 		if (fileinputstream == null) {
 			fileinputstream = PropertiesUtils.class.getClassLoader().getResourceAsStream(fileName);
-			System.err.println("InputStream 未找到"+fileName+"文件,改使用class.getResourceAsStream加载");
+			LOG.info("InputStream 未找到"+fileName+"文件,改使用class.getResourceAsStream加载");
 		}
 		if(fileinputstream!= null)
 		{
 			props = new Properties();
 			try {
 				props.load(fileinputstream);
-				System.err.println(fileinputstream + "加载成功");
+				LOG.info(fileName + "加载成功");
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.err.println("不能读取属性文件. " + "请确保"+fileName+"在CLASSPATH指定的路径中");
+				LOG.info("不能读取属性文件. " + "请确保"+fileName+"在CLASSPATH指定的路径中");
 				return;
 			}
 		}else
 		{
-			System.err.println(fileName +"未发现.");
+			LOG.info(fileName +"未发现.");
 		}
 		
 	}
