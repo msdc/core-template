@@ -97,7 +97,8 @@ public class JsoupIndexer implements IIndexerHandler {
 				} else if (Constants.ATTRIBUTE_HREF.equals(attr)) {
 					results.add(element.absUrl("href"));
 				} else if (Constants.ATTRIBUTE_HTML.equals(attr)) {
-					r = element.html();
+					//r = element.html();
+					r =element.outerHtml();
 					r = EncodeUtils.convertEncoding(r, Constants.DEFAULT_ENCODING);
 					results.add(r);
 				} else if (Constants.ATTRIBUTE_SRC.equals(attr)) {
