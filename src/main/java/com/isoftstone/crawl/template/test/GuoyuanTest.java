@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.isoftstone.crawl.template.global.Constants;
@@ -48,6 +49,11 @@ public class GuoyuanTest {
 		template.setTemplateGuid(templateGuid);
 		template.setState(Constants.UN_FETCH);
 		
+		HashMap<String, String> dictionary = new HashMap<String, String>();
+		dictionary.put("分类", "中国信托网");
+		dictionary.put("项目", "商机通");
+		template.setTags(dictionary);
+		
 		List<Selector> list = new ArrayList<Selector>();
 		List<Selector> news = new ArrayList<Selector>();
 		List<Selector> pagination = new ArrayList<Selector>();
@@ -58,8 +64,7 @@ public class GuoyuanTest {
 
 		// content outlink
 		indexer = new SelectorIndexer();
-		selector = new Selector();// body > div.main > div.main_left > div > div
-									// > dl:nth-child(1) > dt > a
+		selector = new Selector();
 		indexer.initJsoupIndexer("body > div.main > div.main_left > div > div > dl > dt > a", Constants.ATTRIBUTE_HREF);
 		selector.initContentSelector(indexer, null);
 		list.add(selector);
@@ -74,6 +79,13 @@ public class GuoyuanTest {
 		pagination.add(selector);
 		template.setPagination(pagination);
 
+		// html
+		indexer = new SelectorIndexer();
+		selector = new Selector();
+		indexer.initJsoupIndexer("body > div.main > div.main_left.p5 > div > div.cont_b > div.cont_c", Constants.ATTRIBUTE_HTML);
+		selector.initFieldSelector("page_content", "", indexer, null, null);
+		news.add(selector);
+		
 		// title
 		indexer = new SelectorIndexer();
 		selector = new Selector();
