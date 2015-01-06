@@ -23,7 +23,7 @@ public class CcgpShandongTest {
 		
 		// 1、生成模板
 		String nextPage = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?curpage=##&colcode=030";
-		String templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=030";
+		String templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?curpage=1&colcode=030";
 		TemplateResult templateResult = null;
 		for (int i = 1; i <= 5; i++) {
 			templateResult = ccgpTemplate(templateUrl + i, nextPage + i);
@@ -33,14 +33,14 @@ public class CcgpShandongTest {
 		String encoding = "gb2312";
 		byte[] input = null;
 		ParseResult parseResult = null;
-		templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?colcode=0301";
+		templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/channelall.jsp?curpage=1&colcode=0301";
 		input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
 		 parseResult = TemplateFactory.process(input, encoding, templateUrl);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
-		templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=167523";
+		templateUrl = "http://www.ccgp-shandong.gov.cn/fin_info/site/read.jsp?colcode=0301&id=171230";
 		input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		parseResult = TemplateFactory.process(input, encoding, templateUrl);
