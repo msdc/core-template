@@ -42,7 +42,7 @@ public class DateFormatter {
 	public static Date formatbyTimestamp(String timestamp, String format) {
 		try {
 			SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-			return formatStr2Date(dateFormat.format(new Date(Long.parseLong(timestamp) * 1000)), format);
+			return formatStr2Date(dateFormat.format(new Date(Long.parseLong(timestamp))), format);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -168,6 +168,7 @@ public class DateFormatter {
 	}
 
 	public static void main(String[] args) {
+		System.out.println(formatbyTimestamp("1420508701946",DateFormatter.YYYYMMDDHHMMSS));
 		System.out.println(formatDate("2014年10月10日 12:00:00"));
 		System.out.println(formatDate("2014/10/10 12:00:00"));
 		System.out.println(formatDate("2014-10-10     00:00   "));
