@@ -14,8 +14,6 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-			<!--<resource> <directory>libs</directory> <includes> <include>*.jar</include> 
-				</includes> </resource> -->
 		</resources>
 		<plugins>
 			<plugin>
