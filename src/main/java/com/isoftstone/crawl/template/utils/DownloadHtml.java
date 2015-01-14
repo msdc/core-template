@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,34 +22,40 @@ public class DownloadHtml {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(new String(getHtml("http://irm.cnstock.com/ivlist/index/yqjj/0")));
+		try {
+			String url = "http://www.ccgp-fujian.gov.cn/Article.cfm?id=352899&caidan=采购公告&caidan2=公开招标&level=province&yqgg=0";
+			System.out.println(getHtml(url, "utf-8"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// System.out.println(new
+		// String(getHtml("http://irm.cnstock.com/ivlist/index/yqjj/0")));
 	}
+
 	public static String getHtml(String url, String charset) {
 		String responseBody = "";
 		// 创建Get连接方法的实例
 		HttpMethod getMethod = null;
-		// 创建 HttpClient 的实例
-		HttpClient httpClient = new HttpClient();
-		// 创建Get连接方法的实例
-		getMethod = new GetMethod(url);
-		// 使用系统提供的默认的恢复策略
-		getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-				new DefaultHttpMethodRetryHandler());
-		// 设置 get 请求超时为 10秒
-		getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
-
 		try {
+			// 创建 HttpClient 的实例
+			HttpClient httpClient = new HttpClient();
+			// 创建Get连接方法的实例
+			// getMethod = new GetMethod(url);
+			getMethod = new GetMethod(EncodeUtils.formatUrl(url, ""));
+			// 使用系统提供的默认的恢复策略
+			getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+			// 设置 get 请求超时为 10秒
+			getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
 
 			// 执行getMethod
 			int status = httpClient.executeMethod(getMethod);
-			System.out.println("status:" + status);
+			// System.out.println("status:" + status);
 			// 连接返回的状态码
 			if (HttpStatus.SC_OK == status) {
-				System.out.println("Connection to " + getMethod.getURI()
-						+ " Success!");
+				System.out.println("Connection to " + getMethod.getURI() + " Success!");
 				// HTTP响应头部信息
-				Pattern pattern = Pattern
-						.compile("text/html;[\\s]*charset=(.*)");
+				Pattern pattern = Pattern.compile("text/html;[\\s]*charset=(.*)");
 				Header[] headers = getMethod.getResponseHeaders();
 				for (Header h : headers) {
 					if (h.getName().equalsIgnoreCase("Content-Type")) {
@@ -61,9 +68,8 @@ public class DownloadHtml {
 				}
 				// 获取到的内容
 				InputStream resStream = getMethod.getResponseBodyAsStream();
-				
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						resStream, charset));
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(resStream, charset));
 				StringBuffer resBuffer = new StringBuffer();
 				char[] chars = new char[4096];
 				int length = 0;
@@ -71,19 +77,19 @@ public class DownloadHtml {
 					resBuffer.append(chars, 0, length);
 				}
 				resStream.close();
-				
-				return resBuffer.toString();
-				
-				// StringBuilder 线程是不安全的
-//				StringBuilder builder = new StringBuilder();
-//				char[] chars = new char[4096];
-//				int length = 0;
-//				while (0 < (length = br.read(chars))) {
-//					builder.append(chars, 0, length);
-//				}
-//				return builder.toString();
-			}
 
+				// StringBuilder 线程是不安全的
+				// StringBuilder builder = new StringBuilder();
+				// char[] chars = new char[4096];
+				// int length = 0;
+				// while (0 < (length = br.read(chars))) {
+				// builder.append(chars, 0, length);
+				// }
+				// return builder.toString();
+				return resBuffer.toString();
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		} catch (URIException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -94,34 +100,35 @@ public class DownloadHtml {
 			// 释放连接
 			getMethod.releaseConnection();
 		}
-
 		return responseBody;
 	}
-	
+
 	public static byte[] getHtml(String url) {
 		// 创建Get连接方法的实例
 		HttpMethod getMethod = null;
-		// 创建 HttpClient 的实例
-		HttpClient httpClient = new HttpClient();
-		// 创建Get连接方法的实例
-		getMethod = new GetMethod(url);
-		// 使用系统提供的默认的恢复策略
-		getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-				new DefaultHttpMethodRetryHandler());
-		// 设置 get 请求超时为 10秒
-		getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
+
 		try {
+			getMethod = new GetMethod(EncodeUtils.formatUrl(url, ""));
+			// 创建 HttpClient 的实例
+			HttpClient httpClient = new HttpClient();
+			// 创建Get连接方法的实例
+			// getMethod = new GetMethod(url);
+			// 使用系统提供的默认的恢复策略
+			getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+			// 设置 get 请求超时为 10秒
+			getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
 			// 执行getMethod
 			int status = httpClient.executeMethod(getMethod);
 			System.out.println("status:" + status);
 			// 连接返回的状态码
 			if (HttpStatus.SC_OK == status) {
-				System.out.println("Connection to " + getMethod.getURI()
-						+ " Success!");
+				System.out.println("Connection to " + getMethod.getURI() + " Success!");
 				// 获取到的内容
 				InputStream in = getMethod.getResponseBodyAsStream();
 				return IOUtils.toByteArray(in);
 			}
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
 		} catch (URIException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
