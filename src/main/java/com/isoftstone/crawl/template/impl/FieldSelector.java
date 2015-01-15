@@ -92,6 +92,7 @@ public class FieldSelector implements ISelectorHandler {
 			parseResult.setResult(resultKey, field.toString());
 			return 1;
 		} else {
+			
 			String resultValue = selector.getValue();
 			if (!resultValue.isEmpty()) {
 				parseResult.setResult(resultKey, resultValue);

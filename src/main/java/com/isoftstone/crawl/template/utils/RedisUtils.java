@@ -15,12 +15,12 @@ public class RedisUtils {
 	public static JedisPool getPool() {
 		if (pool == null) {
 			JedisPoolConfig config = new JedisPoolConfig();
-			
+			config.setMaxTotal(1024);
+			//最大能够保持idel状态的对象数  
 			config.setMaxIdle(500);
-
-			config.setMaxIdle(5);
+			//当池内没有返回对象时，最大等待时间  
 			config.setMaxWaitMillis(1000 * 100);
-
+			//当调用borrow Object方法时，是否进行有效性检查  
 			config.setTestOnBorrow(true);
 		
 			String ip = Constants.REDIS_IP;

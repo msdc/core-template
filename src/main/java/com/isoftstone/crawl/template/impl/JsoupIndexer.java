@@ -53,8 +53,6 @@ public class JsoupIndexer implements IIndexerHandler {
 			if (value != null && !value.isEmpty()) {
 				value = EncodeUtils.convertEncoding(value,Constants.DEFAULT_ENCODING, encoding);
 				doc = org.jsoup.Jsoup.parse(in, encoding, url);
-				//System.out.println(doc);
-				
 				elements = doc.select(value);
 			} else {
 				LOG.error("JSOUP indexer defined error.");
@@ -83,8 +81,9 @@ public class JsoupIndexer implements IIndexerHandler {
 	 * @param encoding
 	 *            需要查询的网页的编码格式
 	 * @return 获取的元素集合
+	 * @throws UnsupportedEncodingException 
 	 */
-	private ArrayList<String> attributorHandler(org.jsoup.select.Elements elements, String encoding) {
+	private ArrayList<String> attributorHandler(org.jsoup.select.Elements elements, String encoding) throws UnsupportedEncodingException {
 		ArrayList<String> results = new ArrayList<String>();
 		if (elements != null) {
 			String r = null;
@@ -95,7 +94,7 @@ public class JsoupIndexer implements IIndexerHandler {
 					r = EncodeUtils.convertEncoding(r,Constants.DEFAULT_ENCODING);
 					results.add(r);
 				} else if (Constants.ATTRIBUTE_HREF.equals(attr)) {
-					results.add(element.absUrl("href"));
+						results.add(EncodeUtils.formatUrl(element.absUrl("href"), ""));
 				} else if (Constants.ATTRIBUTE_HTML.equals(attr)) {
 					//r = element.html();
 					r =element.outerHtml();
@@ -104,7 +103,7 @@ public class JsoupIndexer implements IIndexerHandler {
 				} else if (Constants.ATTRIBUTE_SRC.equals(attr)) {
 					results.add(element.absUrl("src"));
 				} else {
-					results.add(element.absUrl("href"));
+					results.add(EncodeUtils.formatUrl(element.absUrl("href"), ""));
 				}
 			}
 		}
