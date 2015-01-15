@@ -12,20 +12,30 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Administrator on 2015/1/14.
  */
+
 public class ReParseAndIndex {
     private static final Logger LOG = LoggerFactory.getLogger(PropertiesUtils.class);
+
     public static void main(String[] args) {
         PropertiesUtils property = PropertiesUtils.getInstance();
         List<String> segParseList = new ArrayList<String>();
         List<String> segIndexList = new ArrayList<String>();
+        List<String> segCrawlList = new ArrayList<String>();
         String rootPath = property.getValue("template.root.crawl.data.folder");
+        String rootCrawl = property.getValue("template.root.crawl.seeds.folder");
         File[] fis = new File(rootPath).listFiles();
+        File[] seedsFolder = new File(rootCrawl).listFiles();
+
+        for (File tpFile : seedsFolder) {
+            if (tpFile.isDirectory() == true && tpFile.getName().endsWith("_data") == false) {
+                segCrawlList.add(tpFile.getPath());
+            }
+        }
+
         for (File tpFile : fis) {
-            //File tpFile = fis[i];
             if (tpFile.isDirectory()) {
                 File[] secfis = tpFile.listFiles();
                 for (File sectpFile : secfis) {
-                    //File sectpFile = secfis[j];
                     if (sectpFile.isDirectory() && sectpFile.getName().equals(new String("segments"))) {
                         segParseList.add(sectpFile.getPath());
                         File[] thirdFile = sectpFile.listFiles();
@@ -48,12 +58,20 @@ public class ReParseAndIndex {
                                 }
                             });
                             for (int l = 0; l < finalFile.length; l++) {
-                                //removeDir(finalFile[l]);
+                                removeDir(finalFile[l]);
                             }
                         }
                     }
                 }
             }
+        }
+
+        for (String segs : segCrawlList) {
+            String[] tpStr = segs.split("/");
+            String secStr = tpStr[tpStr.length - 1].split("_") + "_data";
+            String tpStrCrawl = "bin/nutch crawl %s %s http://192.168.100.236:8983/solr/core0 3";
+            System.out.println(String.format(tpStrCrawl, segs, secStr));
+            LOG.info(String.format(tpStrCrawl, segs, secStr));
         }
         for (String segs : segParseList) {
             String tpStrParse = "bin/nutch parse %s";
@@ -62,8 +80,8 @@ public class ReParseAndIndex {
         }
         for (String segs : segIndexList) {
             String tpStrIndex = "bin/nutch solrindex http://192.168.100.236:8983/solr/core0 %s/crawldb -linkdb %s/linkdb -dir %s/segments";
-            System.out.println(String.format(tpStrIndex, segs,segs,segs));
-            LOG.info(String.format(tpStrIndex, segs,segs,segs));
+            System.out.println(String.format(tpStrIndex, segs, segs, segs));
+            LOG.info(String.format(tpStrIndex, segs, segs, segs));
         }
     }
 
