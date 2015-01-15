@@ -67,8 +67,8 @@ public class ReParseAndIndex {
         }
 
         for (String segs : segCrawlList) {
-            String[] tpStr = segs.split("/");
-            String secStr = tpStr[tpStr.length - 1].split("_") + "_data";
+            String[] tpStr = segs.split("\\\\");
+            String secStr = rootPath+"/"+tpStr[tpStr.length - 1].split("_")[0] + "_data";
             String tpStrCrawl = "bin/nutch crawl %s %s http://192.168.100.236:8983/solr/core0 3";
             System.out.println(String.format(tpStrCrawl, segs, secStr));
             LOG.info(String.format(tpStrCrawl, segs, secStr));
@@ -89,13 +89,13 @@ public class ReParseAndIndex {
 
         File[] files = dir.listFiles();
 
-        for (File file : files) {                  //遍历
-            if (file.isDirectory()) {                 //判断是否为文件夹？
-                removeDir(file);                       //递归
+        for (File file : files) {                  //閬嶅巻
+            if (file.isDirectory()) {                 //鍒ゆ柇鏄惁涓烘枃浠跺す锛�
+                removeDir(file);                       //閫掑綊
             } else
-                System.out.println(file + ":" + file.delete());  //如果不是文件夹，就删除。
+                System.out.println(file + ":" + file.delete());  //濡傛灉涓嶆槸鏂囦欢澶癸紝灏卞垹闄ゃ��
         }
-        System.out.println(dir + "----" + dir.delete());    //从最里层开始删除文件夹。
+        System.out.println(dir + "----" + dir.delete());    //浠庢渶閲屽眰寮�濮嬪垹闄ゆ枃浠跺す銆�
 
     }
 }
