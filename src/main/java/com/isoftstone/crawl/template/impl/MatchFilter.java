@@ -41,7 +41,7 @@ public class MatchFilter implements IFilterHandler {
 		StringBuilder result = new StringBuilder();
 		// value为匹配项，str为需要匹配的内容
 		if (str != null && !str.isEmpty() && value != null && !value.isEmpty()) {
-			Pattern p = Pattern.compile(value);
+			Pattern p = Pattern.compile(value, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 			Matcher m = p.matcher(str);
 			if (0 == m.groupCount()) {
 				while (m.find()) {
@@ -59,10 +59,10 @@ public class MatchFilter implements IFilterHandler {
 			return null;
 		}
 
-		// 如果未找到需要匹配的内容，则返回str的值
+		// 如果未找到需要匹配的内容，则返回""值
 		if (result.length() == 0) {
 			LOG.warn("Don't get the match data (" + value + ") from " + str + ".");
-			result.append(str);
+			result.append("");
 		}
 		return result.toString();
 	}
