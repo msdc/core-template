@@ -98,11 +98,13 @@ public class ReParseAndIndex {
         for (String segs : segParseList) {
             String tpStrParse = nutch_root+" parse %s";
             System.out.println(String.format(tpStrParse, segs));
+            excuteCmd(String.format(tpStrParse, segs));
             LOG.info(String.format(tpStrParse, segs));
         }
         for (String segs : segIndexList) {
             String tpStrIndex = nutch_root+" solrindex "+solr_index+" %s/crawldb -linkdb %s/linkdb -dir %s/segments";
             System.out.println(String.format(tpStrIndex, segs, segs, segs));
+            excuteCmd(String.format(tpStrIndex, segs, segs, segs));
             LOG.info(String.format(tpStrIndex, segs, segs, segs));
         }
     }
@@ -131,13 +133,13 @@ public class ReParseAndIndex {
 
         File[] files = dir.listFiles();
 
-        for (File file : files) {                  //閬嶅巻
-            if (file.isDirectory()) {                 //鍒ゆ柇鏄惁涓烘枃浠跺す锛�
-                removeDir(file);                       //閫掑綊
+        for (File file : files) {                  //闁秴宸�
+            if (file.isDirectory()) {                 //閸掋倖鏌囬弰顖氭儊娑撶儤鏋冩禒璺恒仚閿涳拷
+                removeDir(file);                       //闁帒缍�
             } else
-                System.out.println(file + ":" + file.delete());  //濡傛灉涓嶆槸鏂囦欢澶癸紝灏卞垹闄ゃ��
+                System.out.println(file + ":" + file.delete());  //婵″倹鐏夋稉宥嗘Ц閺傚洣娆㈡径鐧哥礉鐏忓崬鍨归梽銈冿拷锟�
         }
-        System.out.println(dir + "----" + dir.delete());    //浠庢渶閲屽眰寮�濮嬪垹闄ゆ枃浠跺す銆�
+        System.out.println(dir + "----" + dir.delete());    //娴犲孩娓堕柌灞界湴瀵拷婵鍨归梽銈嗘瀮娴犺泛銇欓妴锟�
 
     }
 }
