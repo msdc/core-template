@@ -1,8 +1,10 @@
 package com.isoftstone.crawl.template.test;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.text.SimpleDateFormat;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +105,26 @@ public class ReParseAndIndex {
             System.out.println(String.format(tpStrIndex, segs, segs, segs));
             LOG.info(String.format(tpStrIndex, segs, segs, segs));
         }
+    }
+    
+    public static void excuteCmd(String cmd){
+    	 try {  
+             Runtime rt = Runtime.getRuntime(); 
+             Process proc = rt.exec(cmd);  
+             InputStream stdin = proc.getInputStream();  
+             InputStreamReader isr = new InputStreamReader(stdin);  
+             BufferedReader br = new BufferedReader(isr);  
+             String line = null;  
+             System.out.println("<output></output>");  
+             while ((line = br.readLine()) != null)  
+                 System.out.println(line);  
+             System.out.println("");  
+             int exitVal = proc.waitFor();  
+             System.out.println("Process exitValue: " + exitVal);  
+         } catch (Throwable t) {  
+             t.printStackTrace();  
+         }  
+    	
     }
 
     public static void removeDir(File dir) {
