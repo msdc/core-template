@@ -59,10 +59,10 @@ public class ReParseAndIndex {
                 File[] secfis = tpFile.listFiles();
                 for (File sectpFile : secfis) {
                     if (sectpFile.isDirectory() && sectpFile.getName().equals(new String("segments"))) {
-                        segParseList.add(sectpFile.getPath());
+                    	segIndexList.add(sectpFile.getPath());
                         File[] thirdFile = sectpFile.listFiles();
                         for (File thirdtpFile : thirdFile) {
-                            segIndexList.add(thirdtpFile.getPath());
+                            segParseList.add(thirdtpFile.getPath());
                             File[] finalFile = thirdtpFile.listFiles(new FileFilter() {
                                 @Override
                                 public boolean accept(File pathname) {
@@ -95,16 +95,12 @@ public class ReParseAndIndex {
 //            System.out.println(String.format(tpStrCrawl, segs, secStr));
 //            LOG.info(String.format(tpStrCrawl, segs, secStr));
 //        }
-//        for (String segs : segParseList) {
-//            String tpStrParse = nutch_root+" parse %s";
-//            System.out.println(String.format(tpStrParse, segs));
-//            LOG.info(String.format(tpStrParse, segs));
-//        }
-        for (String segs : segIndexList) {
-        	String tpStrParse = nutch_root+" parse %s";
+        for (String segs : segParseList) {
+            String tpStrParse = nutch_root+" parse %s";
             System.out.println(String.format(tpStrParse, segs));
             LOG.info(String.format(tpStrParse, segs));
-        	
+        }
+        for (String segs : segIndexList) {
             String tpStrIndex = nutch_root+" solrindex "+solr_index+" %s/crawldb -linkdb %s/linkdb -dir %s/segments";
             System.out.println(String.format(tpStrIndex, segs, segs, segs));
             LOG.info(String.format(tpStrIndex, segs, segs, segs));
