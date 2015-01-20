@@ -47,16 +47,16 @@ public class TestRedisUtils {
 		String templateGuid = MD5Utils.MD5(url);
 		String filePath = "D:/Develop/resource/标讯库搜索_中国政府采购�?1.html";
 		TemplateResult t = createPageForCCGP(templateGuid);
-		RedisUtils.setTemplateResult(t, templateGuid);
+		RedisUtils.setTemplateResult(t, templateGuid,0);
 
 		byte[] input = readTextFile(filePath, encoding);
-		ParseResult r = TemplateFactory.process(input, encoding, url);
+		ParseResult r = TemplateFactory.process(input, encoding, url,0);
 		System.out.println(r.toString());
 
 		url = "http://www.ccgp.gov.cn/cggg/zygg/gkzb/201411/t20141103_4689829.htm";
 		filePath = "D:/Develop/resource/中国医学科学院阜外心�?管病医院（中国医学科学院心血管病研究�?）新大楼�?办费项目第四十五次采购招标公�?.html";
 		input = readTextFile(filePath, encoding);
-		r = TemplateFactory.process(input, encoding, url);
+		r = TemplateFactory.process(input, encoding, url,0);
 		System.out.println(r.toString());
 	}
 
@@ -135,14 +135,14 @@ public class TestRedisUtils {
 		news.add(selector);
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,0);
 
 		String filePath = "e:/test2.html";
 		String encoding = "GB2312";
 
 		byte[] input = readTextFile(filePath, encoding);
 		
-		ParseResult r = TemplateFactory.process(input, encoding, seedUrl);
+		ParseResult r = TemplateFactory.process(input, encoding, seedUrl,0);
 		System.out.println(r.toString());
 	}
 

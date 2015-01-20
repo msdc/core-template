@@ -20,28 +20,27 @@ public class CfcpnTest {
 
 	public static void main(String[] args) {
 		// 金采网
-		
 		// 1、生成模板
 		String templateUrl = "http://www.cfcpn.com/front/notice/advsearch_list.jsp?offset=0";
-		TemplateResult templateResult = cfcpnTemplate(templateUrl);
+		TemplateResult templateResult = cfcpnTemplate(templateUrl,Constants.DBINDEX);
 		
 		// 2、测试列表页
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		ParseResult parseResult = null;
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		 parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		 parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://www.cfcpn.com/front/notice/show_news.jsp?op=browse&f_charge=0&hyid=0&rec_id=242111";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gb2312";
-		 parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		 parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		 //parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 	}
-	public static TemplateResult cfcpnTemplate(String templateUrl) {
+	public static TemplateResult cfcpnTemplate(String templateUrl,int dbindex) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateGuid = MD5Utils.MD5(templateUrl);
@@ -118,7 +117,7 @@ public class CfcpnTest {
 
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,dbindex);
 		return template;
 
 	}

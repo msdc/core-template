@@ -29,26 +29,26 @@ public class CcgpGansuTest {
 
 		for (int i = 0; i < number.length; i++) {
 			int n = number[i];
-			templateResult = ccgpGansuTemplate(templateUrl + n, nextPage + n);
+			templateResult = ccgpGansuTemplate(templateUrl + n, nextPage + n,Constants.DBINDEX);
 			System.out.println(templateResult);
 		}
 		// 2、测试列表页
 		templateUrl = "http://www.ccgp-gansu.gov.cn/votoonadmin/article/classlist.jsp?pn=1&class_id=214";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://www.ccgp-gansu.gov.cn/web/214/228481.html";
 		input = DownloadHtml.getHtml(templateUrl);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		 //parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 
 	}
 
-	public static TemplateResult ccgpGansuTemplate(String templateUrl, String nextPageUrl) {
+	public static TemplateResult ccgpGansuTemplate(String templateUrl, String nextPageUrl,int dbindex) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		HashMap<String, String> dictionary = new HashMap<String, String>();
@@ -118,7 +118,7 @@ public class CcgpGansuTest {
 		news.add(selector);
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,dbindex);
 		return template;
 
 	}

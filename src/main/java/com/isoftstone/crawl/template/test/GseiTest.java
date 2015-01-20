@@ -28,7 +28,7 @@ public class GseiTest {
 		TemplateResult templateResult = null;
 		for(String s : seeds)
 		{
-			templateResult = gseiTemplate(s);
+			templateResult = gseiTemplate(s,Constants.DBINDEX);
 		}
 		// 2、测试列表页
 		String templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg/index.html";
@@ -37,7 +37,7 @@ public class GseiTest {
 		ParseResult parseResult = null;
 		// parseResult = TemplateFactory.localProcess(input, encoding,
 		// templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 
@@ -45,13 +45,13 @@ public class GseiTest {
 		templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg_2015-01-05/20477985.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gb2312";
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		// parseResult = TemplateFactory.localProcess(input, encoding,
 		// templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 	}
 
-	public static TemplateResult gseiTemplate(String templateUrl) {
+	public static TemplateResult gseiTemplate(String templateUrl,int dbindex) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		
@@ -121,7 +121,7 @@ public class GseiTest {
 
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,dbindex);
 		return template;
 
 	}

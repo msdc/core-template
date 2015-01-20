@@ -21,26 +21,26 @@ public class CnstockTest {
 	public static void main(String[] args) {
 		// 1、生成模板
 		String templateUrl = "http://irm.cnstock.com/ivlist/index/yqjj/0";
-		TemplateResult templateResult = cnstockTemplate(templateUrl);
+		TemplateResult templateResult = cnstockTemplate(templateUrl,Constants.DBINDEX);
 		// 2、测试列表页
 		ParseResult parseResult = null;
 		String encoding = "utf-8";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://irm.cnstock.com/company/scp_tzzgx/tgx_yqjj/201411/3250507.htm";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gbk";
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl,templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 	}
 
-	public static TemplateResult cnstockTemplate(String templateUrl) {
+	public static TemplateResult cnstockTemplate(String templateUrl,int dbindex) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateGuid = MD5Utils.MD5(templateUrl);
@@ -107,7 +107,7 @@ public class CnstockTest {
 		news.add(selector);
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,dbindex);
 		return template;
 	}
 }

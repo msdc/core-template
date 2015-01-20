@@ -9,7 +9,7 @@ public class RemoveTemplateByGuid {
 		String url="http://www.zhongguoxintuo.com/xtxw/5971.html";
 		String guid =MD5Utils.MD5(url);
 		System.out.println(guid);
-		System.out.println(RedisUtils.remove(guid));
+		System.out.println(RedisUtils.remove(guid,0));
 	}
 
 }

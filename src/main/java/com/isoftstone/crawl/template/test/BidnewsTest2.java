@@ -21,12 +21,11 @@ public class BidnewsTest2 {
 
 	public static void main(String[] args) {
 		// 全国招标信息网
-		
 		// 1、生成模板
 		String templateUrl = "http://www.bidnews.cn/news/dianligongsi-38291.html";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		
-		TemplateResult templateResult = bidbewsTemplate(templateUrl,input);
+		TemplateResult templateResult = bidbewsTemplate(templateUrl,input,Constants.DBINDEX);
 		// 2、测试列表页
 		
 		String encoding = "utf-8";
@@ -34,7 +33,7 @@ public class BidnewsTest2 {
 		ParseResult parseResult = null;
 		// parseResult = TemplateFactory.localProcess(input, encoding,
 		// templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 		//System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println("List parseResult:"+parseResult.toJSON());
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
@@ -43,13 +42,13 @@ public class BidnewsTest2 {
 		templateUrl = "http://www.bidnews.cn/news/zhaobiao-219300.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "utf-8";
-		parseResult = TemplateFactory.process(input, encoding, templateUrl);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
 //		 parseResult = TemplateFactory.localProcess(input, encoding,
 //		 templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println("News parseResult:"+parseResult.toJSON());
 	}
 
-	public static TemplateResult bidbewsTemplate(String templateUrl,byte[] input) {
+	public static TemplateResult bidbewsTemplate(String templateUrl,byte[] input,int dbindex) {
 		HashMap<String, String> dictionary = new HashMap<String, String>();
 		TemplateResult template = new TemplateResult();
 
@@ -120,7 +119,7 @@ public class BidnewsTest2 {
 
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,dbindex);
 		return template;
 
 	}

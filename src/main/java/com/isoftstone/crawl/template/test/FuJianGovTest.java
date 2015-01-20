@@ -17,6 +17,7 @@ import com.isoftstone.crawl.template.utils.RedisUtils;
 
 public class FuJianGovTest {
 	public static void main(String[] args) {
+		
 		//生成解析模板
 		String url = "http://www.ccgp-fujian.gov.cn/secpag.cfm?caidan=%B2%C9%B9%BA%B9%AB%B8%E6&caidan2=%B9%AB%BF%AA%D5%D0%B1%EA&level=province&area=&yqgg=0";
 		String encoding = "gb2312";
@@ -26,14 +27,14 @@ public class FuJianGovTest {
 		
 		//解析列表页
 		ParseResult parseResult = null;
-		parseResult = TemplateFactory.process(input, encoding, url);		
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DBINDEX);		
 		System.out.println(parseResult.toJSON());
 		
 		//解析内容页
 		url = "http://www.ccgp-fujian.gov.cn/Article.cfm?id=346870&caidan=%B2%C9%B9%BA%B9%AB%B8%E6&caidan2=%B9%AB%BF%AA%D5%D0%B1%EA&level=province&yqgg=0";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
-		parseResult = TemplateFactory.process(input, encoding, url);
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DBINDEX);
 		System.out.println(parseResult.toJSON());
 	}
 
@@ -115,7 +116,7 @@ public class FuJianGovTest {
 		news.add(selector);
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,0);
 		return template;
 	}
 

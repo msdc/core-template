@@ -19,29 +19,28 @@ import com.isoftstone.crawl.template.utils.RedisUtils;
 public class CsTest {
 
 	public static void main(String[] args) {
-
 		// 1、生成模板
 		String url = "http://www.cs.com.cn/xwzx/hg/index.html";
-		TemplateResult templateResult = cSTemplate(url);
+		TemplateResult templateResult = cSTemplate(url,Constants.DBINDEX);
 		// 2、测试列表页
 		ParseResult parseResult = null;
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
 		// parseResult = TemplateFactory.localProcess(input, encoding,url,
 		// templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, url);
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DBINDEX);
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
-		url = "http://www.cs.com.cn/xwzx/hg/201411/t20141125_4572144.html";
+		url = "http://www.cs.com.cn/xwzx/hg/201501/t20150115_4619103.html";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
-		parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_NEWS);
-		// parseResult = TemplateFactory.process(input, encoding, url);
+		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_NEWS);
+		 parseResult = TemplateFactory.process(input, encoding, url,Constants.DBINDEX);
 		System.out.println(parseResult.toJSON());
 
 	}
 
-	public static TemplateResult cSTemplate(String templateUrl) {
+	public static TemplateResult cSTemplate(String templateUrl,int dbindex) {
 		TemplateResult template = new TemplateResult();
 		template.setType(Constants.TEMPLATE_LIST);
 		String templateGuid = MD5Utils.MD5(templateUrl);
@@ -108,7 +107,7 @@ public class CsTest {
 		news.add(selector);
 		template.setNews(news);
 
-		RedisUtils.setTemplateResult(template, templateGuid);
+		RedisUtils.setTemplateResult(template, templateGuid,dbindex);
 		return template;
 	}
 }
