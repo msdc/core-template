@@ -1,12 +1,12 @@
 package com.isoftstone.crawl.template.global;
 
-import com.isoftstone.crawl.template.utils.PropertiesUtils;
 
 public class Constants {
 	// Redis的设置，如IP及PORT
 	public static String REDIS_IP = "127.0.0.1";
 	public static int REDIS_PORT = 6379;
 
+	public static int DBINDEX =0;
 	// 用于ParseResult，content_outlink中记录了当前列表页面中内容连接的数量，具体的内容页的URL保存在content_outlink_i中
 	public static final String CONTENT_OUTLINK = "content_outlink";
 	public static final String LABEL_LIST = "label_list";
@@ -20,6 +20,8 @@ public class Constants {
 	public static final String PAGINATION_TYPE_PAGENUMBER_INTERVAL = "interval";
 	// 获取分页的记录数
 	public static final String PAGINATION_TYPE_PAGERECORD = "record";
+	// 自定义分页
+	public static final String PAGINATION_TYPE_CUSTOM = "custom";
 	// 默认返回最大页数
 	public static final int MAX_PAGE_COUNT =  Integer.MAX_VALUE;
 	// 用于ParseReuslt，新闻页的URL
