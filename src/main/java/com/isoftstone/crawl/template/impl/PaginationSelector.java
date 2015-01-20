@@ -147,7 +147,7 @@ public class PaginationSelector implements ISelectorHandler {
 		} else if (Constants.PAGINATION_TYPE_CUSTOM.equals(type)){
 			int start = Integer.parseInt(startNumber);//开始页码数
 			int pageNumber =Integer.parseInt(endNumber);//总页码数
-			for (int i = start; i < pageNumber; i++) {
+			for (int i = start; i <= pageNumber; i++) {
 				parseResult.setResult(Constants.PAGINATION_OUTLINK+ "_" + i,pagitationUrl.replace(current, String.valueOf(i*interval)));
 			}
 			return 1;
