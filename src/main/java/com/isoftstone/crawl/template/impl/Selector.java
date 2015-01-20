@@ -456,11 +456,25 @@ public class Selector extends BaseSelector {
 		this.setFormat(format);
 	}
 
-	// 自定义分页
-	public void initPagitationSelector(String type, String current, String pagitationUrl, String start, String end, int interval) {
+	/**
+	 * 自定义分页
+	* @Title: initPagitationSelector 
+	* @Description: TODO(这里用一句话描述这个方法的作用) 
+	* @param type  列表类别
+	* @param current  模板url中要替换的字符
+	* @param pagitationUrl  模板url
+	* @param start 分页开始页码
+	* @param end 分页结束页码
+	* @param interval  步进值 
+	* @return void    返回类型 
+	* @author lj
+	* @throws
+	 */
+	public void initPagitationSelector(String type, String current,String replaceTo, String pagitationUrl, String start, String end, int interval) {
 		this.setType(Constants.SELECTOR_PAGITATION);
 		this.setPagitationType(type);
 		this.setCurrent(current);
+		this.setReplaceTo(replaceTo);
 		this.setPagitationUrl(pagitationUrl);
 		this.setStartNumber(start);
 		this.setLastNumber(end);
