@@ -29,6 +29,7 @@ public class PaginationSelector implements ISelectorHandler {
 		String replaceTo = this.selector.getReplaceTo();
 		String pagitationUrl = this.selector.getPagitationUrl();
 		String startNumber = this.selector.getStartNumber();
+		String endNumber = this.selector.getLastNumber();
 		int interval = this.selector.getInterval();
 		
 		if (Constants.PAGINATION_TYPE_PAGE.equals(type)) {
@@ -143,11 +144,16 @@ public class PaginationSelector implements ISelectorHandler {
 				LOG.error("Pagitation selector defined error.");
 				return -1;
 			}
-		} else {
+		} else if (Constants.PAGINATION_TYPE_CUSTOM.equals(type)){
+			int start = Integer.parseInt(startNumber);//开始页码数
+			int pageNumber =Integer.parseInt(endNumber);//总页码数
+			for (int i = start; i < pageNumber; i++) {
+				parseResult.setResult(Constants.PAGINATION_OUTLINK+ "_" + i,pagitationUrl.replace(current, String.valueOf(i*interval)));
+			}
+			return 1;
+		}else
+		{
 			return -1;
 		}
 	}
-	
-	//分页链接排序
-	
 }

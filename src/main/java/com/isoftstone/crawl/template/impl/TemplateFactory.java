@@ -13,16 +13,17 @@ import com.isoftstone.crawl.template.utils.MD5Utils;
 import com.isoftstone.crawl.template.utils.RedisUtils;
 
 public class TemplateFactory {
-	private static final Logger LOG =LoggerFactory.getLogger(TemplateFactory.class);
-	public static ParseResult process(byte[] input, String encoding, String url) {
+	private static final Logger LOG = LoggerFactory.getLogger(TemplateFactory.class);
+
+	public static ParseResult process(byte[] input, String encoding, String url, int dbindex) {
 		String guid = MD5Utils.MD5(url);
-		//System.out.println("guid:" + guid);
+		// System.out.println("guid:" + guid);
 		List<Selector> selectors = null;
 		ParseResult parseResult = null;
-		TemplateResult templateResult = RedisUtils.getTemplateResult(guid);
+		TemplateResult templateResult = RedisUtils.getTemplateResult(guid, dbindex);
 		if (templateResult != null) {
 			String templateGuid = templateResult.getTemplateGuid();// 获取模板的GUID
-			//System.out.println("templateGuid:" + guid);
+			// System.out.println("templateGuid:" + guid);
 			String type = templateResult.getType();// 获取当前页面的类型
 			if (Constants.TEMPLATE_LIST.equals(type)) {// 列表页
 				selectors = templateResult.getList();
@@ -31,12 +32,12 @@ public class TemplateFactory {
 				}
 				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_PAGITATION.equals(type)) {// 分页
-				selectors = RedisUtils.getTemplateResult(templateGuid).getList();
+				selectors = RedisUtils.getTemplateResult(templateGuid, dbindex).getList();
 				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_NEWS.equals(type)) {// 内容页
-				selectors = RedisUtils.getTemplateResult(templateGuid).getNews();// 获取新闻页模板
+				selectors = RedisUtils.getTemplateResult(templateGuid, dbindex).getNews();// 获取新闻页模板
 				String parseResultGuid = templateResult.getParseResultGuid(); // 获取中间结果
-				parseResult = RedisUtils.getParseResult(parseResultGuid);
+				parseResult = RedisUtils.getParseResult(parseResultGuid, dbindex);
 				if (templateResult.getTags() != null) {
 					parseResult.setResult(Constants.TEMPLATE_STATIC, templateResult.getTags().toString());
 				}
@@ -60,13 +61,12 @@ public class TemplateFactory {
 			}
 			if (flag != -1) {
 				if (Constants.TEMPLATE_LIST.equals(type)) {
-					saveOutlinkParseResultToRedis(parseResult, templateGuid);
+					saveOutlinkParseResultToRedis(parseResult, templateGuid,dbindex);
 				} else if (Constants.TEMPLATE_NEWS.equals(type)) {
-					 //RedisUtils.remove(templateResult.getParseResultGuid());
+					RedisUtils.remove(templateResult.getParseResultGuid(), dbindex);
 				}
 			}
-		}else
-		{
+		} else {
 			LOG.error("This page " + url + " ， not found the Template.");
 		}
 		return parseResult;
@@ -181,9 +181,9 @@ public class TemplateFactory {
 		return null;
 	}
 
-	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid) {
+	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid,int dbindex) {
 		HashMap<String, String> hash = parseResult.getResult();
-		HashMap<String, String> tags = RedisUtils.getTemplateResult(templateGuid).getTags();
+		HashMap<String, String> tags = RedisUtils.getTemplateResult(templateGuid,dbindex).getTags();
 		String contents = null;
 		if (hash.keySet().contains(Constants.CONTENT_OUTLINK)) {
 			contents = hash.get(Constants.CONTENT_OUTLINK);
@@ -218,8 +218,8 @@ public class TemplateFactory {
 								r.setResult(key, value);
 							}
 						}
-						RedisUtils.setParseResult(r, parseResultGuid);
-						RedisUtils.setTemplateResult(t, guid);
+						RedisUtils.setParseResult(r, parseResultGuid,dbindex);
+						RedisUtils.setTemplateResult(t, guid,dbindex);
 					}
 				}
 			} else {
@@ -236,8 +236,8 @@ public class TemplateFactory {
 						t.setParseResultGuid(parseResultGuid);
 						ParseResult r = new ParseResult();
 						r.setResult(Constants.ARTICLE_URL, outlink);
-						RedisUtils.setParseResult(r, parseResultGuid);
-						RedisUtils.setTemplateResult(t, guid);
+						RedisUtils.setParseResult(r, parseResultGuid,dbindex);
+						RedisUtils.setTemplateResult(t, guid,dbindex);
 					}
 				}
 			}
@@ -249,7 +249,7 @@ public class TemplateFactory {
 		int pagitationLength = 0;
 		if (pagitations != null && !pagitations.isEmpty()) {
 			pagitationLength = Integer.parseInt(pagitations);
-			TemplateResult rootTemplate = RedisUtils.getTemplateResult(templateGuid);
+			TemplateResult rootTemplate = RedisUtils.getTemplateResult(templateGuid,dbindex);
 			for (int i = 0; i < pagitationLength; i++) {
 				String outlink = hash.get(Constants.PAGINATION_OUTLINK + "_" + i);
 				if (outlink != null && !outlink.isEmpty()) {
@@ -260,7 +260,7 @@ public class TemplateFactory {
 					t.setState(Constants.UN_FETCH);
 					t.setList(rootTemplate.getList());
 					t.setTemplateGuid(templateGuid);
-					RedisUtils.setTemplateResult(t, guid);
+					RedisUtils.setTemplateResult(t, guid,dbindex);
 				}
 			}
 		}

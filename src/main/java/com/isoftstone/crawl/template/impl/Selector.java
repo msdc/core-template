@@ -123,7 +123,7 @@ public class Selector extends BaseSelector {
 	public void setRecordNumber(String recordNumber) {
 		this.recordNumber = recordNumber;
 	}
-	
+
 	public int getInterval() {
 		return interval;
 	}
@@ -131,7 +131,7 @@ public class Selector extends BaseSelector {
 	public void setInterval(int interval) {
 		this.interval = interval;
 	}
-	
+
 	/**
 	 * 获取类别属性，用于说明当前拾取器类型，如content|field|pagitation|label
 	 * content，用于获取页面中的新闻页的URL列表 pagitation，用于获取页面中的分页的URL列表
@@ -331,8 +331,7 @@ public class Selector extends BaseSelector {
 	 *            当前页面对应的模板信息以及获取到的数据结果
 	 * @return 查询状态
 	 */
-	public int process(byte[] input, String encoding, String url,
-			ParseResult parseResult) {
+	public int process(byte[] input, String encoding, String url, ParseResult parseResult) {
 		if (!this.getType().isEmpty()) {
 			if (Constants.SELECTOR_FEILD.equals(this.getType())) {
 				this.selector = new FieldSelector(this);
@@ -359,8 +358,7 @@ public class Selector extends BaseSelector {
 	 * @param labels
 	 *            标签拾取器集合
 	 */
-	public void initContentSelector(List<SelectorIndexer> indexers,
-			List<Selector> labels) {
+	public void initContentSelector(List<SelectorIndexer> indexers, List<Selector> labels) {
 		this.setType(Constants.SELECTOR_CONTENT);
 		this.setIndexers(indexers);
 		this.setLabels(labels);
@@ -400,10 +398,7 @@ public class Selector extends BaseSelector {
 	 * @param filters
 	 *            过滤器集合
 	 */
-	public void initPagitationSelector(String type, String current,
-			String replaceTo, String pagitationUrl, String start,
-			String records, List<SelectorIndexer> indexers,
-			List<SelectorFilter> filters) {
+	public void initPagitationSelector(String type, String current, String replaceTo, String pagitationUrl, String start, String records, List<SelectorIndexer> indexers, List<SelectorFilter> filters) {
 		this.setType(Constants.SELECTOR_PAGITATION);
 		this.setPagitationType(type);
 		this.setCurrent(current);
@@ -434,10 +429,7 @@ public class Selector extends BaseSelector {
 	 * @param filter
 	 *            过滤器
 	 */
-	public void initPagitationSelector(String type, String current,
-			String replaceTo, String pagitationUrl, String start,
-			String records,SelectorIndexer indexer, SelectorFilter filter,
-			SelectorFormat format) {
+	public void initPagitationSelector(String type, String current, String replaceTo, String pagitationUrl, String start, String records, SelectorIndexer indexer, SelectorFilter filter, SelectorFormat format) {
 		this.setType(Constants.SELECTOR_PAGITATION);
 		this.setPagitationType(type);
 		this.setCurrent(current);
@@ -449,11 +441,8 @@ public class Selector extends BaseSelector {
 		this.setFilter(filter);
 		this.setFormat(format);
 	}
-	
-	public void initPagitationSelector(String type, String current,
-			String replaceTo, String pagitationUrl, String start,
-			String records,int interval, SelectorIndexer indexer, SelectorFilter filter,
-			SelectorFormat format) {
+
+	public void initPagitationSelector(String type, String current, String replaceTo, String pagitationUrl, String start, String records, int interval, SelectorIndexer indexer, SelectorFilter filter, SelectorFormat format) {
 		this.setType(Constants.SELECTOR_PAGITATION);
 		this.setPagitationType(type);
 		this.setCurrent(current);
@@ -465,6 +454,17 @@ public class Selector extends BaseSelector {
 		this.setIndexer(indexer);
 		this.setFilter(filter);
 		this.setFormat(format);
+	}
+
+	// 自定义分页
+	public void initPagitationSelector(String type, String current, String pagitationUrl, String start, String end, int interval) {
+		this.setType(Constants.SELECTOR_PAGITATION);
+		this.setPagitationType(type);
+		this.setCurrent(current);
+		this.setPagitationUrl(pagitationUrl);
+		this.setStartNumber(start);
+		this.setLastNumber(end);
+		this.setInterval(interval);
 	}
 
 	/**
@@ -481,9 +481,7 @@ public class Selector extends BaseSelector {
 	 * @param formats
 	 *            格式化器
 	 */
-	public void initFieldSelector(String name, String value,
-			List<SelectorIndexer> indexers, List<SelectorFilter> filters,
-			List<SelectorFormat> formats) {
+	public void initFieldSelector(String name, String value, List<SelectorIndexer> indexers, List<SelectorFilter> filters, List<SelectorFormat> formats) {
 		this.setType(Constants.SELECTOR_FEILD);
 		this.setName(name);
 		this.setValue(value);
@@ -506,9 +504,7 @@ public class Selector extends BaseSelector {
 	 * @param formats
 	 *            格式化器
 	 */
-	public void initFieldSelector(String name, String value,
-			SelectorIndexer indexer, SelectorFilter filter,
-			SelectorFormat format) {
+	public void initFieldSelector(String name, String value, SelectorIndexer indexer, SelectorFilter filter, SelectorFormat format) {
 		this.setType(Constants.SELECTOR_FEILD);
 		this.setName(name);
 		this.setValue(value);
@@ -531,9 +527,7 @@ public class Selector extends BaseSelector {
 	 * @param formats
 	 *            格式化器集合
 	 */
-	public void initLabelSelector(String name, String value,
-			List<SelectorIndexer> indexers, List<SelectorFilter> filters,
-			List<SelectorFormat> formats) {
+	public void initLabelSelector(String name, String value, List<SelectorIndexer> indexers, List<SelectorFilter> filters, List<SelectorFormat> formats) {
 		this.setType(Constants.SELECTOR_LABEL);
 		this.setName(name);
 		this.setValue(value);
@@ -556,9 +550,7 @@ public class Selector extends BaseSelector {
 	 * @param format
 	 *            格式化器
 	 */
-	public void initLabelSelector(String name, String value,
-			SelectorIndexer indexer, SelectorFilter filter,
-			SelectorFormat format) {
+	public void initLabelSelector(String name, String value, SelectorIndexer indexer, SelectorFilter filter, SelectorFormat format) {
 		this.setType(Constants.SELECTOR_LABEL);
 		this.setName(name);
 		this.setValue(value);
