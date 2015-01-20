@@ -33,8 +33,11 @@ public class ReParseAndIndex {
     		System.out.println("ParseAndIndex: data_folder: " + data_folder);
     		System.out.println("ParseAndIndex: solr_index: " + solr_index);
 		}
-    	
-        //PropertiesUtils property = PropertiesUtils.getInstance();
+    	reParseAndIndex(nutch_root,data_folder,solr_index);
+    }
+    
+    public static void reParseAndIndex(String nutch_root,String data_folder,String solr_index){
+    	        //PropertiesUtils property = PropertiesUtils.getInstance();
         List<String> segParseList = new ArrayList<String>();
         List<String> segIndexList = new ArrayList<String>();
 
@@ -59,7 +62,9 @@ public class ReParseAndIndex {
                 File[] secfis = tpFile.listFiles();
                 for (File sectpFile : secfis) {
                     if (sectpFile.isDirectory() && sectpFile.getName().equals(new String("segments"))) {
-                    	segIndexList.add(sectpFile.getPath());
+                    	String tpindexPath=sectpFile.getPath();
+                    	tpindexPath=tpindexPath.substring(0,tpindexPath.indexOf(new String("segments")));
+                    	segIndexList.add(tpindexPath);
                         File[] thirdFile = sectpFile.listFiles();
                         for (File thirdtpFile : thirdFile) {
                             segParseList.add(thirdtpFile.getPath());
