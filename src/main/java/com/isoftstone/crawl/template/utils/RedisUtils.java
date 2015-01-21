@@ -43,7 +43,7 @@ public class RedisUtils {
 		}
 	}
 
-/*	public static TemplateResult getTemplateResult(String guid) {
+	public static TemplateResult getTemplateResult(String guid) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -59,7 +59,7 @@ public class RedisUtils {
 			returnResource(pool, jedis);
 		}
 		return null;
-	}*/
+	}
 
 	public static TemplateResult getTemplateResult(String guid, int dbindex) {
 		JedisPool pool = null;
@@ -81,7 +81,7 @@ public class RedisUtils {
 	}
 
 	
-/*	public static void setTemplateResult(TemplateResult templateResult, String guid) {
+	public static void setTemplateResult(TemplateResult templateResult, String guid) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -96,7 +96,7 @@ public class RedisUtils {
 		} finally {
 			returnResource(pool, jedis);
 		}
-	}*/
+	}
 	
 	public static void setTemplateResult(TemplateResult templateResult, String guid, int dbindex) {
 		JedisPool pool = null;
@@ -132,7 +132,7 @@ public class RedisUtils {
 		}
 	}
 
-/*	public static long remove(String guid) {
+	public static long remove(String guid) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -146,7 +146,7 @@ public class RedisUtils {
 			returnResource(pool, jedis);
 		}
 		return -1;
-	}*/
+	}
 
 	public static long remove(String guid, int dbindex) {
 		JedisPool pool = null;
@@ -204,7 +204,7 @@ public class RedisUtils {
 		}
 	}
 
-/*	public static boolean contains(String guid) {
+	public static boolean contains(String guid) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		boolean flag = false;
@@ -219,7 +219,7 @@ public class RedisUtils {
 			returnResource(pool, jedis);
 		}
 		return flag;
-	}*/
+	}
 
 	public static boolean contains(String guid, int dbindex) {
 		JedisPool pool = null;
