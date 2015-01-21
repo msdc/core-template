@@ -6,34 +6,10 @@ import java.util.List;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.itf.ISelectorHandler;
 
-/**
- * Selector类定义了拾取器，用于根据拾取器模板获取页面的内容
- * 
- * <pre>
- * @example { 
- * 				"type":"field|content|pagitation", 
- * 				"name":"variableName",
- *          	"value":"variableValue",
- *          	"indexer":{ "type":"jsoup",
- *          	"value":"jsoup select", "attribute":"text|href|src|html" }, "label":
- *          [ { "type":"label", "name":"labelName", "value":"labelValue",
- *          "indexer":{ "type":"jsoup", "value":"jsoup select",
- *          "attribute":"text|href|src|html" }, "filter":[
- *          {"type":"remove|match","value":"removeValue|regularExpression"},
- *          ...... ], "format":[ {"type":"date","value":"yyyy年MM月DD日 HH:mm"},
- *          ...... ] }, ...... ], "filter":[
- *          {"type":"remove|match","value":"removeValue|regularExpression"},
- *          ...... ], "format":[ {"type":"date","value":"yyyy年MM月DD日 HH:mm"},
- *          ...... ] }
- * </pre>
- * 
- * @author Tony Wang
- * 
- */
 public class Selector extends BaseSelector {
 	private String name = "";
 
-	// Tony Wang 用于分页
+	
 	private String pagitationType = "";
 	private String current = "";
 	private String replaceTo = "";
