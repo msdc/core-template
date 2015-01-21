@@ -71,6 +71,63 @@ public class TemplateFactory {
 		}
 		return parseResult;
 	}
+	
+	public static ParseResult process(byte[] input, String encoding, String url) {
+		String guid = MD5Utils.MD5(url);
+		// System.out.println("guid:" + guid);
+		List<Selector> selectors = null;
+		ParseResult parseResult = null;
+		TemplateResult templateResult = RedisUtils.getTemplateResult(guid);
+		if (templateResult != null) {
+			String templateGuid = templateResult.getTemplateGuid();// 获取模板的GUID
+			// System.out.println("templateGuid:" + guid);
+			String type = templateResult.getType();// 获取当前页面的类型
+			if (Constants.TEMPLATE_LIST.equals(type)) {// 列表页
+				selectors = templateResult.getList();
+				if (templateResult.getPagination() != null) {
+					selectors.addAll(templateResult.getPagination());
+				}
+				parseResult = new ParseResult();
+			} else if (Constants.TEMPLATE_PAGITATION.equals(type)) {// 分页
+				selectors = RedisUtils.getTemplateResult(templateGuid).getList();
+				parseResult = new ParseResult();
+			} else if (Constants.TEMPLATE_NEWS.equals(type)) {// 内容页
+				selectors = RedisUtils.getTemplateResult(templateGuid).getNews();// 获取新闻页模板
+				String parseResultGuid = templateResult.getParseResultGuid(); // 获取中间结果
+				parseResult = RedisUtils.getParseResult(parseResultGuid);
+				if (templateResult.getTags() != null) {
+					parseResult.setResult(Constants.TEMPLATE_STATIC, templateResult.getTags().toString());
+				}
+			} else {
+				LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
+				return null;
+			}
+
+			int flag = 0;
+			if (selectors != null) {
+				parseResult.setTemplateGuid(templateGuid);
+				for (Selector selector : selectors) {
+					flag = selector.process(input, encoding, url, parseResult);
+					if (flag == -1) {
+						break;
+					}
+				}
+			} else {
+				LOG.error("This page " + url + " ， the type " + templateResult.getType() + " , it isn't defined in the Template.");
+				return null;
+			}
+			if (flag != -1) {
+				if (Constants.TEMPLATE_LIST.equals(type)) {
+					saveOutlinkParseResultToRedis(parseResult, templateGuid,0);
+				} else if (Constants.TEMPLATE_NEWS.equals(type)) {
+					RedisUtils.remove(templateResult.getParseResultGuid());
+				}
+			}
+		} else {
+			LOG.error("This page " + url + " ， not found the Template.");
+		}
+		return parseResult;
+	}
 
 	/**
 	 * 
