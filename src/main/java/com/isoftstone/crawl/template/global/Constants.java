@@ -1,12 +1,12 @@
 package com.isoftstone.crawl.template.global;
 
-
 public class Constants {
-	// Redis的设置，如IP及PORT
+	// Redis的IP
 	public static String REDIS_IP = "127.0.0.1";
+	// Redis的PORT
 	public static int REDIS_PORT = 6379;
-
-	public static int DBINDEX =0;
+	// Redis的数据库表
+	public static int DBINDEX = 0;
 	// 用于ParseResult，content_outlink中记录了当前列表页面中内容连接的数量，具体的内容页的URL保存在content_outlink_i中
 	public static final String CONTENT_OUTLINK = "content_outlink";
 	public static final String LABEL_LIST = "label_list";
@@ -23,20 +23,20 @@ public class Constants {
 	// 自定义分页
 	public static final String PAGINATION_TYPE_CUSTOM = "custom";
 	// 默认返回最大页数
-	public static final int MAX_PAGE_COUNT =  Integer.MAX_VALUE;
+	public static final int MAX_PAGE_COUNT = Integer.MAX_VALUE;
 	// 用于ParseReuslt，新闻页的URL
 	public static final String ARTICLE_URL = "article_url";
 
 	public static final String PARSE_RESULT_PREFIX = "_PS";
-	
+
 	public static final String LIST_PREFIX = "_LIST";
-	
+
 	public static final String NEWS_PREFIX = "_NEWS";
-	
+
 	public static final String TEMPLATE_PREFIX = "_TEMPLATE";
-	
-	public static final String UN_FETCH ="un_fetch";
-	public static final String FETCH ="fetch";
+
+	public static final String UN_FETCH = "un_fetch";
+	public static final String FETCH = "fetch";
 
 	// 用于Template，区分模板的使用类型，如当前是列表页则获取list拾取器模板，如果是内容页则获取news拾取器模板
 	public static final String TEMPLATE_LIST = "list";
@@ -60,17 +60,15 @@ public class Constants {
 
 	// 默认输出的文本编码规则
 	public static final String DEFAULT_ENCODING = "UTF-8";
-
 	// 过滤器类别
 	public static final String FILTER_REMOVE = "remove";
 	public static final String FILTER_MATCH = "match";
 	public static final String FILTER_REPLACE = "replace";
-
 	// 格式化器的类别
 	public static final String FORMAT_DATE = "date";
-	
+
 	public static final String YYYYMMDDHHMMSS = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})";
 	public static final String YYYYMMDDHHMM = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2})";
 	public static final String YYYYMMDD = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)";
-	
+
 }
