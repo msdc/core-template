@@ -185,6 +185,26 @@ public class RedisUtils {
 		}
 		return null;
 	}
+	
+	public static ParseResult getParseResult(String guid) {
+
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			pool = getPool();
+			jedis = pool.getResource();
+			// System.out.println("guid=" + guid);
+			String json = jedis.get(guid);
+			// System.out.println("json=" + json);
+			return JSONUtils.getParseResultObject(json);
+		} catch (Exception e) {
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			returnResource(pool, jedis);
+		}
+		return null;
+	}
 
 	public static void setParseResult(ParseResult parseResult, String guid, int dbindex) {
 		JedisPool pool = null;
