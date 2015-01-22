@@ -30,6 +30,7 @@ public class TemplateFactory {
 				if (templateResult.getPagination() != null) {
 					selectors.addAll(templateResult.getPagination());
 				}
+				
 				parseResult = new ParseResult();
 			} else if (Constants.TEMPLATE_PAGITATION.equals(type)) {// 分页
 				selectors = RedisUtils.getTemplateResult(templateGuid, dbindex).getList();
