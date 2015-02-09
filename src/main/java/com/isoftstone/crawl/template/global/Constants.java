@@ -37,6 +37,7 @@ public class Constants {
 
 	public static final String UN_FETCH = "un_fetch";
 	public static final String FETCH = "fetch";
+	public static final String PARSE_FAIL = "parse_fail";
 
 	// 用于Template，区分模板的使用类型，如当前是列表页则获取list拾取器模板，如果是内容页则获取news拾取器模板
 	public static final String TEMPLATE_LIST = "list";
