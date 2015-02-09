@@ -49,18 +49,18 @@ public class PropertiesUtils {
 		try {
 			fileinputstream = new FileInputStream(fileName);
 		} catch (FileNotFoundException e1) {
-			LOG.info("InputStream 未找到"+fileName+"文件 :" + e1.getMessage());
+			//LOG.info(e1.getMessage());
 		}
 		if (fileinputstream == null) {
 			fileinputstream = PropertiesUtils.class.getClassLoader().getResourceAsStream(fileName);
-			LOG.info("InputStream 未找到"+fileName+"文件,改使用class.getResourceAsStream加载");
+			//LOG.info("InputStream 未找到"+fileName+"文件,改使用class.getResourceAsStream加载");
 		}
 		if(fileinputstream!= null)
 		{
 			props = new Properties();
 			try {
 				props.load(fileinputstream);
-				LOG.info(fileName + "加载成功");
+				//LOG.info(fileName + "加载成功");
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOG.info("不能读取属性文件. " + "请确保"+fileName+"在CLASSPATH指定的路径中");
