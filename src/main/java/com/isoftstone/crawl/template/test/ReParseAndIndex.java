@@ -117,7 +117,7 @@ public class ReParseAndIndex {
 			System.out.println("Process exitValue: " + exitVal);
 		} catch (Throwable t) {
 			t.printStackTrace();
-		}
+		}       
 
 	}
 
