@@ -175,8 +175,10 @@ public class RedisUtils {
 			jedis.select(dbindex);
 			// System.out.println("guid=" + guid);
 			String json = jedis.get(guid);
-			// System.out.println("json=" + json);
-			return JSONUtils.getParseResultObject(json);
+			if(json!=null && !json.isEmpty())
+			{
+				return JSONUtils.getParseResultObject(json);
+			}
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
 			e.printStackTrace();
