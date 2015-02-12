@@ -38,13 +38,7 @@ public class RemoveFilter implements IFilterHandler {
 		// value为匹配项，str为需要匹配的内容
 		if (!str.isEmpty() && !value.isEmpty()) {
 			// value支持正则，可以替换掉匹配的内容
-			if (str.contains(value) || str.matches(value)) {
-				return str.replaceAll(value, "");
-			} else {
-				LOG.warn("Don't get the remove data (" + value + ") from "
-						+ str + ".");
-				return str;
-			}
+			return str.replaceAll(value, "").trim();
 		} else {
 			LOG.error("Remove filter defined error.");
 			return null;

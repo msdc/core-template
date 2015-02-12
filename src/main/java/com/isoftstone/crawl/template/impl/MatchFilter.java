@@ -38,32 +38,23 @@ public class MatchFilter implements IFilterHandler {
 	@Override
 	public String filter(String str) {
 		String value = filter.getValue();
-		StringBuilder result = new StringBuilder();
+		String result="";
 		// value为匹配项，str为需要匹配的内容
 		if (str != null && !str.isEmpty() && value != null && !value.isEmpty()) {
 			Pattern p = Pattern.compile(value, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 			Matcher m = p.matcher(str);
-			if (0 == m.groupCount()) {
-				while (m.find()) {
-					result.append(m.group());
-				}
-			} else {
-				while (m.find()) {
-					for (int i = 0; i < m.groupCount(); i++)
-						result.append(m.group(i + 1));
-				}
+			if (m.find()) {
+				result=m.group(1);
 			}
 		} else {
 			// str或value为空，返回null，并输出error
 			LOG.error("Match filter defined error.");
 			return null;
 		}
-
 		// 如果未找到需要匹配的内容，则返回""值
 		if (result.length() == 0) {
 			LOG.warn("Don't get the match data (" + value + ") from " + str + ".");
-			result.append("");
 		}
-		return result.toString();
+		return result.trim();
 	}
 }
