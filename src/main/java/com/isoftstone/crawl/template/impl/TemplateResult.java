@@ -22,6 +22,13 @@ public class TemplateResult {
 	private HashMap<String,String> tags; //网页标签
 	private String state;//状态
 	
+//	private String siteName;//网站名称
+//	private String mediaType;//一级信息类型
+//	private String subMediaType;//二级信息类型
+//	private int language;//1：中文，2：英文
+//	private int isOversea;  //1：境外，0：境内
+//	private String dataSource;
+	
 	public TemplateResult() {
 
 	}
@@ -162,6 +169,54 @@ public class TemplateResult {
 	public void setState(String state) {
 		this.state = state;
 	}
+	
+//	public String getSiteName() {
+//		return siteName;
+//	}
+//
+//	public void setSiteName(String siteName) {
+//		this.siteName = siteName;
+//	}
+//
+//	public String getMediaType() {
+//		return mediaType;
+//	}
+//
+//	public void setMediaType(String mediaType) {
+//		this.mediaType = mediaType;
+//	}
+//
+//	public String getSubMediaType() {
+//		return subMediaType;
+//	}
+//
+//	public void setSubMediaType(String subMediaType) {
+//		this.subMediaType = subMediaType;
+//	}
+//
+//	public int getLanguage() {
+//		return language;
+//	}
+//
+//	public void setLanguage(int language) {
+//		this.language = language;
+//	}
+//
+//	public int getIsOversea() {
+//		return isOversea;
+//	}
+//
+//	public void setIsOversea(int isOversea) {
+//		this.isOversea = isOversea;
+//	}
+//
+//	public String getDataSource() {
+//		return dataSource;
+//	}
+//
+//	public void setDataSource(String dataSource) {
+//		this.dataSource = dataSource;
+//	}
 
 	/**
 	 * 重写toString()，用户输出TemplateResult所有属性数据

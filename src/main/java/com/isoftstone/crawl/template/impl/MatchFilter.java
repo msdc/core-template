@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.isoftstone.crawl.template.itf.IFilterHandler;
+import com.isoftstone.crawl.template.utils.StringUtil;
 
 /**
  * MatchFilter类是过滤器的实现类,主要提供正则表达式过滤器
@@ -38,13 +39,13 @@ public class MatchFilter implements IFilterHandler {
 	@Override
 	public String filter(String str) {
 		String value = filter.getValue();
-		String result="";
+		String result ="";
 		// value为匹配项，str为需要匹配的内容
 		if (str != null && !str.isEmpty() && value != null && !value.isEmpty()) {
 			Pattern p = Pattern.compile(value, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 			Matcher m = p.matcher(str);
 			if (m.find()) {
-				result=m.group(1);
+				result=StringUtil.trim(m.group(1));
 			}
 		} else {
 			// str或value为空，返回null，并输出error
@@ -55,6 +56,6 @@ public class MatchFilter implements IFilterHandler {
 		if (result.length() == 0) {
 			LOG.warn("Don't get the match data (" + value + ") from " + str + ".");
 		}
-		return result.trim();
+		return result;
 	}
 }
