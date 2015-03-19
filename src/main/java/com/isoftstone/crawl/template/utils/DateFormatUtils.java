@@ -167,6 +167,12 @@ public class DateFormatUtils {
 		return rightNow.getTime();
 	}
 
+	public static Date nHourBefore(Date s,int n) {
+		Calendar rightNow = Calendar.getInstance();
+		rightNow.setTime(s);
+		rightNow.add(Calendar.HOUR_OF_DAY, -n);
+		return rightNow.getTime();
+	}
 	public static void main(String[] args) {
 		System.out.println(formatbyTimestamp("1420508701946",DateFormatUtils.YYYYMMDDHHMMSS));
 		System.out.println(formatDate("2014年10月10日 12:00:00"));
