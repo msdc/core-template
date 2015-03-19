@@ -74,6 +74,16 @@ public class SolrSerach {
 		}
 		return hashmap;
 	}
+	
+	public HashMap<String, Long> getQueryResultCount(List<String> hosts) {
+		HashMap<String, Long> hashmap = new HashMap<String, Long>();
+		if (hosts != null) {
+			for (String host : hosts) {
+				hashmap.put(host, getQueryResultCount("host", host));
+			}
+		}
+		return hashmap;
+	}
 
 	public static void main(String[] args) {
 		// SolrSerach search = new SolrSerach();
