@@ -50,7 +50,7 @@ public class SolrSerach {
 		SolrQuery query = null;
 		query = new SolrQuery();
 		query.setQuery(field + ":" + value);
-		query.addFilterQuery(filter = ":[" + df.format(DateFormatUtils.nHourBefore(start, 8)) + " TO " + df.format(DateFormatUtils.nHourBefore(end, 8)) + "]");
+		query.addFilterQuery(filter + ":[" + df.format(DateFormatUtils.nHourBefore(start, 8)) + " TO " + df.format(DateFormatUtils.nHourBefore(end, 8)) + "]");
 		query.setRows(10);
 		QueryResponse rsp = null;
 		try {
@@ -86,11 +86,11 @@ public class SolrSerach {
 	}
 
 	public static void main(String[] args) {
-		// SolrSerach search = new SolrSerach();
+		 SolrSerach search = new SolrSerach();
 
 		// System.out.println(df.format(DateFormatUtils.nHourBefore(new Date(),
 		// 8)));
 
-		// System.out.println(search.getQueryResultCount("host","www.bidnews.cn"));
+		 System.out.println(search.getQueryResultCount("host","www.bidnews.cn","fetch_time",new Date(),new Date()));
 	}
 }
