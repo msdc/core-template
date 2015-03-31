@@ -126,7 +126,7 @@ public class DownloadHtml {
 				// 获取到的内容
 				InputStream in = getMethod.getResponseBodyAsStream();
 				byte[] html= IOUtils.toByteArray(in);
-				RedisUtils.setHtmlResult(url,html);
+				RedisUtils.getHtmlResult(url,html);
 				return html;
 			}
 		} catch (UnsupportedEncodingException e1) {

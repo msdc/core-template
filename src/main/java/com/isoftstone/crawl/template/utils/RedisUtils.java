@@ -99,7 +99,7 @@ public class RedisUtils {
 	}
 	
 	
-	public static void setHtmlResult(String url, byte[] html) {
+	public static void getHtmlResult(String url, byte[] html) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
