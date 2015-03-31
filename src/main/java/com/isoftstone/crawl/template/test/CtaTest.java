@@ -21,14 +21,14 @@ public class CtaTest {
 	public static void main(String[] args) {
 		// 1、生成模板
 		String templateUrl = "http://www.xtxh.net/xtxh/finance/index.htm";
-		TemplateResult templateResult = chinaTrusteeAssociationTemplate(templateUrl,Constants.DBINDEX);
+		TemplateResult templateResult = chinaTrusteeAssociationTemplate(templateUrl,Constants.DEFAULT_DBINDEX);
 		
 		// 2、测试列表页
 		String encoding = "utf-8";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		ParseResult parseResult = null;
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		
@@ -36,7 +36,7 @@ public class CtaTest {
 		templateUrl = "http://www.xtxh.net/xtxh/finance/21592.htm";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "utf-8";
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 	}

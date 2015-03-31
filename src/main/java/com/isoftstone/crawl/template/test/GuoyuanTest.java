@@ -24,20 +24,20 @@ public class GuoyuanTest {
 	public static void main(String[] args) {
 		// 1、生成模板
 		String templateUrl = "http://www.zhongguoxintuo.com/xtxw/index.html";
-		TemplateResult templateResult = guanyuanTemplate(templateUrl,Constants.DBINDEX);
+		TemplateResult templateResult = guanyuanTemplate(templateUrl,Constants.DEFAULT_DBINDEX);
 		System.out.println(templateResult.toJSON());
 		// 2、测试列表页
 		String encoding = "gb2312";
 		ParseResult parseResult =null;
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://www.zhongguoxintuo.com/xtxw/5977.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl, templateResult, Constants.TEMPLATE_NEWS);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
 		System.out.println(parseResult.toJSON());
 	}
 

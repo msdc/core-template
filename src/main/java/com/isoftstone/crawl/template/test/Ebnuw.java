@@ -27,7 +27,7 @@ public class Ebnuw {
 		TemplateResult templateResult = ebnuwTemplate();
 		ParseResult parseResult = null;
 		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, url,Constants.DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// System.out.println(TemplateFactory.getOutlink(parseResult).toString());
@@ -36,7 +36,7 @@ public class Ebnuw {
 			   
 		input = DownloadHtml.getHtml(url);
 		encoding = "utf-8";
-		parseResult = TemplateFactory.process(input, encoding, url,Constants.DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_DBINDEX);
 		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
 
