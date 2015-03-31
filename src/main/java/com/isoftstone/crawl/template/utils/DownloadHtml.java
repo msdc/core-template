@@ -23,7 +23,7 @@ public class DownloadHtml {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			String url = "http://www.ccgp-fujian.gov.cn/Article.cfm?id=352899&caidan=采购公告&caidan2=公开招标&level=province&yqgg=0";
+			String url = "http://www.ccgp-fujian.gov.cn";
 			System.out.println(getHtml(url));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -129,7 +129,7 @@ public class DownloadHtml {
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
 					RedisUtils.setHtmlResult(url,IOUtils.toByteArray(in));
-					return html;
+					return IOUtils.toByteArray(in);
 				}
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
