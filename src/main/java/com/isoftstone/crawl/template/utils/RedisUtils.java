@@ -99,7 +99,7 @@ public class RedisUtils {
 	}
 	
 	
-	public static void getHtmlResult(String url, byte[] html) {
+	public static void setHtmlResult(String url, byte[] html) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -114,6 +114,26 @@ public class RedisUtils {
 		} finally {
 			returnResource(pool, jedis);
 		}
+	}
+	
+	public static byte[] getHtmlResult(String url) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			String guid=MD5Utils.MD5(url)+"_rawHtml";
+			pool = getPool();
+			jedis = pool.getResource();
+			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
+			String json = jedis.get(guid);
+			if (json != null)
+				return json.getBytes();
+		} catch (Exception e) {
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			returnResource(pool, jedis);
+		}
+		return null;
 	}
 	
 	public static void setTemplateResult(TemplateResult templateResult, String guid, int dbindex) {
