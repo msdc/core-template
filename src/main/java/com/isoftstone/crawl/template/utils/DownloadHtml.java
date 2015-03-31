@@ -24,7 +24,7 @@ public class DownloadHtml {
 		// TODO Auto-generated method stub
 		try {
 			String url = "http://www.ccgp-fujian.gov.cn/Article.cfm?id=352899&caidan=采购公告&caidan2=公开招标&level=province&yqgg=0";
-			System.out.println(getHtml(url, "utf-8"));
+			System.out.println(getHtml(url));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,7 +125,9 @@ public class DownloadHtml {
 				System.out.println("Connection to " + getMethod.getURI() + " Success!");
 				// 获取到的内容
 				InputStream in = getMethod.getResponseBodyAsStream();
-				return IOUtils.toByteArray(in);
+				byte[] html= IOUtils.toByteArray(in);
+				RedisUtils.setHtmlResult(url,html);
+				return html;
 			}
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();

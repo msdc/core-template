@@ -98,6 +98,24 @@ public class RedisUtils {
 		}
 	}
 	
+	
+	public static void setHtmlResult(String url, byte[] html) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			String guid=url+"_rawHtml";
+			pool = getPool();
+			jedis = pool.getResource();
+			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
+			jedis.set(guid, html.toString());
+		} catch (Exception e) {
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			returnResource(pool, jedis);
+		}
+	}
+	
 	public static void setTemplateResult(TemplateResult templateResult, String guid, int dbindex) {
 		JedisPool pool = null;
 		Jedis jedis = null;
