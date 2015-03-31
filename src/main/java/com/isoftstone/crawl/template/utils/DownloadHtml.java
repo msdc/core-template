@@ -23,7 +23,7 @@ public class DownloadHtml {
 		// TODO Auto-generated method stub
 		try {
 			String url = "http://www.ccgp-fujian.gov.cn";
-			System.out.println(getHtmlSource(url));
+			System.out.println(getHtml(url));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
