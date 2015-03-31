@@ -127,8 +127,9 @@ public class DownloadHtml {
 					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
-					RedisUtils.setHtmlResult(url, IOUtils.toByteArray(in));
-					return IOUtils.toByteArray(in);
+					html = IOUtils.toByteArray(in);
+					RedisUtils.setHtmlResult(url, html);
+					return html;
 				}
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
