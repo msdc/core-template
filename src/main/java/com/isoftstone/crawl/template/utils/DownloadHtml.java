@@ -104,10 +104,9 @@ public class DownloadHtml {
 	}
 
 	public static byte[] getHtml(String url) {
-		
+
 		byte[] html = RedisUtils.getHtmlResult(url);
-		if(html==null)
-		{
+		if (html == null) {
 			// 创建Get连接方法的实例
 			HttpMethod getMethod = null;
 			try {
@@ -128,7 +127,7 @@ public class DownloadHtml {
 					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
-					RedisUtils.setHtmlResult(url,IOUtils.toByteArray(in));
+					RedisUtils.setHtmlResult(url, IOUtils.toByteArray(in));
 					return IOUtils.toByteArray(in);
 				}
 			} catch (UnsupportedEncodingException e1) {
@@ -143,11 +142,9 @@ public class DownloadHtml {
 				// 释放连接
 				getMethod.releaseConnection();
 			}
-		}else
-		{
+		} else {
 			return html;
 		}
-		
 		return null;
 	}
 }
