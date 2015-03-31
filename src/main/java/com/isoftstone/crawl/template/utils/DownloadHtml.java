@@ -151,11 +151,58 @@ public class DownloadHtml {
 		} else {
 			return html;
 		}
-
 		return null;
 	}
 
 	public static byte[] getHtml(String url) {
+		String html = RedisUtils.getHtmlResult(url);
+		if (html == null) {
+			// 创建Get连接方法的实例
+			HttpMethod getMethod = null;
+			try {
+				getMethod = new GetMethod(EncodeUtils.formatUrl(url, ""));
+				// 创建 HttpClient 的实例
+				HttpClient httpClient = new HttpClient();
+				// 创建Get连接方法的实例
+				// getMethod = new GetMethod(url);
+				// 使用系统提供的默认的恢复策略
+				getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+				// 设置 get 请求超时为 10秒
+				getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
+				// 执行getMethod
+				int status = httpClient.executeMethod(getMethod);
+				System.out.println("status:" + status);
+				// 连接返回的状态码
+				if (HttpStatus.SC_OK == status) {
+					System.out.println("Connection to " + getMethod.getURI() + " Success!");
+					// 获取到的内容
+					InputStream in = getMethod.getResponseBodyAsStream();
+
+					BufferedReader br = new BufferedReader(new InputStreamReader(in, "utf-8"));
+					StringBuffer resBuffer = new StringBuffer();
+					char[] chars = new char[4096];
+					int length = 0;
+					while (0 < (length = br.read(chars))) {
+						resBuffer.append(chars, 0, length);
+					}
+					in.close();
+					return resBuffer.toString().getBytes();
+				}
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			} catch (URIException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				// 释放连接
+				getMethod.releaseConnection();
+			}
+		} else {
+			return html.getBytes();
+		}
 		return null;
 	}
 }
