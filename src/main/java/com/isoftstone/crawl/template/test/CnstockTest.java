@@ -21,20 +21,20 @@ public class CnstockTest {
 	public static void main(String[] args) {
 		// 1、生成模板
 		String templateUrl = "http://irm.cnstock.com/ivlist/index/yqjj/0";
-		TemplateResult templateResult = cnstockTemplate(templateUrl,Constants.DEFAULT_DBINDEX);
+		TemplateResult templateResult = cnstockTemplate(templateUrl,Constants.DEFAULT_REDIS_DBINDEX);
 		// 2、测试列表页
 		ParseResult parseResult = null;
 		String encoding = "utf-8";
 		byte[] input = DownloadHtml.getHtml(templateUrl);
 		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_REDIS_DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		templateUrl = "http://irm.cnstock.com/company/scp_tzzgx/tgx_yqjj/201411/3250507.htm";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gbk";
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_REDIS_DBINDEX);
 		//parseResult = TemplateFactory.localProcess(input, encoding, templateUrl,templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());

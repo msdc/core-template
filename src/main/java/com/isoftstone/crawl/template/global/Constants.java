@@ -6,17 +6,17 @@ public class Constants {
 	// Redis的PORT
 	public static int REDIS_PORT = 6379;
 	// 常规模板库
-    public static final int DEFAULT_DBINDEX = 0;
+    public static final int DEFAULT_REDIS_DBINDEX = 0;
 	 //增量模板库
-    public static final int INCREASE_DBINDEX = 1;
+    public static final int INCREASE_REDIS_DBINDEX = 1;
     //调度
-	public static final Integer DISPATCH_REDIS_DBINDEX = 2;
+	public static final int DISPATCH_REDIS_DBINDEX = 2;
     //增加种子
-    public static final Integer SEEDLIST_REDIS_DEBINDEX = 3;
+    public static final int SEEDLIST_REDIS_DEBINDEX = 3;
     //种子有效性缓存库
-    public static final int CACHE_DBINDEX = 4;
+    public static final int CACHE_REDIS_DBINDEX = 4;
     //
-    public static final int RAWHTML_DBINDEX=5;
+    public static final int RAWHTML_REDIS_DBINDEX=5;
     
 	// 用于ParseResult，content_outlink中记录了当前列表页面中内容连接的数量，具体的内容页的URL保存在content_outlink_i中
 	public static final String CONTENT_OUTLINK = "content_outlink";

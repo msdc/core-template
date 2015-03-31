@@ -21,21 +21,21 @@ public class CsTest {
 	public static void main(String[] args) {
 		// 1、生成模板
 		String url = "http://www.cs.com.cn/xwzx/hg/index.html";
-		TemplateResult templateResult = cSTemplate(url,Constants.DEFAULT_DBINDEX);
+		TemplateResult templateResult = cSTemplate(url,Constants.DEFAULT_REDIS_DBINDEX);
 		// 2、测试列表页
 		ParseResult parseResult = null;
 		String encoding = "gb2312";
 		byte[] input = DownloadHtml.getHtml(url);
 		// parseResult = TemplateFactory.localProcess(input, encoding,url,
 		// templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_REDIS_DBINDEX);
 		System.out.println(parseResult.toJSON());
 		// 3、测试内容页
 		url = "http://www.cs.com.cn/xwzx/hg/201501/t20150121_4624970.html";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
 		//parseResult = TemplateFactory.localProcess(input, encoding, url, templateResult, Constants.TEMPLATE_NEWS);
-		 parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_DBINDEX);
+		 parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_REDIS_DBINDEX);
 		System.out.println(parseResult.toJSON());
 
 	}

@@ -27,14 +27,14 @@ public class FuJianGovTest {
 		
 		//解析列表页
 		ParseResult parseResult = null;
-		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_DBINDEX);		
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_REDIS_DBINDEX);		
 		System.out.println(parseResult.toJSON());
 		
 		//解析内容页
 		url = "http://www.ccgp-fujian.gov.cn/Article.cfm?id=346870&caidan=%B2%C9%B9%BA%B9%AB%B8%E6&caidan2=%B9%AB%BF%AA%D5%D0%B1%EA&level=province&yqgg=0";
 		input = DownloadHtml.getHtml(url);
 		encoding = "gb2312";
-		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, url,Constants.DEFAULT_REDIS_DBINDEX);
 		System.out.println(parseResult.toJSON());
 	}
 

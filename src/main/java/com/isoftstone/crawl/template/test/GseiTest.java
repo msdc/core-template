@@ -28,7 +28,7 @@ public class GseiTest {
 		TemplateResult templateResult = null;
 		for(String s : seeds)
 		{
-			templateResult = gseiTemplate(s,Constants.DEFAULT_DBINDEX);
+			templateResult = gseiTemplate(s,Constants.DEFAULT_REDIS_DBINDEX);
 		}
 		// 2、测试列表页
 		String templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg/index.html";
@@ -37,7 +37,7 @@ public class GseiTest {
 		ParseResult parseResult = null;
 		// parseResult = TemplateFactory.localProcess(input, encoding,
 		// templateUrl, templateResult, Constants.TEMPLATE_LIST);
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_REDIS_DBINDEX);
 		System.out.println("templateResult:" + templateResult.toJSON());
 		System.out.println(parseResult.toJSON());
 
@@ -45,7 +45,7 @@ public class GseiTest {
 		templateUrl = "http://www.gsei.com.cn/Html/zbgg/zbgg/zbgg_2015-01-05/20477985.html";
 		input = DownloadHtml.getHtml(templateUrl);
 		encoding = "gb2312";
-		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_DBINDEX);
+		parseResult = TemplateFactory.process(input, encoding, templateUrl,Constants.DEFAULT_REDIS_DBINDEX);
 		// parseResult = TemplateFactory.localProcess(input, encoding,
 		// templateUrl, templateResult, Constants.TEMPLATE_NEWS);
 		System.out.println(parseResult.toJSON());
