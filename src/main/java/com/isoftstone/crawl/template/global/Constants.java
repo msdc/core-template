@@ -5,8 +5,19 @@ public class Constants {
 	public static String REDIS_IP = "127.0.0.1";
 	// Redis的PORT
 	public static int REDIS_PORT = 6379;
-	// Redis的数据库表
-	public static int DBINDEX = 0;
+	// 常规模板库
+    public static final int DEFAULT_DBINDEX = 0;
+	 //增量模板库
+    public static final int INCREASE_DBINDEX = 1;
+    //调度
+	public static final Integer DISPATCH_REDIS_DBINDEX = 2;
+    //增加种子
+    public static final Integer SEEDLIST_REDIS_DEBINDEX = 3;
+    //种子有效性缓存库
+    public static final int CACHE_DBINDEX = 4;
+    //
+    public static final int RAWHTML_DBINDEX=5;
+    
 	// 用于ParseResult，content_outlink中记录了当前列表页面中内容连接的数量，具体的内容页的URL保存在content_outlink_i中
 	public static final String CONTENT_OUTLINK = "content_outlink";
 	public static final String LABEL_LIST = "label_list";
