@@ -16,7 +16,6 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.io.IOUtils;
 
 public class DownloadHtml {
 
@@ -24,7 +23,7 @@ public class DownloadHtml {
 		// TODO Auto-generated method stub
 		try {
 			String url = "http://www.ccgp-fujian.gov.cn";
-			System.out.println(getHtml(url));
+			System.out.println(getHtmlSource(url));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,9 +102,8 @@ public class DownloadHtml {
 		return responseBody;
 	}
 
-	public static byte[] getHtml(String url) {
-
-		byte[] html = RedisUtils.getHtmlResult(url);
+	public static String getHtmlSource(String url) {
+		String html = RedisUtils.getHtmlResult(url);
 		if (html == null) {
 			// 创建Get连接方法的实例
 			HttpMethod getMethod = null;
@@ -127,9 +125,16 @@ public class DownloadHtml {
 					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
-					html = IOUtils.toByteArray(in);
-					RedisUtils.setHtmlResult(url, html);
-					return html;
+
+					BufferedReader br = new BufferedReader(new InputStreamReader(in, "utf-8"));
+					StringBuffer resBuffer = new StringBuffer();
+					char[] chars = new char[4096];
+					int length = 0;
+					while (0 < (length = br.read(chars))) {
+						resBuffer.append(chars, 0, length);
+					}
+					in.close();
+					return resBuffer.toString();
 				}
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
@@ -146,6 +151,11 @@ public class DownloadHtml {
 		} else {
 			return html;
 		}
+
+		return null;
+	}
+
+	public static byte[] getHtml(String url) {
 		return null;
 	}
 }

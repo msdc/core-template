@@ -1,5 +1,11 @@
 package com.isoftstone.crawl.template.utils;
 
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -99,7 +105,7 @@ public class RedisUtils {
 	}
 	
 	
-	public static void setHtmlResult(String url, byte[] html) {
+	public static void setHtmlResult(String url, String html) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -107,7 +113,7 @@ public class RedisUtils {
 			pool = getPool();
 			jedis = pool.getResource();
 			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
-			jedis.set(guid, html.toString());
+			jedis.set(guid, html);
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
 			e.printStackTrace();
@@ -116,7 +122,7 @@ public class RedisUtils {
 		}
 	}
 	
-	public static byte[] getHtmlResult(String url) {
+	public static String getHtmlResult(String url) {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
@@ -126,7 +132,7 @@ public class RedisUtils {
 			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
 			String json = jedis.get(guid);
 			if (json != null)
-				return json.getBytes();
+				return json;
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
 			e.printStackTrace();
@@ -154,6 +160,20 @@ public class RedisUtils {
 		}
 	}
 
+	 public static byte[] getByteArrayByJSONString(String jsonString) {
+		  byte[] byteArray = null;
+		  try {
+		   ObjectMapper objectmapper = new ObjectMapper();
+		   byteArray = objectmapper.readValue(jsonString, byte[].class);
+		  } catch (JsonParseException e) {
+		   e.printStackTrace();
+		  } catch (JsonMappingException e) {
+		   e.printStackTrace();
+		  } catch (IOException e) {
+		   e.printStackTrace();
+		  }
+		  return byteArray;
+		 }
 	public static void saveStr(String str, String guid, int dbindex) {
 		JedisPool pool = null;
 		Jedis jedis = null;
