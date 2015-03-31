@@ -9,13 +9,13 @@ public class Constants {
     public static final int DEFAULT_REDIS_DBINDEX = 0;
 	 //增量模板库
     public static final int INCREASE_REDIS_DBINDEX = 1;
-    //调度
+    //调度库
 	public static final int DISPATCH_REDIS_DBINDEX = 2;
-    //增加种子
+    //增量种子库
     public static final int SEEDLIST_REDIS_DEBINDEX = 3;
     //种子有效性缓存库
     public static final int CACHE_REDIS_DBINDEX = 4;
-    //
+    //页面源代码库
     public static final int RAWHTML_REDIS_DBINDEX=5;
     
 	// 用于ParseResult，content_outlink中记录了当前列表页面中内容连接的数量，具体的内容页的URL保存在content_outlink_i中
