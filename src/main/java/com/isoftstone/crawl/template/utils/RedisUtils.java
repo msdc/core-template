@@ -103,7 +103,7 @@ public class RedisUtils {
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
-			String guid=url+"_rawHtml";
+			String guid=MD5Utils.MD5(url)+"_rawHtml";
 			pool = getPool();
 			jedis = pool.getResource();
 			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
