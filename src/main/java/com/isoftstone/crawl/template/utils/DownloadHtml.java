@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +24,7 @@ public class DownloadHtml {
 		// TODO Auto-generated method stub
 		try {
 			String url = "http://www.ccgp-fujian.gov.cn";
-			System.out.println(getHtml(url));
+			System.out.println(new String(getHtml(url)));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -186,7 +187,9 @@ public class DownloadHtml {
 						resBuffer.append(chars, 0, length);
 					}
 					in.close();
-					return resBuffer.toString().getBytes();
+					html = new String(resBuffer);
+					RedisUtils.setHtmlResult(url, html);
+					return html.getBytes(Charset.forName("utf-8"));
 				}
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
@@ -201,7 +204,7 @@ public class DownloadHtml {
 				getMethod.releaseConnection();
 			}
 		} else {
-			return html.getBytes();
+			return html.getBytes(Charset.forName("utf-8"));
 		}
 		return null;
 	}
