@@ -53,7 +53,7 @@ public class DownloadHtml {
 			// System.out.println("status:" + status);
 			// 连接返回的状态码
 			if (HttpStatus.SC_OK == status) {
-				System.out.println("Connection to " + getMethod.getURI() + " Success!");
+				//System.out.println("Connection to " + getMethod.getURI() + " Success!");
 				// HTTP响应头部信息
 				Pattern pattern = Pattern.compile("text/html;[\\s]*charset=(.*)");
 				Header[] headers = getMethod.getResponseHeaders();
@@ -120,10 +120,10 @@ public class DownloadHtml {
 				getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
 				// 执行getMethod
 				int status = httpClient.executeMethod(getMethod);
-				System.out.println("status:" + status);
+				//System.out.println("status:" + status);
 				// 连接返回的状态码
 				if (HttpStatus.SC_OK == status) {
-					System.out.println("Connection to " + getMethod.getURI() + " Success!");
+					//System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
 
@@ -172,10 +172,10 @@ public class DownloadHtml {
 				getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
 				// 执行getMethod
 				int status = httpClient.executeMethod(getMethod);
-				System.out.println("status:" + status);
+				//System.out.println("status:" + status);
 				// 连接返回的状态码
 				if (HttpStatus.SC_OK == status) {
-					System.out.println("Connection to " + getMethod.getURI() + " Success!");
+					//System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
 
@@ -187,7 +187,7 @@ public class DownloadHtml {
 						resBuffer.append(chars, 0, length);
 					}
 					in.close();
-					html = new String(resBuffer);
+					html = resBuffer.toString();
 					RedisUtils.setHtmlResult(url, html);
 					return html.getBytes(Charset.forName("utf-8"));
 				}
