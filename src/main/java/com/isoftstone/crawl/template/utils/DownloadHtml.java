@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.utils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,7 +54,7 @@ public class DownloadHtml {
 			// System.out.println("status:" + status);
 			// 连接返回的状态码
 			if (HttpStatus.SC_OK == status) {
-				//System.out.println("Connection to " + getMethod.getURI() + " Success!");
+				System.out.println("Connection to " + getMethod.getURI() + " Success!");
 				// HTTP响应头部信息
 				Pattern pattern = Pattern.compile("text/html;[\\s]*charset=(.*)");
 				Header[] headers = getMethod.getResponseHeaders();
@@ -120,10 +121,10 @@ public class DownloadHtml {
 				getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
 				// 执行getMethod
 				int status = httpClient.executeMethod(getMethod);
-				//System.out.println("status:" + status);
+				System.out.println("status:" + status);
 				// 连接返回的状态码
 				if (HttpStatus.SC_OK == status) {
-					//System.out.println("Connection to " + getMethod.getURI() + " Success!");
+					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
 
@@ -155,8 +156,19 @@ public class DownloadHtml {
 		return null;
 	}
 
+	public static final byte[] input2byte(InputStream inStream) throws IOException {
+		ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+		byte[] buff = new byte[100];
+		int rc = 0;
+		while ((rc = inStream.read(buff, 0, 100)) > 0) {
+			swapStream.write(buff, 0, rc);
+		}
+		byte[] in2b = swapStream.toByteArray();
+		return in2b;
+	}
+
 	public static byte[] getHtml(String url) {
-		String html = RedisUtils.getHtmlResult(url);
+		byte[] html = RedisUtils.getHtmlResultByte(url);
 		if (html == null) {
 			// 创建Get连接方法的实例
 			HttpMethod getMethod = null;
@@ -172,24 +184,16 @@ public class DownloadHtml {
 				getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 10000);
 				// 执行getMethod
 				int status = httpClient.executeMethod(getMethod);
-				//System.out.println("status:" + status);
+				System.out.println("status:" + status);
 				// 连接返回的状态码
 				if (HttpStatus.SC_OK == status) {
-					//System.out.println("Connection to " + getMethod.getURI() + " Success!");
+					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
 
-					BufferedReader br = new BufferedReader(new InputStreamReader(in, "utf-8"));
-					StringBuffer resBuffer = new StringBuffer();
-					char[] chars = new char[4096];
-					int length = 0;
-					while (0 < (length = br.read(chars))) {
-						resBuffer.append(chars, 0, length);
-					}
-					in.close();
-					html = resBuffer.toString();
+					html=input2byte(in);
 					RedisUtils.setHtmlResult(url, html);
-					return html.getBytes(Charset.forName("utf-8"));
+					return html;
 				}
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
@@ -204,7 +208,7 @@ public class DownloadHtml {
 				getMethod.releaseConnection();
 			}
 		} else {
-			return html.getBytes(Charset.forName("utf-8"));
+			return html;
 		}
 		return null;
 	}

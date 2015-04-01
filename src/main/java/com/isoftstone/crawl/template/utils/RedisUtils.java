@@ -122,6 +122,43 @@ public class RedisUtils {
 		}
 	}
 	
+	public static void setHtmlResult(String url, byte[] html) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			String guid=MD5Utils.MD5(url)+"_rawHtml";
+			pool = getPool();
+			jedis = pool.getResource();
+			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
+			jedis.set(guid.getBytes(), html);
+		} catch (Exception e) {
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			returnResource(pool, jedis);
+		}
+	}
+	
+	public static byte[] getHtmlResultByte(String url) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			String guid=MD5Utils.MD5(url)+"_rawHtml";
+			pool = getPool();
+			jedis = pool.getResource();
+			jedis.select(Constants.RAWHTML_REDIS_DBINDEX);
+			byte[] json = jedis.get(guid.getBytes());
+			if (json != null)
+				return json;
+		} catch (Exception e) {
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			returnResource(pool, jedis);
+		}
+		return null;
+	}
+	
 	public static String getHtmlResult(String url) {
 		JedisPool pool = null;
 		Jedis jedis = null;
