@@ -190,7 +190,6 @@ public class DownloadHtml {
 					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
-
 					html=input2byte(in);
 					RedisUtils.setHtmlResult(url, html);
 					return html;
