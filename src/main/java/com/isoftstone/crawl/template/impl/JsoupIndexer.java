@@ -103,7 +103,7 @@ public class JsoupIndexer implements IIndexerHandler {
 				} else if (Constants.ATTRIBUTE_SRC.equals(attr)) {
 					results.add(element.absUrl("src"));
 				} else {
-					results.add(EncodeUtils.formatUrl(element.absUrl("href"), ""));
+					results.add(element.attr(attr));
 				}
 			}
 		}
