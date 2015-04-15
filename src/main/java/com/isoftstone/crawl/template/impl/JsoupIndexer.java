@@ -91,14 +91,14 @@ public class JsoupIndexer implements IIndexerHandler {
 				String attr = this.index.getAttribute();
 				if (Constants.ATTRIBUTE_TEXT.equals(attr)) {
 					r = element.text();
-					r = EncodeUtils.convertEncoding(r,Constants.DEFAULT_ENCODING);
+					r = EncodeUtils.convertEncoding(r,encoding);
 					results.add(r);
 				} else if (Constants.ATTRIBUTE_HREF.equals(attr)) {
 						results.add(EncodeUtils.formatUrl(element.absUrl("href"), ""));
 				} else if (Constants.ATTRIBUTE_HTML.equals(attr)) {
 					//r = element.html();
 					r =element.outerHtml();
-					r = EncodeUtils.convertEncoding(r, Constants.DEFAULT_ENCODING);
+					r = EncodeUtils.convertEncoding(r, encoding);
 					results.add(r);
 				} else if (Constants.ATTRIBUTE_SRC.equals(attr)) {
 					results.add(element.absUrl("src"));
