@@ -69,40 +69,41 @@ public class JsoupIndexer implements IIndexerHandler {
         return null;
     }
 
-    /**
-     * attributorHandler方法，用于获取拾取元素的返回值
-     *
-     * @param elements 查询到的元素集合
-     * @param encoding 需要查询的网页的编码格式
-     * @return 获取的元素集合
-     * @throws UnsupportedEncodingException
-     */
-    private ArrayList<String> attributorHandler(org.jsoup.select.Elements elements, String encoding) throws UnsupportedEncodingException {
-        ArrayList<String> results = new ArrayList<String>();
-        if (elements != null) {
-            String r = null;
-            for (org.jsoup.nodes.Element element : elements) {
-                String attr = this.index.getAttribute();
-                if (Constants.ATTRIBUTE_TEXT.equals(attr)) {
-                    r = element.text();
-                    //r = EncodeUtils.convertEncoding(r,encoding);
-                    results.add(r);
-                } else if (Constants.ATTRIBUTE_HREF.equals(attr)) {
 
-                    results.add(EncodeUtils.formatUrl(element.absUrl("href"), ""));
-
-                } else if (Constants.ATTRIBUTE_HTML.equals(attr)) {
-                    //r = element.html();
-                    r = element.outerHtml();
-                    //r = EncodeUtils.convertEncoding(r, encoding);
-                    results.add(r);
-                } else if (Constants.ATTRIBUTE_SRC.equals(attr)) {
-                    results.add(element.absUrl("src"));
-                } else {
-                    results.add(element.attr(attr));
-                }
-            }
-        }
-        return results;
-    }
+	/**
+	 * attributorHandler方法，用于获取拾取元素的返回值
+	 * 
+	 * @param elements
+	 *            查询到的元素集合
+	 * @param encoding
+	 *            需要查询的网页的编码格式
+	 * @return 获取的元素集合
+	 * @throws UnsupportedEncodingException 
+	 */
+	private ArrayList<String> attributorHandler(org.jsoup.select.Elements elements, String encoding) throws UnsupportedEncodingException {
+		ArrayList<String> results = new ArrayList<String>();
+		if (elements != null) {
+			String r = null;
+			for (org.jsoup.nodes.Element element : elements) {
+				String attr = this.index.getAttribute();
+				if (Constants.ATTRIBUTE_TEXT.equals(attr)) {
+					r = element.text();
+					//r = EncodeUtils.convertEncoding(r,encoding);
+					results.add(r);
+				} else if (Constants.ATTRIBUTE_HREF.equals(attr)) {
+						results.add(EncodeUtils.formatUrl(element.absUrl("href"), ""));
+				} else if (Constants.ATTRIBUTE_HTML.equals(attr)) {
+					//r = element.html();
+					r =element.outerHtml();
+					//r = EncodeUtils.convertEncoding(r, encoding);
+					results.add(r);
+				} else if (Constants.ATTRIBUTE_SRC.equals(attr)) {
+					results.add(element.absUrl("src"));
+				} else {
+					results.add(element.attr(attr));
+				}
+			}
+		}
+		return results;
+	}
 }
