@@ -3,6 +3,7 @@ package com.isoftstone.crawl.template.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -190,7 +191,7 @@ public class TemplateFactory {
 	public static ArrayList<String> getContentOutlink(ParseResult parseResult) {
 		ArrayList<String> result = null;
 		if (parseResult != null) {
-			HashMap<String, String> results = parseResult.getResult();
+			Map<String, String> results = parseResult.getResult();
 			if (results != null && results.size() > 0) {
 				if (results.containsKey(Constants.CONTENT_OUTLINK)) {
 					result = new ArrayList<String>();
@@ -208,7 +209,7 @@ public class TemplateFactory {
 	public static ArrayList<String> getPaginationOutlink(ParseResult parseResult) {
 		ArrayList<String> result = null;
 		if (parseResult != null) {
-			HashMap<String, String> results = parseResult.getResult();
+			Map<String, String> results = parseResult.getResult();
 			if (results != null && results.size() > 0) {
 				if (results.containsKey(Constants.PAGINATION_OUTLINK)) {
 					result = new ArrayList<String>();
@@ -245,7 +246,7 @@ public class TemplateFactory {
 	}
 
 	private static void saveOutlinkParseResultToRedis(ParseResult parseResult, String templateGuid, int dbindex) {
-		HashMap<String, String> hash = parseResult.getResult();
+		Map<String, String> hash = parseResult.getResult();
 		HashMap<String, String> tags = RedisUtils.getTemplateResult(templateGuid, dbindex).getTags();
 		String contents = null;
 		if (hash.keySet().contains(Constants.CONTENT_OUTLINK)) {

@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.impl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.isoftstone.crawl.template.utils.JSONUtils;
 
@@ -12,7 +13,7 @@ import com.isoftstone.crawl.template.utils.JSONUtils;
  */
 public class ParseResult {
 	private String templateGuid;
-	private HashMap<String, String> result;
+	private Map<String, String> result;
 	/**
 	 * 获取模板的GUID
 	 * 
@@ -37,7 +38,7 @@ public class ParseResult {
 	 * 
 	 * @return 页面结果键值对
 	 */
-	public HashMap<String, String> getResult() {
+	public Map<String, String> getResult() {
 		return result;
 	}
 
@@ -47,7 +48,7 @@ public class ParseResult {
 	 * @param result
 	 *            页面结果键值对
 	 */
-	public void setResult(HashMap<String, String> result) {
+	public void setResult(Map<String, String> result) {
 		this.result = result;
 	}
 
