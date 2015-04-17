@@ -1,7 +1,11 @@
 package com.isoftstone.crawl.template.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -10,13 +14,17 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import com.alibaba.fastjson.JSON;
 import com.isoftstone.crawl.template.global.Constants;
 import com.isoftstone.crawl.template.impl.ParseResult;
 import com.isoftstone.crawl.template.impl.TemplateResult;
+import com.isoftstone.crawl.template.vo.DispatchVo;
 
 public class RedisUtils {
 	private static JedisPool pool = null;
 	private static PropertiesUtils propert = PropertiesUtils.getInstance();
+	
+	private static final Log LOG = LogFactory.getLog(RedisUtils.class);
 
 	public static JedisPool getPool() {
 		if (pool == null) {
@@ -355,4 +363,27 @@ public class RedisUtils {
 		}
 		return flag;
 	}
+	
+	public static List<DispatchVo> getDispatchResult(List<String> guid,int dbIndex){
+        JedisPool pool = null;
+        Jedis jedis = null;
+        List<DispatchVo> result= new ArrayList<>();
+
+        try {
+            pool = RedisUtils.getPool();
+            jedis = pool.getResource();
+            jedis.select(dbIndex);
+            List<String> json = jedis.mget(guid.toArray(new String[0]));
+            if (json != null) {
+                for(String js : json)
+                    result.add(JSON.parseObject(js, DispatchVo.class));
+            }
+        } catch (Exception e) {
+            pool.returnBrokenResource(jedis);
+            LOG.error("get dispatch result from redis failed", e);
+        } finally {
+            RedisUtils.returnResource(pool, jedis);
+        }
+        return result;
+    }
 }
