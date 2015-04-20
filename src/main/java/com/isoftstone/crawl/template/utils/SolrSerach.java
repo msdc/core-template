@@ -111,10 +111,6 @@ public class SolrSerach {
 		return hashmap;
 	}
 
-	public HashMap<String, Long> getQueryResultCount() {
-		// getQueryResultCount("host", host);
-		return null;
-	}
 	/**
 	 * @Title: getHostList
 	 * @Description: TODO(返回所有host)
@@ -127,7 +123,7 @@ public class SolrSerach {
 		SolrQuery query = null;
 		List<String> lsHost = new ArrayList<String>();
 		query = new SolrQuery();
-		query.setQuery("*:*");// 如果没有查询语句，必须这么写，否则会报异常
+		query.setQuery("tags:dataSource\\:1");// 如果没有查询语句，必须这么写，否则会报异常
 		query.setFacet(true);// 是否分组查询
 		query.setRows(0);// 设置返回结果条数，如果你时分组查询，你就设置为0
 		query.addFacetField("host");// 增加分组字段
