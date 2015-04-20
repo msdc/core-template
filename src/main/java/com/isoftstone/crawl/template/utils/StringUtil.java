@@ -3,6 +3,7 @@ package com.isoftstone.crawl.template.utils;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -55,7 +56,7 @@ public class StringUtil {
 	// private static final String REGEX_TEMP =
 	// "[`~!@＃#$%^&*()+=|{}';'\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；”“\"\"’。，、？]"; //
 	// 定义特殊字符
-	private static final String REGEX_SPACE = "\\s+";
+	private static final String REGEX_SPACE = "[\\s+| +|　+]";
 	private static final String REG_IP = "(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)";
 	private static final String regEx = "[\u4e00-\u9fa5]";
 
@@ -664,6 +665,36 @@ public class StringUtil {
 	}
 
 	/**
+	 * 
+	 * @Title: normalizingSpace
+	 * @Description: TODO(多个空格[全角,半角及另类的空白字符]标准处理为一个半角空格)
+	 * @param @param str
+	 */
+	public static String normalizingSpace(String str) {
+		Pattern p = null;
+		Matcher m = null;
+		if (null != str && !"".equals(str)) {
+			p = Pattern.compile(REGEX_SPACE);
+			m = p.matcher(str);
+		}
+		return m.replaceAll(" ");
+	}
+
+	/**
+	 * 去除字符串中所包含的空格（包括:空格(全角，半角)、制表符、换页符等） 这里有一个神奇的" "字符
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static String removeAllBlank(String str) {
+		String result = "";
+		if (null != str && !"".equals(str)) {
+			result = str.replaceAll("[　*|　*| *| *| *|//s*]*", "");
+		}
+		return result;
+	}
+
+	/**
 	 * <PRE>
 	 * 半角字符->全角字符转换 
 	 * 只处理空格，!到˜之间的字符，忽略其他
@@ -712,7 +743,10 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
+		String str = "2015年04月15日 19:38";
+		System.out.println(normalizingSpace(str));
 
+		System.out.println("|" + removeAllBlank(str) + "|");
 		// String a = "121313/231//";
 		// int length = a.length()-1;
 		// int charAt = a.lastIndexOf("/");
