@@ -9,6 +9,8 @@ public class DispatchVo {
     private String status;
 
     private boolean userProxy;
+    
+    private String redisKey;
 
     public List<Seed> getSeed() {
         return seed;
@@ -38,6 +40,20 @@ public class DispatchVo {
      */
     public void setUserProxy(boolean userProxy) {
         this.userProxy = userProxy;
+    }
+
+    /**
+     * @return the redisKey
+     */
+    public String getRedisKey() {
+        return redisKey;
+    }
+
+    /**
+     * @param redisKey the redisKey to set
+     */
+    public void setRedisKey(String redisKey) {
+        this.redisKey = redisKey;
     }
 
 }
