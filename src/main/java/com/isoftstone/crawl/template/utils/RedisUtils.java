@@ -364,7 +364,7 @@ public class RedisUtils {
 		return flag;
 	}
 	
-	public static List<DispatchVo> getDispatchResult(List<String> guid,int dbIndex){
+	public static List<DispatchVo> getDispatchListResult(List<String> redisKeys,int dbIndex){
         JedisPool pool = null;
         Jedis jedis = null;
         List<DispatchVo> result= new ArrayList<>();
@@ -373,7 +373,7 @@ public class RedisUtils {
             pool = RedisUtils.getPool();
             jedis = pool.getResource();
             jedis.select(dbIndex);
-            List<String> json = jedis.mget(guid.toArray(new String[0]));
+            List<String> json = jedis.mget(redisKeys.toArray(new String[0]));
             if (json != null) {
                 for(String js : json)
                     result.add(JSON.parseObject(js, DispatchVo.class));
