@@ -42,6 +42,7 @@ public class MatchFilter implements IFilterHandler {
 		String result ="";
 		// value为匹配项，str为需要匹配的内容
 		if (str != null && !str.isEmpty() && value != null && !value.isEmpty()) {
+			str = StringUtil.normalizingSpace(str);
 			Pattern p = Pattern.compile(value, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 			Matcher m = p.matcher(str);
 			if (m.find()) {

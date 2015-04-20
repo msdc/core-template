@@ -38,6 +38,7 @@ public class RemoveFilter implements IFilterHandler {
 		String value = this.filter.getValue();
 		// value为匹配项，str为需要匹配的内容
 		if (!str.isEmpty() && !value.isEmpty()) {
+			str = StringUtil.normalizingSpace(str);
 			// value支持正则，可以替换掉匹配的内容
 			return StringUtil.trim(str.replaceAll(value, ""));
 		} else {
