@@ -1,13 +1,18 @@
 package com.isoftstone.crawl.template.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.params.GroupParams;
 
 /**
  * 
@@ -21,6 +26,16 @@ public class SolrSerach {
 	private CommonsHttpSolrServer solr = SolrServer.getInstance().getSolrServer();
 	private String format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
+	/**
+	* @Title: getQueryResultCount 
+	* @Description: TODO(返回指定查询条件的数据个数) 
+	* @param @param field
+	* @param @param value
+	* @param @return    设定文件 
+	* @return long    返回类型 
+	* @author lj
+	* @throws
+	 */
 	public long getQueryResultCount(String field, String value) {
 		if (field.isEmpty() || field == null || value.isEmpty() || value == null) {
 			return -1;
@@ -42,6 +57,17 @@ public class SolrSerach {
 		return -1;
 	}
 
+
+	/**
+	* @Title: getQueryResultCount 
+	* @Description: TODO(返回指定查询条件和指定日期的数据个数) 
+	* @param @param field
+	* @param @param value
+	* @param @return    设定文件 
+	* @return long    返回类型 
+	* @author lj
+	* @throws
+	 */
 	public long getQueryResultCount(String field, String value, String filter, Date start, Date end) {
 		if (field.isEmpty() || field == null || value.isEmpty() || value == null) {
 			return -1;
@@ -74,7 +100,7 @@ public class SolrSerach {
 		}
 		return hashmap;
 	}
-	
+
 	public HashMap<String, Long> getQueryResultCount(List<String> hosts) {
 		HashMap<String, Long> hashmap = new HashMap<String, Long>();
 		if (hosts != null) {
@@ -85,12 +111,48 @@ public class SolrSerach {
 		return hashmap;
 	}
 
+	public HashMap<String, Long> getQueryResultCount() {
+		// getQueryResultCount("host", host);
+		return null;
+	}
+	/**
+	 * @Title: getHostList
+	 * @Description: TODO(返回所有host)
+	 * @param @return 设定文件
+	 * @return List<String> 返回类型
+	 * @author lj
+	 * @throws
+	 */
+	public List<String> getHostList() {
+		SolrQuery query = null;
+		List<String> lsHost = new ArrayList<String>();
+		query = new SolrQuery();
+		query.setQuery("*:*");// 如果没有查询语句，必须这么写，否则会报异常
+		query.setFacet(true);// 是否分组查询
+		query.setRows(0);// 设置返回结果条数，如果你时分组查询，你就设置为0
+		query.addFacetField("host");// 增加分组字段
+		query.setFacetLimit(-1);// 限制每次返回结果数
+		QueryResponse rsp = null;
+		try {
+			rsp = solr.query(query);
+			if (rsp != null) {
+				List<Count> lsc = rsp.getFacetField("host").getValues();
+				for (Count count : lsc) {
+					lsHost.add(count.getName());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lsHost;
+	}
+
 	public static void main(String[] args) {
-		 SolrSerach search = new SolrSerach();
+		SolrSerach search = new SolrSerach();
+		System.out.println(search.getHostList());
 
-		// System.out.println(df.format(DateFormatUtils.nHourBefore(new Date(),
-		// 8)));
-
-		 System.out.println(search.getQueryResultCount("host","www.bidnews.cn","fetch_time",new Date(),new Date()));
+		// System.out.println(search.getQueryResultCount("host",
+		// "www.bidnews.cn", "fetch_time", new Date(), new Date()));
 	}
 }
