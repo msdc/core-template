@@ -29,8 +29,8 @@ public class RedisUtils {
 	public static JedisPool getPool() {
 		if (pool == null) {
 			JedisPoolConfig config = new JedisPoolConfig();
-
-			config.setMaxTotal(1024);
+			
+			config.setMaxTotal(-1);
 			// 最大能够保持idel状态的对象数
 			config.setMaxIdle(500);
 			// 当池内没有返回对象时，最大等待时间
