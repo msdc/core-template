@@ -4,13 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.Group;
 import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.GroupResponse;
@@ -28,8 +25,6 @@ import org.apache.solr.common.params.GroupParams;
 public class SolrSerach {
 	private CommonsHttpSolrServer solr = SolrServer.getInstance().getSolrServer();
 	private String format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-	private static PropertiesUtils propert = PropertiesUtils.getInstance();
-
 	/**
 	 * @Title: getQueryResultCount
 	 * @Description: TODO(返回指定查询条件的数据个数)
@@ -162,12 +157,18 @@ public class SolrSerach {
 //		return lsHost;
 //	}
 	
-	
+	/**
+	 * @Title: getHostList
+	 * @Description: TODO(返回所有host)
+	 * @param @return 设定文件
+	 * @return List<String> 返回类型
+	 * @author lj
+	 * @throws
+	 */
 	public List<String> getHostList() {
 		List<String> lsHost = new ArrayList<String>();
 		SolrQuery query = null;
 		try {
-			//String filters = propert.getValue("filter.value");
 			query = new SolrQuery();
 			query.setQuery("*:*");// 如果没有查询语句，必须这么写，否则会报异常
 			query.setParam(GroupParams.GROUP, "true");
