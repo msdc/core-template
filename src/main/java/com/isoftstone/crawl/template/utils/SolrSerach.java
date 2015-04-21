@@ -11,6 +11,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.client.solrj.response.Group;
+import org.apache.solr.client.solrj.response.GroupCommand;
+import org.apache.solr.client.solrj.response.GroupResponse;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.GroupParams;
 
@@ -25,16 +28,17 @@ import org.apache.solr.common.params.GroupParams;
 public class SolrSerach {
 	private CommonsHttpSolrServer solr = SolrServer.getInstance().getSolrServer();
 	private String format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	private static PropertiesUtils propert = PropertiesUtils.getInstance();
 
 	/**
-	* @Title: getQueryResultCount 
-	* @Description: TODO(返回指定查询条件的数据个数) 
-	* @param @param field
-	* @param @param value
-	* @param @return    设定文件 
-	* @return long    返回类型 
-	* @author lj
-	* @throws
+	 * @Title: getQueryResultCount
+	 * @Description: TODO(返回指定查询条件的数据个数)
+	 * @param @param field
+	 * @param @param value
+	 * @param @return 设定文件
+	 * @return long 返回类型
+	 * @author lj
+	 * @throws
 	 */
 	public long getQueryResultCount(String field, String value) {
 		if (field.isEmpty() || field == null || value.isEmpty() || value == null) {
@@ -57,16 +61,15 @@ public class SolrSerach {
 		return -1;
 	}
 
-
 	/**
-	* @Title: getQueryResultCount 
-	* @Description: TODO(返回指定查询条件和指定日期的数据个数) 
-	* @param @param field
-	* @param @param value
-	* @param @return    设定文件 
-	* @return long    返回类型 
-	* @author lj
-	* @throws
+	 * @Title: getQueryResultCount
+	 * @Description: TODO(返回指定查询条件和指定日期的数据个数)
+	 * @param @param field
+	 * @param @param value
+	 * @param @return 设定文件
+	 * @return long 返回类型
+	 * @author lj
+	 * @throws
 	 */
 	public long getQueryResultCount(String field, String value, String filter, Date start, Date end) {
 		if (field.isEmpty() || field == null || value.isEmpty() || value == null) {
@@ -111,32 +114,81 @@ public class SolrSerach {
 		return hashmap;
 	}
 
-	/**
-	 * @Title: getHostList
-	 * @Description: TODO(返回所有host)
-	 * @param @return 设定文件
-	 * @return List<String> 返回类型
-	 * @author lj
-	 * @throws
-	 */
+//	/**
+//	 * @Title: getHostList
+//	 * @Description: TODO(返回所有host)
+//	 * @param @return 设定文件
+//	 * @return List<String> 返回类型
+//	 * @author lj
+//	 * @throws
+//	 */
+//	public List<String> getHostList() {
+//		List<String> lsHost = new ArrayList<String>();
+//		SolrQuery query = null;
+//		try {
+//			String filters = propert.getValue("filter.value");
+//			query = new SolrQuery();
+//			query.setQuery("*:*");// 如果没有查询语句，必须这么写，否则会报异常
+//			query.setFacet(true);// 是否分组查询
+//			query.setRows(0);// 设置返回结果条数，如果你时分组查询，你就设置为0
+//			query.addFacetField("host");// 增加分组字段
+//			query.setFacetLimit(-1);// 限制每次返回结果数
+//
+//			if (filters.contains(",")) {
+//				for (String filter : filters.split(",")) {
+//					query.addFilterQuery("-tags:" + filter);
+//				}
+//			} else {
+//				query.addFilterQuery("-tags:" + filters);
+//			}
+//
+//			QueryResponse rsp = null;
+//			rsp = solr.query(query);
+//			if (rsp != null) {
+//				List<Count> lsc = rsp.getFacetField("host").getValues();
+////				int query_count;
+//				for (Count count : lsc) {
+////					query_count = (int) count.getCount();
+////					if (query_count >= 100) {
+////						lsHost.add(count.getName());
+////					}
+//					lsHost.add(count.getName());
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//		return lsHost;
+//	}
+	
+	
 	public List<String> getHostList() {
-		SolrQuery query = null;
 		List<String> lsHost = new ArrayList<String>();
-		query = new SolrQuery();
-		query.setQuery("tags:dataSource\\:1");// 如果没有查询语句，必须这么写，否则会报异常
-		query.setFacet(true);// 是否分组查询
-		query.setRows(0);// 设置返回结果条数，如果你时分组查询，你就设置为0
-		query.addFacetField("host");// 增加分组字段
-		query.setFacetLimit(-1);// 限制每次返回结果数
-		QueryResponse rsp = null;
+		SolrQuery query = null;
 		try {
+			//String filters = propert.getValue("filter.value");
+			query = new SolrQuery();
+			query.setQuery("*:*");// 如果没有查询语句，必须这么写，否则会报异常
+			query.setParam(GroupParams.GROUP, "true");
+			query.setParam(GroupParams.GROUP_FIELD, "host");
+			query.setParam(GroupParams.GROUP_LIMIT, "0");
+			query.setRows(-1);// 设置返回结果条数，如果你时分组查询，你就设置为0
+			query.addFilterQuery("-tags:dataSource\\:2");
+			
+			QueryResponse rsp = null;
 			rsp = solr.query(query);
-			if (rsp != null) {
-				List<Count> lsc = rsp.getFacetField("host").getValues();
-				for (Count count : lsc) {
-					lsHost.add(count.getName());
-				}
-			}
+			GroupResponse groupResponse = rsp.getGroupResponse(); 
+			if(groupResponse != null) {  
+			    List<GroupCommand> groupList = groupResponse.getValues();  
+			    for(GroupCommand groupCommand : groupList) {  
+			        List<Group> groups = groupCommand.getValues();  
+			        for(Group group : groups) {  
+			        	lsHost.add(group.getGroupValue());
+			        	//System.out.println((group.getGroupValue()+","+(int)group.getResult().getNumFound()));  
+			        }  
+			    }  
+			}  
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -147,6 +199,7 @@ public class SolrSerach {
 	public static void main(String[] args) {
 		SolrSerach search = new SolrSerach();
 		System.out.println(search.getHostList());
+		System.out.println(search.getHostList().size());
 
 		// System.out.println(search.getQueryResultCount("host",
 		// "www.bidnews.cn", "fetch_time", new Date(), new Date()));
