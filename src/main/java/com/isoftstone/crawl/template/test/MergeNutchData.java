@@ -16,14 +16,16 @@ public class MergeNutchData {
 	private final String MERGE_LINKDB = " mergelinkdb ";
 	private final String MERGE_SEGMENTS = " mergesegs -dir ";
 	private String nutch_root = "/nutch_run/local_incremental/bin/nutch";
+	private String output_folder = " /home/nutch_final_data/";
 	private static final Logger LOG = LoggerFactory.getLogger(MergeNutchData.class);
 
-	public MergeNutchData(String nutch_root) {
+	public MergeNutchData(String nutch_root,String output_folder) {
 		this.nutch_root = nutch_root;
+		this.output_folder = output_folder;
 	}
 
 	public static void main(String[] args) {
-		MergeNutchData merge = new MergeNutchData("/nutch_run/local_incremental/bin/nutch");
+		MergeNutchData merge = new MergeNutchData("/nutch_run/local_incremental/bin/nutch","/home/nutch_final_data/");
 		List<String> lstOne = new ArrayList<String>();
 		lstOne.add("123");
 		lstOne.add("456");
@@ -52,16 +54,16 @@ public class MergeNutchData {
 	 */
 	public void mergeCrawlDB(List<String> crawldb_list) {
 		if (nutch_root.length() > 0 && nutch_root != null && crawldb_list != null) {
-			String cmd = nutch_root + MERGE_CRAWLDB;
+			String cmd = nutch_root + MERGE_CRAWLDB +output_folder+"crawldb ";
 			try {
+				String merge_crawldb = cmd + "%s";
 				StringBuilder sb = new StringBuilder();
-				for (String crawldb_folder : crawldb_list) {
-					sb.append(crawldb_folder);
+				for (int i = 0;i< crawldb_list.size();i++) {
+					sb.append(crawldb_list.get(i));
 					sb.append(" ");
 				}
-				String merge_crawldb = cmd + "%s";
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
-				// System.out.println(String.format(merge_crawldb, folderStr));
+				//System.out.println(String.format(merge_crawldb, folderStr));
 				ExcuteCmd.excuteCmd(String.format(merge_crawldb, folderStr));
 			} catch (Exception e) {
 				LOG.info("merge crawldb:", e.getMessage());
@@ -79,7 +81,7 @@ public class MergeNutchData {
 	 */
 	public void mergeLinkDB(List<String> linkdb_list) {
 		if (nutch_root.length() > 0 && nutch_root != null && linkdb_list != null) {
-			String cmd = nutch_root + MERGE_LINKDB;
+			String cmd = nutch_root + MERGE_LINKDB+output_folder+"linkdb ";
 			try {
 				StringBuilder sb = new StringBuilder();
 				for (String linkdb_folder : linkdb_list) {
@@ -88,7 +90,7 @@ public class MergeNutchData {
 				}
 				String merge_linkdb = cmd + "%s";
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
-				// System.out.println(String.format(merge_linkdb, folderStr));
+				//System.out.println(String.format(merge_linkdb, folderStr));
 				ExcuteCmd.excuteCmd(String.format(merge_linkdb, folderStr));
 			} catch (Exception e) {
 				LOG.info("merge linkdb:", e.getMessage());
@@ -106,11 +108,10 @@ public class MergeNutchData {
 	 */
 	public void mergeSegments(String segments_folder) {
 		if (nutch_root.length() > 0 && nutch_root != null && segments_folder != null) {
-			String cmd = nutch_root + MERGE_SEGMENTS;
+			String cmd = nutch_root + MERGE_SEGMENTS +output_folder+"segments ";
 			try {
 				String merge_segments = cmd + "%s";
-				// System.out.println(String.format(merge_segments,
-				// segments_folder));
+				// System.out.println(String.format(merge_segments,segments_folder));
 				ExcuteCmd.excuteCmd(String.format(merge_segments, segments_folder));
 			} catch (Exception e) {
 				LOG.info("merge segment:", e.getMessage());
@@ -128,12 +129,11 @@ public class MergeNutchData {
 	 */
 	public void mergeSegments(List<String> segments_list) {
 		if (nutch_root.length() > 0 && nutch_root != null && segments_list != null) {
-			String cmd = nutch_root + MERGE_SEGMENTS;
+			String cmd = nutch_root + MERGE_SEGMENTS +output_folder+"segments ";
 			try {
 				for (String segments_folder : segments_list) {
 					String merge_segments = cmd + "%s";
-					// System.out.println(String.format(merge_segments,
-					// segments_folder));
+					 //System.out.println(String.format(merge_segments,segments_folder));
 					ExcuteCmd.excuteCmd(String.format(merge_segments, segments_folder));
 				}
 			} catch (Exception e) {
