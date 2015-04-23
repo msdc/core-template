@@ -1,12 +1,11 @@
 package com.isoftstone.crawl.template.test;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.isoftstone.crawl.template.utils.ExcuteCmd;
 
 /**
  * Created by Administrator on 2015/1/14.
@@ -77,48 +76,27 @@ public class ReParseAndIndex {
 			for (String segment : segParseList) {
 				//parse
 				String tpStrParse = nutch_root + " parse %s";
-				excuteCmd(String.format(tpStrParse, segment));
+				ExcuteCmd.excuteCmd(String.format(tpStrParse, segment));
 				
 				String temp = segment.substring(0, segment.indexOf("segments"));
 				//更新crawldb
 				String updatedbStr = nutch_root + " updatedb %scrawldb %s";
-				excuteCmd(String.format(updatedbStr, temp, segment));
+				ExcuteCmd.excuteCmd(String.format(updatedbStr, temp, segment));
 				
 				//更新linkdb
 				String invertlinksStr = nutch_root + " invertlinks %slinkdb %s -noFilter";
-				excuteCmd(String.format(invertlinksStr, temp, segment));
+				ExcuteCmd.excuteCmd(String.format(invertlinksStr, temp, segment));
 				//过滤重复
 				String dedupStr = nutch_root + " dedup %scrawldb";
-				excuteCmd(String.format(dedupStr, temp));
+				ExcuteCmd.excuteCmd(String.format(dedupStr, temp));
 			}
 		}
 
 		for (String segs : segIndexList) {
 			//索引
 			String tpStrIndex = nutch_root + " solrindex " + solr_index + " %scrawldb -linkdb %slinkdb -dir %ssegments";
-			excuteCmd(String.format(tpStrIndex, segs, segs, segs));
+			ExcuteCmd.excuteCmd(String.format(tpStrIndex, segs, segs, segs));
 		}
-	}
-
-	public static void excuteCmd(String cmd) {
-		try {
-			System.out.println("command:" + cmd);
-			Runtime rt = Runtime.getRuntime();
-			Process proc = rt.exec(cmd);
-			InputStream stdin = proc.getInputStream();
-			InputStreamReader isr = new InputStreamReader(stdin);
-			BufferedReader br = new BufferedReader(isr);
-			String line = null;
-			System.out.println("<output></output>");
-			while ((line = br.readLine()) != null)
-				System.out.println(line);
-			System.out.println("");
-			int exitVal = proc.waitFor();
-			System.out.println("Process exitValue: " + exitVal);
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}       
-
 	}
 
 	public static void removeDir(File dir) {
