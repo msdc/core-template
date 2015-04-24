@@ -14,19 +14,19 @@ import com.isoftstone.crawl.template.utils.ExcuteCmd;
  * Created by Administrator on 2015/4/22.
  */
 public class MergeNutchData {
+	private static final Logger LOG = LoggerFactory.getLogger(MergeNutchData.class);
 	private final String MERGE_CRAWLDB = " mergedb ";
 	private final String MERGE_LINKDB = " mergelinkdb ";
 	private final String MERGE_SEGMENTS = " mergesegs -dir ";
-
 	private final String CRAWLDB = "crawldb";
 	private final String LINKDB = "linkdb";
 	private final String SEGMENTS = "segments";
+	private final String RM = "rm -rf %s";
 
 	private List<String> data_list = Arrays.asList("crawldb", "linkdb", "segments");
 	private String nutch_root = "/nutch_run/local_incremental/bin/nutch";
 	private String output_folder = " /home/nutch_final_data/";
 	private String data_folder = "/nutch_data/";
-	private static final Logger LOG = LoggerFactory.getLogger(MergeNutchData.class);
 
 	public MergeNutchData(String nutch_root, String output_folder, String data_folder) {
 		this.nutch_root = nutch_root;
@@ -48,7 +48,7 @@ public class MergeNutchData {
 					File f = null;
 					String fname = folder.getName();
 					if (fname.contains(domain)) {
-						f = new File(data_folder + "/" + fname + "/" + data_name);
+						f = new File(data_folder + "\\" + fname + "\\" + data_name);
 						if (f.exists()) {
 							if (data_name.equals("segments")) {
 								mergeSegments(f.getPath(), domain);// segments比较特殊，需单个合并
@@ -113,10 +113,11 @@ public class MergeNutchData {
 					sb.append(" ");
 				}
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
-				// System.out.println(String.format(merge_crawldb, folderStr));
+				System.out.println(String.format(merge_crawldb, folderStr));
 				int code = ExcuteCmd.excuteCmd(String.format(merge_crawldb, folderStr));
-				if (code == 0) {//执行成功,则删除目录
-
+				if (code == 0) {// 执行成功,则删除目录
+					// System.out.println(String.format(RM, folderStr));
+					ExcuteCmd.excuteCmd(String.format(RM, folderStr));
 				}
 			} catch (Exception e) {
 				LOG.info("merge crawldb:", e.getMessage());
@@ -144,7 +145,11 @@ public class MergeNutchData {
 				String merge_linkdb = cmd + "%s";
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
 				// System.out.println(String.format(merge_linkdb, folderStr));
-				ExcuteCmd.excuteCmd(String.format(merge_linkdb, folderStr));
+				int code = ExcuteCmd.excuteCmd(String.format(merge_linkdb, folderStr));
+				if (code == 0) {// 执行成功,则删除目录
+					// System.out.println(String.format(RM, folderStr));
+					ExcuteCmd.excuteCmd(String.format(RM, folderStr));
+				}
 			} catch (Exception e) {
 				LOG.info("merge linkdb:", e.getMessage());
 			}
@@ -166,7 +171,11 @@ public class MergeNutchData {
 				String merge_segments = cmd + "%s";
 				// System.out.println(String.format(merge_segments,
 				// segments_folder));
-				ExcuteCmd.excuteCmd(String.format(merge_segments, segments_folder));
+				int code = ExcuteCmd.excuteCmd(String.format(merge_segments, segments_folder));
+				if (code == 0) {// 执行成功,则删除目录
+					// System.out.println(String.format(RM, segments_folder));
+					ExcuteCmd.excuteCmd(String.format(RM, segments_folder));
+				}
 			} catch (Exception e) {
 				LOG.info("merge segment:", e.getMessage());
 			}

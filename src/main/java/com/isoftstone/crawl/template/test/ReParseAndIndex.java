@@ -64,7 +64,7 @@ public class ReParseAndIndex {
 							for (int l = 0; l < finalFile.length; l++) {
 								if(filter)
 								{
-									ExcuteCmd.removeDir(finalFile[l]);
+									removeDir(finalFile[l]);
 								}
 							}
 						}
@@ -97,5 +97,16 @@ public class ReParseAndIndex {
 			String tpStrIndex = nutch_root + " solrindex " + solr_index + " %scrawldb -linkdb %slinkdb -dir %ssegments";
 			ExcuteCmd.excuteCmd(String.format(tpStrIndex, segs, segs, segs));
 		}
+	}
+	
+	public static void removeDir(File dir) {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				removeDir(file);
+			} else
+				System.out.println(file + ":" + file.delete());
+		}
+		System.out.println(dir + "----" + dir.delete());
 	}
 }
