@@ -64,7 +64,7 @@ public class MergeNutchData {
 					File f = null;
 					String fname = folder.getName();
 					if (fname.contains(domain)) {
-						f = new File(data_folder + "\\" + fname + "\\" + data_name);
+						f = new File(data_folder + "/" + fname + "/" + data_name);
 						if (f.exists()) {
 							if (data_name.equals("segments")) {
 								mergeSegments(f.getPath(), domain);// segments比较特殊，需单个合并
