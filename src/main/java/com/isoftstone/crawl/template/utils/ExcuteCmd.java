@@ -1,6 +1,7 @@
 package com.isoftstone.crawl.template.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -19,7 +20,8 @@ public class ExcuteCmd {
 	 * @author lj
 	 * @throws
 	 */
-	public static void excuteCmd(String cmd) {
+	public static int excuteCmd(String cmd) {
+		int exitVal =-1;
 		try {
 			LOG.info("command:",cmd);
 			Runtime rt = Runtime.getRuntime();
@@ -32,10 +34,23 @@ public class ExcuteCmd {
 			while ((line = br.readLine()) != null)
 			LOG.info(line);
 			LOG.info("");
-			int exitVal = proc.waitFor();
+			exitVal = proc.waitFor();
 			LOG.info("Process exitValue:",exitVal);
+			
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+		return exitVal;
+	}
+	
+	public static void removeDir(File dir) {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				removeDir(file);
+			} else
+				System.out.println(file + ":" + file.delete());
+		}
+		System.out.println(dir + "----" + dir.delete());
 	}
 }
