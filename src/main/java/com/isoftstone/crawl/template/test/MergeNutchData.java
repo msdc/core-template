@@ -35,8 +35,24 @@ public class MergeNutchData {
 	}
 
 	public static void main(String[] args) {
-		MergeNutchData merge = new MergeNutchData("/nutch_run/local_incremental/bin/nutch", "/home/nutch_final_data/", "./nutch_data");
-		merge.mergeByDomain("baidu");
+		if (args.length < 3) {
+			System.err.println("Usage: MergeNutchData <nutch_root> <output_folder> <data_folder> <data_domain>");
+			return;
+		}
+		String nutch_root = args[0];
+		String output_folder = args[1];
+		String data_folder = args[2];
+		String data_domain= args[3];
+		
+		if (nutch_root != null && data_folder != null) {
+			System.out.println("MergeNutchData nutch_root: " + nutch_root);
+			System.out.println("MergeNutchData output_folder: " + output_folder);
+			System.out.println("MergeNutchData data_folder: " + data_folder);
+			System.out.println("MergeNutchData data_domain: " + data_domain);
+		}
+		
+		MergeNutchData merge = new MergeNutchData(nutch_root, output_folder, data_folder);
+		merge.mergeByDomain(data_domain);
 	}
 
 	public void mergeByDomain(String domain) {
