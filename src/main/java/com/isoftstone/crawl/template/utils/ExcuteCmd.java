@@ -42,15 +42,4 @@ public class ExcuteCmd {
 		}
 		return exitVal;
 	}
-	
-	public static void removeDir(File dir) {
-		File[] files = dir.listFiles();
-		for (File file : files) {
-			if (file.isDirectory()) {
-				removeDir(file);
-			} else
-				System.out.println(file + ":" + file.delete());
-		}
-		System.out.println(dir + "----" + dir.delete());
-	}
 }
