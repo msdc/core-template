@@ -68,8 +68,7 @@ public class TemplateFactory {
 				if (Constants.TEMPLATE_LIST.equals(type)) {
 					saveOutlinkParseResultToRedis(parseResult, templateGuid, dbindex);
 				} else if (Constants.TEMPLATE_NEWS.equals(type)) {
-					// RedisUtils.remove(templateResult.getParseResultGuid(),
-					// dbindex);
+					 RedisUtils.remove(templateResult.getParseResultGuid(),dbindex);
 				}
 			}
 
