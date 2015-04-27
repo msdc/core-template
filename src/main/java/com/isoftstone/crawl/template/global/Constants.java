@@ -47,7 +47,7 @@ public class Constants {
 	public static final String TEMPLATE_PREFIX = "_TEMPLATE";
 	
 	
-	public static final int REDIS_EXPIRE_TIME = 10;
+	public static final int REDIS_EXPIRE_TIME = 10*60*5;
 
 	public static final String UN_FETCH = "un_fetch";
 	public static final String FETCH = "fetch";
