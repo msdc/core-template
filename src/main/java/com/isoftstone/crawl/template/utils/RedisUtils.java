@@ -321,6 +321,7 @@ public class RedisUtils {
 			jedis = pool.getResource();
 			jedis.select(dbindex);
 			jedis.set(guid, str.toString());
+			//jedis.expire(guid, Constants.REDIS_EXPIRE_TIME);
 		} catch (Exception e) {
 			pool.returnBrokenResource(jedis);
 			e.printStackTrace();
