@@ -5,12 +5,16 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.isoftstone.crawl.template.test.MergeNutchData;
+
 
 public class ExcuteCmd {
-	private static final Logger LOG = LoggerFactory.getLogger(ExcuteCmd.class);
+	private static final Log LOG = LogFactory.getLog(ExcuteCmd.class);
 
 	/**
 	 * @Title: excuteCmd
@@ -23,7 +27,6 @@ public class ExcuteCmd {
 	public static int excuteCmd(String cmd) {
 		int exitVal =-1;
 		try {
-			LOG.info("command:",cmd);
 			Runtime rt = Runtime.getRuntime();
 			Process proc = rt.exec(cmd);
 			InputStream stdin = proc.getInputStream();
@@ -35,7 +38,7 @@ public class ExcuteCmd {
 			LOG.info(line);
 			LOG.info("");
 			exitVal = proc.waitFor();
-			LOG.info("Process exitValue:",exitVal);
+			LOG.info("Process exitValue:"+exitVal);
 			
 		} catch (Throwable t) {
 			t.printStackTrace();

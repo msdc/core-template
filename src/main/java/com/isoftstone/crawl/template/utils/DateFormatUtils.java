@@ -21,8 +21,8 @@ public class DateFormatUtils {
 	public static final String YYYYMMDDHHMM = "yyyy-MM-dd HH:mm";
 	public static final String HHMM = "HH-mm";
 
-	public static final String LONG = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})";
-	public static final String MIDDLE = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2})";
+	public static final String LONG = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s*\\d{1,2}:\\d{1,2}:\\d{1,2})";
+	public static final String MIDDLE = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s*\\d{1,2}:\\d{1,2})";
 	public static final String SHORT = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)";
 
 	public static String formatDate2Str(Date date, String format) {

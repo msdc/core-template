@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,8 +23,8 @@ public class DownloadHtml {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			String url = "http://www.ccgp-fujian.gov.cn";
-			System.out.println(new String(getHtml(url)));
+			String url = "http://www.cs.com.cn/xwzx/hg/";
+			System.out.println(getHtml(url,"gb2312"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -190,7 +189,7 @@ public class DownloadHtml {
 					System.out.println("Connection to " + getMethod.getURI() + " Success!");
 					// 获取到的内容
 					InputStream in = getMethod.getResponseBodyAsStream();
-					html=input2byte(in);
+					html = input2byte(in);
 					RedisUtils.setHtmlResult(url, html);
 					return html;
 				}
