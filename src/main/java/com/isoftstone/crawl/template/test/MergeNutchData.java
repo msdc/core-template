@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.isoftstone.crawl.template.utils.ExcuteCmd;
 
@@ -14,10 +14,10 @@ import com.isoftstone.crawl.template.utils.ExcuteCmd;
  * Created by Administrator on 2015/4/22.
  */
 public class MergeNutchData {
-	private static final Logger LOG = LoggerFactory.getLogger(MergeNutchData.class);
+	private static final Log LOG = LogFactory.getLog(MergeNutchData.class);
 	private final String MERGE_CRAWLDB = " mergedb ";
 	private final String MERGE_LINKDB = " mergelinkdb ";
-	private final String MERGE_SEGMENTS = " mergesegs -dir ";
+	private final String MERGE_SEGMENTS = " mergesegs ";
 	private final String CRAWLDB = "crawldb";
 	private final String LINKDB = "linkdb";
 	private final String SEGMENTS = "segments";
@@ -51,6 +51,10 @@ public class MergeNutchData {
 			System.out.println("MergeNutchData data_domain: " + data_domain);
 		}
 		
+//		 String nutch_root = "/nutch_run/local_incremental/bin/nutch";
+//		 String output_folder = " /home/nutch_final_data/";
+//		 String data_folder = "./nutch_data/";
+//		 String data_domain = "baidu";
 		MergeNutchData merge = new MergeNutchData(nutch_root, output_folder, data_folder);
 		merge.mergeByDomain(data_domain);
 	}
@@ -66,7 +70,7 @@ public class MergeNutchData {
 					if (fname.contains(domain)) {
 						f = new File(data_folder + "/" + fname + "/" + data_name);
 						if (f.exists()) {
-							if (data_name.equals("segments")) {
+							if (data_name.equals(SEGMENTS)) {
 								mergeSegments(f.getPath(), domain);// segments比较特殊，需单个合并
 							}
 							ls.add(f.getPath());
@@ -106,7 +110,7 @@ public class MergeNutchData {
 				}
 			}
 		} catch (Exception e) {
-			LOG.info("mergeByDomain:", e.getMessage());
+			LOG.error("mergeByDomain:"+ e.getMessage());
 		}
 	}
 
@@ -120,23 +124,27 @@ public class MergeNutchData {
 	 */
 	public void mergeCrawlDB(List<String> crawldb_list, String domain) {
 		if (nutch_root.length() > 0 && nutch_root != null && crawldb_list != null) {
-			String cmd = nutch_root + MERGE_CRAWLDB + output_folder + domain + "_data/" + CRAWLDB + " ";
+			String str = nutch_root + MERGE_CRAWLDB + output_folder + domain + "_data/" + CRAWLDB + " ";
 			try {
-				String merge_crawldb = cmd + "%s";
+				String merge_crawldb = str + "%s";
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < crawldb_list.size(); i++) {
 					sb.append(crawldb_list.get(i));
 					sb.append(" ");
 				}
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
-				System.out.println(String.format(merge_crawldb, folderStr));
-				int code = ExcuteCmd.excuteCmd(String.format(merge_crawldb, folderStr));
-				if (code == 0) {// 执行成功,则删除目录
-					// System.out.println(String.format(RM, folderStr));
-					ExcuteCmd.excuteCmd(String.format(RM, folderStr));
+				String cmd = String.format(merge_crawldb, folderStr);
+				LOG.info("mergedb command start:"+cmd);
+				if (ExcuteCmd.excuteCmd(cmd) == 0) {// merge crawldb succeed
+					LOG.info("merge crawldb succeed:"+cmd);
+					cmd = String.format(RM, folderStr);
+					if(ExcuteCmd.excuteCmd(cmd)==0)//rm crawldb
+					{
+						LOG.info("rm crawldb:"+cmd);
+					}
 				}
 			} catch (Exception e) {
-				LOG.info("merge crawldb:", e.getMessage());
+				LOG.error("merge crawldb:"+e.getMessage());
 			}
 		}
 	}
@@ -151,23 +159,27 @@ public class MergeNutchData {
 	 */
 	public void mergeLinkDB(List<String> linkdb_list, String domain) {
 		if (nutch_root.length() > 0 && nutch_root != null && linkdb_list != null) {
-			String cmd = nutch_root + MERGE_LINKDB + output_folder + domain + "_data/" + LINKDB + " ";
+			String str = nutch_root + MERGE_LINKDB + output_folder + domain + "_data/" + LINKDB + " ";
 			try {
 				StringBuilder sb = new StringBuilder();
 				for (String linkdb_folder : linkdb_list) {
 					sb.append(linkdb_folder);
 					sb.append(" ");
 				}
-				String merge_linkdb = cmd + "%s";
+				String merge_linkdb = str + "%s";
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
-				// System.out.println(String.format(merge_linkdb, folderStr));
-				int code = ExcuteCmd.excuteCmd(String.format(merge_linkdb, folderStr));
-				if (code == 0) {// 执行成功,则删除目录
-					// System.out.println(String.format(RM, folderStr));
-					ExcuteCmd.excuteCmd(String.format(RM, folderStr));
+				String cmd =String.format(merge_linkdb, folderStr);
+				LOG.info("mergelinkdb command start:"+cmd);
+				if (ExcuteCmd.excuteCmd(cmd) == 0) {//merge linkdb succeed
+					LOG.info("merge linkdb succeed:"+cmd);
+					cmd = String.format(RM, folderStr);
+					if(ExcuteCmd.excuteCmd(cmd) == 0)//rm linkdb
+					{
+						LOG.info("rm linkdb:"+cmd);
+					}
 				}
 			} catch (Exception e) {
-				LOG.info("merge linkdb:", e.getMessage());
+				LOG.error("merge linkdb:"+ e.getMessage());
 			}
 		}
 	}
@@ -182,18 +194,21 @@ public class MergeNutchData {
 	 */
 	public void mergeSegments(String segments_folder, String domain) {
 		if (nutch_root.length() > 0 && nutch_root != null && segments_folder != null) {
-			String cmd = nutch_root + MERGE_SEGMENTS + output_folder + domain + "_data/" + SEGMENTS + " ";
+			String str = nutch_root + MERGE_SEGMENTS + output_folder + domain + "_data/"+SEGMENTS+" -dir ";
 			try {
-				String merge_segments = cmd + "%s";
-				// System.out.println(String.format(merge_segments,
-				// segments_folder));
-				int code = ExcuteCmd.excuteCmd(String.format(merge_segments, segments_folder));
-				if (code == 0) {// 执行成功,则删除目录
-					// System.out.println(String.format(RM, segments_folder));
-					ExcuteCmd.excuteCmd(String.format(RM, segments_folder));
+				String merge_segments = str + "%s";
+				String cmd =String.format(merge_segments, segments_folder);
+				LOG.info("mergesegs command start:"+cmd);
+				if (ExcuteCmd.excuteCmd(cmd) == 0) {// merge segment succeed
+					LOG.info("merge segment succeed:"+cmd);
+					cmd =String.format(RM, segments_folder);
+					if(ExcuteCmd.excuteCmd(cmd)==0)//rm segments
+					{
+						LOG.info("rm segments:"+cmd);
+					}
 				}
 			} catch (Exception e) {
-				LOG.info("merge segment:", e.getMessage());
+				LOG.error("merge segment:"+ e.getMessage());
 			}
 		}
 	}
