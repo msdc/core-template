@@ -49,7 +49,7 @@ public class MD5Utils {
 	}
 	public static void main(String[] args) {
 		
-		System.out.println(MD5("http://irm.cnstock.com/company/scp_tzzgx/tgx_yqjj/201411/3248648.htm"));
+		System.out.println(MD5("http://www.cs.com.cn/xwzx/hg/"));
 	}
 	
 }
