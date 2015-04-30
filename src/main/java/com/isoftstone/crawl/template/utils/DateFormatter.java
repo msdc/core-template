@@ -21,9 +21,9 @@ public class DateFormatter {
 	public static final String YYYYMMDDHHMM = "yyyy-MM-dd HH:mm";
 	public static final String HHMM = "HH-mm";
 
-	public static final String LONG = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})";
-	public static final String MIDDLE = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2})";
-	public static final String SHORT = "(20\\d{2}[-|/|年](?:0[1-9]|1[012])[-|/|月](?:0[1-9]|[12][0-9]|3[01])日?)";
+	public static final String LONG = "(20\\d{2}[-|/|年](?:0?[1-9]|1[012])[-|/|月](?:0?[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})";
+	public static final String MIDDLE = "(20\\d{2}[-|/|年](?:0?[1-9]|1[012])[-|/|月](?:0?[1-9]|[12][0-9]|3[01])日?\\s+\\d{1,2}:\\d{1,2})";
+	public static final String SHORT = "(20\\d{2}[-|/|年](?:0?[1-9]|1[012])[-|/|月](?:0?[1-9]|[12][0-9]|3[01])日?)";
 
 	public static String formatDate2Str(Date date, String format) {
 		try {
@@ -73,7 +73,7 @@ public class DateFormatter {
 		try {
 			if (date != null && date != "") {
 				// 1、标准化
-				date = date.replaceAll("\\s+", " ").replaceAll("年|月|/", "-").replace("日", "").trim();
+				date = date.replaceAll("年|月|/", "-").replaceAll("日", " ").replaceAll("\\s+", " ").trim();
 				// 2、判断日期格式,将其统一
 				if (date.matches(SHORT)) {
 					date = date + " 00:00:00";
