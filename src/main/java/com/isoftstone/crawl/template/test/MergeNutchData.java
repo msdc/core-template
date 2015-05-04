@@ -1,14 +1,17 @@
 package com.isoftstone.crawl.template.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.isoftstone.crawl.template.utils.ExcuteCmd;
+import com.isoftstone.crawl.template.utils.HdfsUtils;
 
 /**
  * Created by Administrator on 2015/4/22.
@@ -50,20 +53,79 @@ public class MergeNutchData {
 			System.out.println("MergeNutchData data_folder: " + data_folder);
 			System.out.println("MergeNutchData data_domain: " + data_domain);
 		}
-		
+//		
 //		 String nutch_root = "/nutch_run/local_incremental/bin/nutch";
 //		 String output_folder = " /home/nutch_final_data/";
-//		 String data_folder = "./nutch_data/";
-//		 String data_domain = "baidu";
+//		 String data_folder = "/nutch_data";
+//		 String data_domain = "www.jcrb.com";
 		MergeNutchData merge = new MergeNutchData(nutch_root, output_folder, data_folder);
 		merge.mergeByDomain(data_domain);
+		//merge.deployMergeByDomain(data_domain);
 	}
 
+	
+	public void deployMergeByDomain(String domain) {
+		if (domain!=null && domain.length()>0) {
+			List<String> ls_folder;
+			List<String> ls_data = new ArrayList<String>();//保存与domain匹配的data_folder
+			try {
+				ls_folder = HdfsUtils.listAll(data_folder);
+				for (String data_name : data_list) {// 分别处理各data目录[crawldb、linkdb、segments]
+					for (String folder : ls_folder) {
+						//判断下面是否有要处理的文件
+						//System.out.println(folder);
+						String host = folder.substring(folder.lastIndexOf("/")+1, folder.indexOf("_increment"));
+						if(host.equals(domain))
+						{
+							ls_data.add(folder);
+							//System.out.println(folder);
+							if (ls_data.size() == 5)// 防止一次合并过多,一次最多合并5个
+							{
+								switch (data_name) {
+								case CRAWLDB:// 1、crawldb
+									mergeCrawlDB(ls_data, domain);
+									break;
+								case LINKDB:// 2、linkdb
+									mergeLinkDB(ls_data, domain);
+									break;
+								default:
+									break;
+								}
+								ls_data = new ArrayList<String>();
+							}
+						}else
+						{
+							System.out.println("folder not equal "+domain);
+						}
+					}
+					// 不足5个,有多少处理多少
+					switch (data_name) {
+					case CRAWLDB:// 1、crawldb
+						mergeCrawlDB(ls_data, domain);
+						ls_data = new ArrayList<String>();
+						break;
+					case LINKDB:// 2、linkdb
+						mergeLinkDB(ls_data, domain);
+						ls_data = new ArrayList<String>();
+						break;
+					default:
+						break;
+					}
+				}
+			} catch (IOException e) {
+				LOG.info("deployMergeByDomain:"+e.getMessage());
+			}
+		} else {
+			LOG.info("deployMergeByDomain domain not found!");
+		}
+	}
+	
+	
 	public void mergeByDomain(String domain) {
 		List<String> ls = new ArrayList<String>();
 		try {
 			File[] folders = new File(data_folder).listFiles();
-			for (String data_name : data_list) {// 分别处理各data目录
+			for (String data_name : data_list) {// 分别处理各data目录[crawldb、linkdb、segments]
 				for (File folder : folders) {
 					File f = null;
 					String fname = folder.getName();
@@ -77,7 +139,7 @@ public class MergeNutchData {
 						} else {
 							// System.out.println(fname +
 							// " directory not found crawldb!");
-							LOG.info(fname + " directory not found crawldb!");
+							LOG.info(fname + " directory not found crawldb or linkdb!");
 						}
 						if (ls.size() == 5)// 防止一次合并过多,一次最多合并5个
 						{
