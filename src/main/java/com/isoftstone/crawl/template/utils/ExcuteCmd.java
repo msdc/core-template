@@ -33,13 +33,11 @@ public class ExcuteCmd {
 			InputStreamReader isr = new InputStreamReader(stdin);
 			BufferedReader br = new BufferedReader(isr);
 			String line = null;
-			LOG.info("<output></output>");
 			while ((line = br.readLine()) != null)
 			LOG.info(line);
 			LOG.info("");
 			exitVal = proc.waitFor();
 			LOG.info("Process exitValue:"+exitVal);
-			
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
