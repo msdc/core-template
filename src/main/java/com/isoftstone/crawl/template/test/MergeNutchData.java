@@ -1,17 +1,14 @@
 package com.isoftstone.crawl.template.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.isoftstone.crawl.template.utils.ExcuteCmd;
-import com.isoftstone.crawl.template.utils.HdfsUtils;
 
 /**
  * Created by Administrator on 2015/4/22.
@@ -21,15 +18,24 @@ public class MergeNutchData {
 	private final String MERGE_CRAWLDB = " mergedb ";
 	private final String MERGE_LINKDB = " mergelinkdb ";
 	private final String MERGE_SEGMENTS = " mergesegs ";
+	
 	private final String CRAWLDB = "crawldb";
 	private final String LINKDB = "linkdb";
 	private final String SEGMENTS = "segments";
+	
 	private final String RM = "rm -rf %s";
-
+	private final String MV = "mv -f %s %s";
+	private final String MKDIR = "mkdir %s";
+	
+	private final String SUFFIX_MERGED = "_merged";
+	private final String SUFFIX_BACKUP = "_backup";
+	
 	private List<String> data_list = Arrays.asList("crawldb", "linkdb", "segments");
 	private String nutch_root = "/nutch_run/local_incremental/bin/nutch";
 	private String output_folder = "/home/nutch_final_data/";
 	private String data_folder = "/nutch_data/";
+	private String temp_folder = "/nutch_temp_data/";
+	private String market_folder = "/nutch_data_market/";
 
 	public MergeNutchData(String nutch_root, String output_folder, String data_folder) {
 		this.nutch_root = nutch_root;
@@ -64,14 +70,14 @@ public class MergeNutchData {
 					LOG.info("MergeNutchData data_folder: " + data_folder);
 					LOG.info("MergeNutchData data_domain: " + data_domain);
 				}
+				LOG.info("~~~~~~~~~~~~ MergeNutchData " + data_domain + " start ~~~~~~~~~~~~~~~~~~~~");
 				merge.mergeByDomain(data_domain);
-				// merge.deployMergeByDomain(data_domain);
 				break;
-			case 3:// 参数为3个时，处理方指定data_folder下所有的domain
+			case 3:// 参数为3个时，处理指定data_folder下所有的domain
+				LOG.info("~~~~~~~~~~~~ MergeNutchData all domain start ~~~~~~~~~~~~~~~~~~~~");
 				for (String str : merge.getDomainList(data_folder)) {
 					// System.out.println(str);
 					merge.mergeByDomain(str);
-					// merge.deployMergeByDomain(data_domain);
 				}
 				break;
 			default:
@@ -80,64 +86,9 @@ public class MergeNutchData {
 		}
 	}
 
-	// 集群模式下merge todo
-	public void deployMergeByDomain(String domain) {
-		if (domain != null && domain.length() > 0) {
-			List<String> ls_folder;
-			List<String> ls_data = new ArrayList<String>();// 保存与domain匹配的data_folder
-			try {
-				ls_folder = HdfsUtils.listAll(data_folder);
-				for (String data_name : data_list) {// 分别处理各data目录[crawldb、linkdb、segments]
-					for (String folder : ls_folder) {
-						// 判断下面是否有要处理的文件
-						// System.out.println(folder);
-						String host = folder.substring(folder.lastIndexOf("/") + 1, folder.indexOf("_increment"));
-						if (host.equals(domain)) {
-							ls_data.add(folder);
-							// System.out.println(folder);
-							if (ls_data.size() == 5)// 防止一次合并过多,一次最多合并5个
-							{
-								switch (data_name) {
-								case CRAWLDB:// 1、crawldb
-									mergeCrawlDB(ls_data, domain);
-									break;
-								case LINKDB:// 2、linkdb
-									mergeLinkDB(ls_data, domain);
-									break;
-								default:
-									break;
-								}
-								ls_data = new ArrayList<String>();
-							}
-						} else {
-							LOG.info("folder not equal " + domain);
-						}
-					}
-					// 不足5个,有多少处理多少
-					switch (data_name) {
-					case CRAWLDB:// 1、crawldb
-						mergeCrawlDB(ls_data, domain);
-						ls_data = new ArrayList<String>();
-						break;
-					case LINKDB:// 2、linkdb
-						mergeLinkDB(ls_data, domain);
-						ls_data = new ArrayList<String>();
-						break;
-					default:
-						break;
-					}
-				}
-			} catch (IOException e) {
-				LOG.info("deployMergeByDomain:" + e.getMessage());
-			}
-		} else {
-			LOG.info("deployMergeByDomain domain not found!");
-		}
-	}
-
 	/**
 	 * @Title: getDomainList
-	 * @Description: TODO(获取所有不重复的domain)
+	 * @Description: (获取所有不重复的domain)
 	 * @param @param data_folder
 	 * @param @return 设定文件
 	 * @return List<String> 返回类型
@@ -148,7 +99,7 @@ public class MergeNutchData {
 		List<String> ls = new ArrayList<String>();
 		try {
 			File[] folders = new File(data_folder).listFiles();
-			if (folders != null) {
+			if (folders != null && folders.length > 0) {
 				for (File folder : folders) {
 					String fname = folder.getName();
 					String host = fname.substring(0, fname.indexOf("_"));// 提取host
@@ -164,63 +115,42 @@ public class MergeNutchData {
 		return ls;
 	}
 
-	/**
-	* @Title: mergeByDomain 
-	* @Description: TODO(按指定domain合并nutch_data) 
-	* @param @param domain    设定文件 
-	* @return void    返回类型 
-	* @author lj
-	* @throws
-	 */
 	public void mergeByDomain(String domain) {
-		List<String> ls = new ArrayList<String>();
 		try {
 			File[] folders = new File(data_folder).listFiles();
 			for (String data_name : data_list) {// 分别处理各data目录[crawldb、linkdb、segments]
 				for (File folder : folders) {
-					File f = null;
-					String fname = folder.getName();
-					String host = fname.substring(0, fname.indexOf("_"));// 提取host
-					if (host.equals(domain)) {
-						f = new File(data_folder + "/" + fname + "/" + data_name);
-						if (f.exists()) {
-							if (data_name.equals(SEGMENTS)) {
-								mergeSegments(f.getPath(), domain);// segments比较特殊，需单个合并
+					try {
+						File f = null;
+						String fname = folder.getName();
+						String host = fname.substring(0, fname.indexOf("_"));// 提取host
+						if (host.equals(domain)) {
+							f = new File(data_folder + "/" + fname + "/" + data_name);
+							if (f.exists()) {
+								String path = f.getPath();
+								switch (data_name) {// data_name
+								case CRAWLDB:// 1、crawldb
+									//mergeCrawlDB(path, domain);
+									break;
+								case LINKDB:// 2、linkdb
+									//mergeLinkDB(path, domain);
+									break;
+								case SEGMENTS:// 3、segments
+									 mergeSegments(path, domain);
+									 //merge(path, domain);
+									break;
+								default:
+									break;
+								}
+							} else {
+								// System.out.println(fname +
+								// " directory not found crawldb!");
+								LOG.info(fname + "/" + data_name + " directory not found!");
 							}
-							ls.add(f.getPath());
-						} else {
-							// System.out.println(fname +
-							// " directory not found crawldb!");
-							LOG.info(fname + " directory not found crawldb or linkdb!");
 						}
-						if (ls.size() == 5)// 防止一次合并过多,一次最多合并5个
-						{
-							switch (data_name) {
-							case CRAWLDB:// 1、crawldb
-								mergeCrawlDB(ls, domain);
-								break;
-							case LINKDB:// 2、linkdb
-								mergeLinkDB(ls, domain);
-								break;
-							default:
-								break;
-							}
-							ls = new ArrayList<String>();
-						}
+					} catch (Exception e) {
+						LOG.error("mergeByDomain:" + e.getMessage());
 					}
-				}
-				// 不足5个,有多少处理多少
-				switch (data_name) {
-				case CRAWLDB:// 1、crawldb
-					mergeCrawlDB(ls, domain);
-					ls = new ArrayList<String>();
-					break;
-				case LINKDB:// 2、linkdb
-					mergeLinkDB(ls, domain);
-					ls = new ArrayList<String>();
-					break;
-				default:
-					break;
 				}
 			}
 		} catch (Exception e) {
@@ -230,7 +160,7 @@ public class MergeNutchData {
 
 	/**
 	 * @Title: mergeCrawlDB
-	 * @Description: TODO(合并crawldb)
+	 * @Description: (合并crawldb)
 	 * @param @param crawldb_list
 	 * @return void 返回类型
 	 * @author lj
@@ -238,9 +168,8 @@ public class MergeNutchData {
 	 */
 	public void mergeCrawlDB(List<String> crawldb_list, String domain) {
 		if (nutch_root.length() > 0 && nutch_root != null && crawldb_list != null) {
-			String str = nutch_root + MERGE_CRAWLDB + output_folder + domain + "_data/" + CRAWLDB + " ";
+			String merge_crawldb = nutch_root + MERGE_CRAWLDB + output_folder + domain + "_data/" + CRAWLDB + " %s";
 			try {
-				String merge_crawldb = str + "%s";
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < crawldb_list.size(); i++) {
 					sb.append(crawldb_list.get(i));
@@ -264,8 +193,36 @@ public class MergeNutchData {
 	}
 
 	/**
+	 * @Title: mergeCrawlDB
+	 * @Description: (合并crawldb,single input CrawlDb is ok)
+	 * @param @param crawldb
+	 * @return void 返回类型
+	 * @author lj
+	 * @throws
+	 */
+	public void mergeCrawlDB(String crawldb, String domain) {
+		if (nutch_root.length() > 0 && nutch_root != null) {
+			String merge_crawldb = nutch_root + MERGE_CRAWLDB + output_folder + domain + "_data/" + CRAWLDB + " %s";
+			try {
+				String cmd = String.format(merge_crawldb, crawldb);
+				LOG.info("mergedb command start:" + cmd);
+				if (ExcuteCmd.excuteCmd(cmd) == 0) {// merge crawldb succeed
+					LOG.info("merge crawldb succeed:" + cmd);
+					cmd = String.format(RM, crawldb);
+					// if (ExcuteCmd.excuteCmd(cmd) == 0)// rm crawldb
+					// {
+					// LOG.info("rm crawldb:" + cmd);
+					// }
+				}
+			} catch (Exception e) {
+				LOG.error("merge crawldb:" + e.getMessage());
+			}
+		}
+	}
+
+	/**
 	 * @Title: mergeLinkDB
-	 * @Description: TODO(合并LinkDB)
+	 * @Description: (合并LinkDB)
 	 * @param @param linkdb_list
 	 * @return void 返回类型
 	 * @author lj
@@ -273,14 +230,13 @@ public class MergeNutchData {
 	 */
 	public void mergeLinkDB(List<String> linkdb_list, String domain) {
 		if (nutch_root.length() > 0 && nutch_root != null && linkdb_list != null) {
-			String str = nutch_root + MERGE_LINKDB + output_folder + domain + "_data/" + LINKDB + " ";
+			String merge_linkdb = nutch_root + MERGE_LINKDB + output_folder + domain + "_data/" + LINKDB + " %s";
 			try {
 				StringBuilder sb = new StringBuilder();
 				for (String linkdb_folder : linkdb_list) {
 					sb.append(linkdb_folder);
 					sb.append(" ");
 				}
-				String merge_linkdb = str + "%s";
 				String folderStr = sb.deleteCharAt(sb.length() - 1).toString();
 				String cmd = String.format(merge_linkdb, folderStr);
 				LOG.info("mergelinkdb command start:" + cmd);
@@ -299,26 +255,77 @@ public class MergeNutchData {
 	}
 
 	/**
+	 * @Title: mergeLinkDB
+	 * @Description: (合并LinkDB)
+	 * @param @param linkdb_list
+	 * @return void 返回类型
+	 * @author lj
+	 * @throws
+	 */
+	public void mergeLinkDB(String linkdb, String domain) {
+		if (nutch_root.length() > 0 && nutch_root != null) {
+			String merge_linkdb = nutch_root + MERGE_LINKDB + output_folder + domain + "_data/" + LINKDB + " %s";
+			try {
+				String cmd = String.format(merge_linkdb, linkdb);
+				LOG.info("mergelinkdb command start:" + cmd);
+				if (ExcuteCmd.excuteCmd(cmd) == 0) {// merge linkdb succeed
+					LOG.info("merge linkdb succeed:" + cmd);
+					// cmd = String.format(RM, linkdb);
+					// if (ExcuteCmd.excuteCmd(cmd) == 0)// rm linkdb
+					// {
+					// LOG.info("rm linkdb:" + cmd);
+					// }
+				}
+			} catch (Exception e) {
+				LOG.error("merge linkdb:" + e.getMessage());
+			}
+		}
+	}
+
+	/**
 	 * @Title: mergeSegments
-	 * @Description: TODO(合并单个segment)
+	 * @Description: (合并单个segment)
 	 * @param @param segments_folder 设定文件
 	 * @return void 返回类型
 	 * @author lj
 	 * @throws
 	 */
-	public void mergeSegments(String segments_folder, String domain) {
+	public void merge(String segments_folder, String domain) {
 		if (nutch_root.length() > 0 && nutch_root != null && segments_folder != null) {
-			String str = nutch_root + MERGE_SEGMENTS + output_folder + domain + "_data/" + SEGMENTS + " -dir ";
+			String merge_segments = nutch_root + MERGE_SEGMENTS + segments_folder + SUFFIX_MERGED + " %s/*";
 			try {
-				String merge_segments = str + "%s";
 				String cmd = String.format(merge_segments, segments_folder);
-				LOG.info("mergesegs command start:" + cmd);
+				// System.out.println(cmd);
 				if (ExcuteCmd.excuteCmd(cmd) == 0) {// merge segment succeed
-					LOG.info("merge segment succeed:" + cmd);
-					cmd = String.format(RM, segments_folder);
-					if (ExcuteCmd.excuteCmd(cmd) == 0)// rm segments
+					LOG.info("mergesegs command:" + cmd);
+					cmd = String.format(RM, segments_folder + SUFFIX_BACKUP);
+					// System.out.println(cmd);
+					if (ExcuteCmd.excuteCmd(cmd) == 0)// 删除备份
 					{
-						LOG.info("rm segments:" + cmd);
+						LOG.info(cmd);
+						cmd = String.format(MV, segments_folder, segments_folder + SUFFIX_BACKUP);
+						// System.out.println(cmd);
+						if (ExcuteCmd.excuteCmd(cmd) == 0)// 重命名
+						{
+							LOG.info(cmd);
+							cmd = String.format(MKDIR, segments_folder);
+							// System.out.println(cmd);
+							if (ExcuteCmd.excuteCmd(cmd) == 0)// 创建segments
+							{
+								LOG.info(cmd);
+								cmd = String.format(MV, segments_folder + SUFFIX_MERGED, segments_folder);
+								// System.out.println(cmd);
+								if (ExcuteCmd.excuteCmd(cmd) == 0)// meger_segments重命为segments
+								{
+									LOG.info(cmd);
+									cmd = String.format(RM, segments_folder + SUFFIX_MERGED);// 删除合并结果
+									// System.out.println(cmd);
+									if (ExcuteCmd.excuteCmd(cmd) == 0) {
+										LOG.info(cmd);
+									}
+								}
+							}
+						}
 					}
 				}
 			} catch (Exception e) {
@@ -326,4 +333,80 @@ public class MergeNutchData {
 			}
 		}
 	}
+
+	public void mergeSegments(String segments_folder, String domain) {
+		if (nutch_root.length() > 0 && nutch_root != null && segments_folder != null) {
+			String out_folder = temp_folder + domain + "_data_" + System.currentTimeMillis();
+			String merge_segments = nutch_root + MERGE_SEGMENTS + out_folder + " %s/*";
+			try {
+				String cmd = String.format(merge_segments, segments_folder);
+				LOG.info("merge shell:"+cmd);
+				if (ExcuteCmd.excuteCmd(cmd) == 0) {
+					LOG.info("merge segment succeed");
+					String domain_folder = market_folder + domain + "_data/";
+					File f = new File(domain_folder);
+					if (!f.exists())// 创建domain folder
+					{
+						f.mkdir();
+						LOG.info("mkdir domain folder: " + f.getPath());
+					}
+					// 将合并后的目录归档
+					cmd = String.format(MV, out_folder + "/*", f.getPath());
+					if (ExcuteCmd.excuteCmd(cmd) == 0) {
+						LOG.info("mv temp folder:" + cmd);
+						cmd = String.format(RM, out_folder);
+						if (ExcuteCmd.excuteCmd(cmd) == 0) {
+							LOG.info("rm temp folder:" + cmd);
+							normalizingSegments(domain);
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("merge segment:" + e.getMessage());
+			}
+		}
+	}
+
+	public void normalizingSegments(String domain) {
+		String fina_data = data_folder + domain + "/segments/";
+		String temp_data = market_folder + domain + "_data/";
+		String cmd = "";
+		try {
+			File[] folders = new File(fina_data).listFiles();
+			if (folders != null && folders.length > 0) {
+				for (File file : folders) {
+					String path = file.getPath();
+					cmd = String.format(MV, path, temp_data);
+					if (ExcuteCmd.excuteCmd(cmd) == 0) {
+						LOG.info("mv data:" + cmd);
+					}
+				}
+			}
+			cmd = nutch_root + MERGE_SEGMENTS + fina_data + " " + temp_data + "*";
+			if (ExcuteCmd.excuteCmd(cmd) == 0) {
+				LOG.info("normalizingSegments:" + cmd);
+			}
+		} catch (Exception e) {
+			LOG.error("normalizingSegments:" + e.getMessage());
+		}
+	}
+
+	// 将同一域名下所有的segments合并成一个
+	// public void mergeSegments(String segments_folder, String domain) {
+	// if (nutch_root.length() > 0 && nutch_root != null && segments_folder !=
+	// null) {
+	// String merge_segments = nutch_root + MERGE_SEGMENTS + temp_folder +
+	// domain + "_data_"+System.currentTimeMillis()+"/" + " %s/*";
+	// try {
+	// String cmd = String.format(merge_segments, segments_folder);
+	// LOG.info("mergesegs command start:" + cmd);
+	// if (ExcuteCmd.excuteCmd(cmd) == 0) {// merge segment succeed
+	// LOG.info("merge segment succeed:" + cmd);
+	// }
+	// } catch (Exception e) {
+	// LOG.error("merge segment:" + e.getMessage());
+	// }
+	// }
+	// }
+
 }
