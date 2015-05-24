@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.isoftstone.crawl.template.vo;
 
 /**
@@ -7,6 +6,7 @@ package com.isoftstone.crawl.template.vo;
 public class CrawlQueueItem {
     private String url;
     private String type;
+    private String templateID;
 
     public String getUrl() {
         return url;
@@ -23,31 +23,12 @@ public class CrawlQueueItem {
     public void setType(String type) {
         this.type = type;
     }
-}
-=======
-package com.isoftstone.crawl.template.vo;
 
-/**
- * Created by donegal on 2015/5/6.
- */
-public class CrawlQueueItem {
-    private String url;
-    private String type;
-
-    public String getUrl() {
-        return url;
+    public String getTemplateID() {
+        return templateID;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setTemplateID(String templateID) {
+        this.templateID = templateID;
     }
 }
->>>>>>> 3f0f16c7e97c1276b53d01ffd369a74c00ddaa37
